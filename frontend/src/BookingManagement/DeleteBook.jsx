@@ -1,6 +1,6 @@
 import { useState } from "react";
-import BackButton from "../components/BackButton";
-import Spinner from "../components/Spinner";
+import BackButton from "../BookingManagement/BackButton";
+import Spinner from "../BookingManagement/Spinner";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import BooksTable from "../components/home/BooksTable";
+import BooksTable from "../BookingManagement/BooksTable";
 
 function Dashboard() {
   const [books, setBooks] = useState([]);

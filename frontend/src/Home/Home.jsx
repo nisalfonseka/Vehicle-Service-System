@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Spinner from "../components/Spinner";
+import Spinner from "../BookingManagement/Spinner";
 import { Link } from "react-router-dom";
 import { MdOutlineAddBox } from "react-icons/md";
-import BooksCard from "../components/home/BooksCard";
-import BooksTable from "../components/home/BooksTable";
-import HeroSection1 from "../components/HeroSection1";
-import HeroSection2 from "../components/HeroSection2";
-import HeroSection3 from "../components/HeroSection3";
-import HeroSection4 from "../components/HeroSection4";
+
+import HeroSection1 from "../Home/HeroSection1";
+import HeroSection2 from "../Home/HeroSection2";
+import HeroSection3 from "../Home/HeroSection3";
+import HeroSection4 from "../Home/HeroSection4";
 
 function Home() {
  

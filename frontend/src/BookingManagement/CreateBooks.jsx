@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import BackButton from "../components/BackButton";
-import Spinner from "../components/Spinner";
+import BackButton from "../BookingManagement/BackButton";
+import Spinner from "../BookingManagement/Spinner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Header from "../components/Header";
+
 
 
 function CreateCustomer() {

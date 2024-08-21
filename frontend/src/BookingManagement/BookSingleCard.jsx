@@ -12,7 +12,7 @@ import { CiCalendarDate } from "react-icons/ci";
 import { HiViewGrid } from "react-icons/hi";
 import BookModel from "./BookModel";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import Bookreport from "../Bookreport";
+import Bookreport from "../BookingManagement/Bookreport";
 
 
 
