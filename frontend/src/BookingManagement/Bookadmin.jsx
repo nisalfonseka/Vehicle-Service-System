@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import BooksCard from "./home/BooksCard";
+import BooksCard from "../BookingManagement/BooksCard";
 
 
 

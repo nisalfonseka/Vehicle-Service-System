@@ -1,15 +1,15 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import CreateBook from "./pages/CreateBooks";
-import ShowBook from "./pages/ShowBook";
-import EditBook from "./pages/EditBook";
-import DeleteBook from "./pages/DeleteBook";
-import Header from './components/Header';
-import Footer from './components/Footer';
-import BooksTable from "./components/home/BooksTable";
-import Dashboard from "./components/dashboard";
-import BookSingleCard from "./components/home/BookSingleCard";
-import Bookadmin from "./components/Bookadmin";
+import Home from "./Home/Home";
+import CreateBook from "./BookingManagement/CreateBooks";
+import ShowBook from "./BookingManagement/ShowBook";
+import EditBook from "./BookingManagement/EditBook";
+import DeleteBook from "./BookingManagement/DeleteBook";
+import Header from './Home/Header';
+import Footer from './Home/Footer';
+import BooksTable from "./BookingManagement/BooksTable";
+import Dashboard from "./BookingManagement/dashboard";
+import BookSingleCard from "./BookingManagement/BookSingleCard";
+import Bookadmin from "./BookingManagement/Bookadmin";
 
 function App() {
   return (
