@@ -2,33 +2,29 @@ import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { PiBookOpenTextLight } from "react-icons/pi";
 import { BiUserCircle } from "react-icons/bi";
-import axios from "axios";
+import Reactwhatsapp from "react-whatsapp";
 
 const BookModel = ({ book, onClose }) => {
   const [declineReason, setDeclineReason] = useState("");
 
-  const sendWhatsAppMessage = async (message) => {
-    try {
-      const response = await axios.post("YOUR_WHATSAPP_API_ENDPOINT", {
-        to: book.contactNumber,
-        body: message,
-      });
-      console.log("Message sent:", response.data);
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
+  const createWhatsAppLink = (message) => {
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappLink = `https://wa.me/${book.contactNumber}?text=${encodedMessage}`;
+    return whatsappLink;
   };
 
   const handleConfirmBooking = () => {
-    const confirmMessage = `Your booking has been confirmed. Thank you, ${book.customerName}!`;
-    sendWhatsAppMessage(confirmMessage);
-    onClose(); // Close the modal after sending the message
+    const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle : ${book.vehicleNumber}\n  Date : ${book.selectedDate}\n  Time : ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
+    const whatsappLink = createWhatsAppLink(confirmMessage);
+    window.open(whatsappLink, "_blank");
+    onClose(); // Close the modal after opening WhatsApp
   };
 
   const handleDeclineBooking = () => {
-    const declineMessage = `Your booking has been declined. Reason: ${declineReason}`;
-    sendWhatsAppMessage(declineMessage);
-    onClose(); // Close the modal after sending the message
+    const declineMessage = `Sorry! Your booking has been declined for vehicle ${book.vehicleNumber}. Reason: ${declineReason}`;
+    const whatsappLink = createWhatsAppLink(declineMessage);
+    window.open(whatsappLink, "_blank");
+    onClose(); // Close the modal after opening WhatsApp
   };
 
   return (
