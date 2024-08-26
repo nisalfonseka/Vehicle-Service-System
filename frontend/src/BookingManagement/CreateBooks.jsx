@@ -25,7 +25,6 @@ function CreateCustomer() {
   const services = [
     { name: "Wash and Grooming", cost: 9000, time: 45 },
     { name: "Lube Services", cost: 5000, time: 60 },
-<<<<<<< Updated upstream
     { name: "Exterior & Interior Detailing", cost: 8000, time: 120 },
     { name: "Engine Tune ups", cost: 15000, time: 180 },
     { name: "Undercarriage Degreasing", cost: 40000, time: 60 },
@@ -42,24 +41,7 @@ function CreateCustomer() {
     { name: "Detailing", cost: 10000, time: 150 },
     { name: "Body Shop", cost: 9000, time: 60 },
     { name: "Periodic Maintenances", cost: 20000, time: 120 },
-=======
-    { name: "Exterior & Interior Detailing", cost: 8000, time: 90 },
-    { name: "Engine Tune ups", cost: 15000, time: 120 },
-    { name: "Undercarriage Degreasing", cost: 10000, time: 60 },
-    { name: "Windscreen Treatments", cost: 11000, time: 60 },
-    { name: "Inspection Reports", cost: 7500, time: 50 },
-    { name: "Insurance Claims", cost: 0, time: 30 },
-    { name: "Part Replacements", cost: 10000, time: 70 },
-    { name: "Hybrid Services", cost: 20000, time: 120 },
-    { name: "Wheel Alignment", cost: 6000, time: 80 },
-    { name: "Battery Services", cost: 9000, time: 60 },
-    { name: "Nano Treatments", cost: 12000, time: 110 },
-    { name: "Full Paints", cost: 19000, time: 90 },
-    { name: "Mechanical", cost: 12000, time: 120 },
-    { name: "Detailing", cost: 10000, time: 110 },
-    { name: "Body Shop", cost: 11000, time: 60 },
-    { name: "Periodic Maintenances", cost: 8000, time: 120 },
->>>>>>> Stashed changes
+
     { name: "Other", cost: 0, time: 0 },
   ];
 
