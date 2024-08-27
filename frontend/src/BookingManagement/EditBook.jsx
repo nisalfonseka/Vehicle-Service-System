@@ -173,7 +173,7 @@ function EditBook() {
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Book Edited Successfully", { variant: "success" });
-        navigate("/");
+        navigate(-1);
       })
       .catch((error) => {
         setLoading(false);
@@ -191,52 +191,55 @@ function EditBook() {
   return (
     <div className="p-4">
       <BackButton />
-      <h1 className="text-3xl my-4">Edit Booking</h1>
-      {loading ? <Spinner /> : ""}
-      <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Customer Name</label>
-          <input
-            type="text"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-          />
+      <h1 className="text-3xl my-4"></h1>
+      {loading && <Spinner />}
+      <div className="flex flex-col rounded-xl w-[1000px] p-4 mx-auto">
+        <div className="flex justify-between my-4">
+          <div className="w-1/2 pr-2">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Customer Name</label>
+            <input
+              type="text"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              className="border-2 rem border-gray-500 px-4 py-2 w-full"
+            />
+          </div>
+          <div className="w-1/2 pl-2">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Contact Number</label>
+            <input
+              type="text"
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
+              className="border-2 rem border-gray-500 px-4 py-2 w-full"
+            />
+          </div>
         </div>
 
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Contact Number</label>
-          <input
-            type="text"
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-          />
-        </div>
-
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Vehicle Type</label>
-          <input
-            type="text"
-            value={vehicleType}
-            onChange={(e) => setVehicleType(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-          />
-        </div>
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Vehicle Number</label>
-          <input
-            type="text"
-            value={vehicleNumber}
-            onChange={(e) => setVehicleNumber(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-          />
+        <div className="flex justify-between my-4">
+          <div className="w-1/2 pr-2">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Type</label>
+            <input
+              type="text"
+              value={vehicleType}
+              onChange={(e) => setVehicleType(e.target.value)}
+              className="border-2 border-gray-500 px-4 py-2 w-full"
+            />
+          </div>
+          <div className="w-1/2 pl-2">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Number</label>
+            <input
+              type="text"
+              value={vehicleNumber}
+              onChange={(e) => setVehicleNumber(e.target.value)}
+              className="border-2 border-gray-500 px-4 py-2 w-full"
+            />
+          </div>
         </div>
 
         {/* Service Selection */}
         <div className="my-4">
-          <h4 className="text-xl text-gray-500">Select Services</h4>
-          <div className="service-grid grid grid-cols-2 gap-4 mt-2">
+          <h4 className="text-xl text-lg font-semibold text-black-500">Select Services</h4>
+          <div className="service-grid grid grid-cols-3 gap-4 mt-2">
             {services.map((service, index) => (
               <label key={index} className="service-option flex items-center">
                 <input
@@ -252,46 +255,50 @@ function EditBook() {
         </div>
 
         {/* Date Picker */}
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Select Date</label>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-            dateFormat="yyyy-MM-dd"
-          />
-        </div>
+        <div className="flex justify-between my-4">
+          <div className="my-4">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Date</label>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              className="border-2 border-gray-500 px-4 py-2 w-full"
+              dateFormat="yyyy-MM-dd"
+              minDate={new Date()} // Restrict to current day and future dates
+            />
+          </div>
 
-        {/* Time Slot Selection */}
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Select Time Slot</label>
-          <select
-            value={selectedTimeSlot}
-            onChange={(e) => setSelectedTimeSlot(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-            disabled={Object.keys(timeSlotsAvailability).length === 0} // Disable if data is not yet loaded
-          >
-            <option value="">Select a time slot</option>
-            {timeSlots.map((slot, index) => (
-              <option
-                key={index}
-                value={slot}
-                disabled={timeSlotsAvailability[slot] >= 3} // Disable slot if fully booked
-              >
-                {slot} {timeSlotsAvailability[slot] >= 3 ? "(Fully Booked)" : ""}
+          {/* Time Slot Selection */}
+          <div className="my-4">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Time Slot</label>
+            <select
+              value={selectedTimeSlot}
+              onChange={(e) => setSelectedTimeSlot(e.target.value)}
+              className="border-2 border-gray-500 px-4 py-2 w-full"
+            >
+              <option value="" disabled>
+                Select a time slot
               </option>
-            ))}
-          </select>
+              {timeSlots.map((slot, index) => (
+                <option
+                  key={index}
+                  value={slot}
+                  disabled={timeSlotsAvailability[slot] >= 3} // Disable slot if fully booked
+                >
+                  {slot} {timeSlotsAvailability[slot] >= 3 ? "(Fully Booked)" : ""}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Estimation Summary */}
         <div className="my-4 p-4 bg-gray-100 rounded-lg">
           <h4 className="text-lg font-semibold">Estimated Cost and Time</h4>
-          <p className="text-gray-700">Total Cost: ${totalCost}</p>
+          <p className="text-gray-700">Total Cost: LKR: {totalCost}.00</p>
           <p className="text-gray-700">Total Time: {formatTime(totalTime)}</p>
         </div>
 
-        <button className="p-2 bg-sky-300 m-8" onClick={handleSaveCustomer}>
+        <button className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700" onClick={handleSaveCustomer}>
           Save
         </button>
       </div>

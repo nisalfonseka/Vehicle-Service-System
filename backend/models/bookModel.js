@@ -56,6 +56,11 @@ const bookSchema = mongoose.Schema(
       required: false,
       
     },
+    status: {
+      type: String,
+      enum: ['New', 'Confirmed', 'Declined'],
+      default: 'New'
+    }
    
   },
   {

@@ -7,8 +7,6 @@ import { useSnackbar } from "notistack";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
-
 function CreateCustomer() {
   const [customerName, setCustomerName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
@@ -43,6 +41,7 @@ function CreateCustomer() {
     { name: "Detailing", cost: 10000, time: 150 },
     { name: "Body Shop", cost: 9000, time: 60 },
     { name: "Periodic Maintenances", cost: 20000, time: 120 },
+
     { name: "Other", cost: 0, time: 0 },
   ];
 
@@ -59,19 +58,16 @@ function CreateCustomer() {
   ];
 
   useEffect(() => {
-    // Fetch current bookings for the selected date to determine available slots
     const fetchBookings = async () => {
       try {
         const response = await axios.get(`http://localhost:5555/books?date=${selectedDate.toISOString().split("T")[0]}`);
         const bookings = response.data;
 
-        // Initialize availability with 0 bookings for each time slot
         const availability = timeSlots.reduce((acc, slot) => {
           acc[slot] = 0;
           return acc;
         }, {});
 
-        // Count the number of bookings for each time slot
         bookings.forEach((booking) => {
           if (availability[booking.selectedTimeSlot] !== undefined) {
             availability[booking.selectedTimeSlot]++;
@@ -150,7 +146,7 @@ function CreateCustomer() {
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Customer Created Successfully", { variant: "success" });
-        navigate("/");
+        navigate("-1");
       })
       .catch((error) => {
         setLoading(false);
@@ -158,6 +154,7 @@ function CreateCustomer() {
         console.error(error);
       });
   };
+
   const formatTime = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
@@ -165,8 +162,6 @@ function CreateCustomer() {
   };
 
   return (
-
-    
     <div className="p-4">
       <BackButton />
       <h1 className="text-3xl my-4"></h1>
@@ -192,7 +187,7 @@ function CreateCustomer() {
             />
           </div>
         </div>
-  
+
         <div className="flex justify-between my-4">
           <div className="w-1/2 pr-2">
             <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Type</label>
@@ -213,7 +208,7 @@ function CreateCustomer() {
             />
           </div>
         </div>
-  
+
         {/* Service Selection */}
         <div className="my-4">
           <h4 className="text-xl text-lg font-semibold text-black-500">Select Services</h4>
@@ -231,56 +226,57 @@ function CreateCustomer() {
             ))}
           </div>
         </div>
-  
+
         {/* Date Picker */}
         <div className="flex justify-between my-4">
-        <div className="my-4">
-          <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Date</label>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-            dateFormat="yyyy-MM-dd"
-          />
-        </div>
-  
-        {/* Time Slot Selection */}
-        <div className="my-4">
-          <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Time Slot</label>
-          <select
-            value={selectedTimeSlot}
-            onChange={(e) => setSelectedTimeSlot(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
-          >
-            <option value="">Select a time slot</option>
-            {timeSlots.map((slot, index) => (
-              <option
-                key={index}
-                value={slot}
-                disabled={timeSlotsAvailability[slot] >= 3} // Disable slot if fully booked
-              >
-                {slot} {timeSlotsAvailability[slot] >= 3 ? "(Fully Booked)" : ""}
+          <div className="my-4">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Date</label>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              className="border-2 border-gray-500 px-4 py-2 w-full"
+              dateFormat="yyyy-MM-dd"
+              minDate={new Date()} // Restrict to current day and future dates
+            />
+          </div>
+
+          {/* Time Slot Selection */}
+          <div className="my-4">
+            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Time Slot</label>
+            <select
+              value={selectedTimeSlot}
+              onChange={(e) => setSelectedTimeSlot(e.target.value)}
+              className="border-2 border-gray-500 px-4 py-2 w-full"
+            >
+              <option value="" disabled>
+                Select a time slot
               </option>
-            ))}
-          </select>
+              {timeSlots.map((slot, index) => (
+                <option
+                  key={index}
+                  value={slot}
+                  disabled={timeSlotsAvailability[slot] >= 3} // Disable slot if fully booked
+                >
+                  {slot} {timeSlotsAvailability[slot] >= 3 ? "(Fully Booked)" : ""}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-      </div>
-  
         {/* Estimation Summary */}
         <div className="my-4 p-4 bg-gray-100 rounded-lg">
           <h4 className="text-lg font-semibold">Estimated Cost and Time</h4>
-          <p className="text-gray-700">Total Cost: LKR: {totalCost}</p>
+          <p className="text-gray-700">Total Cost: LKR: {totalCost}.00</p>
           <p className="text-gray-700">Total Time: {formatTime(totalTime)}</p>
         </div>
-  
+
         <button className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700" onClick={handleSaveCustomer}>
           Add Booking
         </button>
       </div>
     </div>
   );
-  
 }
 
 export default CreateCustomer;
