@@ -10,6 +10,7 @@ import BooksTable from "./BookingManagement/BooksTable";
 import Dashboard from "./BookingManagement/dashboard";
 import BookSingleCard from "./BookingManagement/BookSingleCard";
 import Bookadmin from "./BookingManagement/Bookadmin";
+import './Home/styles.css';
 
 function App() {
   return (

@@ -4,27 +4,56 @@ import { PiBookOpenTextLight } from "react-icons/pi";
 import { BiUserCircle } from "react-icons/bi";
 import Reactwhatsapp from "react-whatsapp";
 
-const BookModel = ({ book, onClose }) => {
+const BookModel = ({ book, onClose, onStatusUpdate }) => {
   const [declineReason, setDeclineReason] = useState("");
 
   const createWhatsAppLink = (message) => {
     const encodedMessage = encodeURIComponent(message);
-    const whatsappLink = `https://wa.me/${book.contactNumber}?text=${encodedMessage}`;
-    return whatsappLink;
+    return `https://wa.me/${book.contactNumber}?text=${encodedMessage}`;
   };
 
-  const handleConfirmBooking = () => {
-    const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle : ${book.vehicleNumber}\n  Date : ${book.selectedDate}\n  Time : ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
-    const whatsappLink = createWhatsAppLink(confirmMessage);
-    window.open(whatsappLink, "_blank");
-    onClose(); // Close the modal after opening WhatsApp
+  const handleConfirmBooking = async () => {
+    try {
+      const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle: ${book.vehicleNumber}\n  Date: ${book.selectedDate}\n  Time: ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
+      const whatsappLink = createWhatsAppLink(confirmMessage);
+      window.open(whatsappLink, "_blank");
+
+      // Update booking status to Confirmed
+      await fetch(`/api/bookings/${book._id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'Confirmed' })
+      });
+
+      onStatusUpdate(book._id, 'Confirmed');
+      onClose();
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+    }
   };
 
-  const handleDeclineBooking = () => {
-    const declineMessage = `Sorry! Your booking has been declined for vehicle ${book.vehicleNumber}. Reason: ${declineReason}`;
-    const whatsappLink = createWhatsAppLink(declineMessage);
-    window.open(whatsappLink, "_blank");
-    onClose(); // Close the modal after opening WhatsApp
+  const handleDeclineBooking = async () => {
+    try {
+      const declineMessage = `Sorry! Your booking has been declined for vehicle ${book.vehicleNumber}. Reason: ${declineReason}`;
+      const whatsappLink = createWhatsAppLink(declineMessage);
+      window.open(whatsappLink, "_blank");
+
+      // Update booking status to Declined
+      await fetch(`/api/bookings/${book._id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'Declined' })
+      });
+
+      onStatusUpdate(book._id, 'Declined');
+      onClose();
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+    }
   };
 
   return (
@@ -33,40 +62,43 @@ const BookModel = ({ book, onClose }) => {
       onClick={onClose}
     >
       <div
-        onClick={(event) => event.stopPropagation()}
-        className="w-[600px] max-w-full h-[400px] bg-white rounded-xl p-4 flex flex-col relative"
+        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg"
+        onClick={(e) => e.stopPropagation()}
       >
-        <AiOutlineClose
-          className="absolute right-6 top-6 text-3xl text-red-600 cursor-pointer"
-          onClick={onClose}
-        />
-        <h2 className="w-fit px-4 py-1 bg-red-400 rounded-lg">
-          {book.publishYear}
-        </h2>
-        <h4 className="my-2 text-gray-500">{book._id}</h4>
-        <div className="flex justify-start items-center gap-x-2">
-          <PiBookOpenTextLight className="text-red-300 text-2xl " />
-          Customer Name: <h2 className="my-1">{book.customerName}</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Booking Details</h2>
+          <AiOutlineClose className="text-2xl cursor-pointer" onClick={onClose} />
         </div>
-        <div className="flex justify-start items-center gap-x-2">
-          <BiUserCircle className="text-red-300 text-2xl" />
-          Contact Number:<h2 className="my-1">{book.contactNumber}</h2>
+        <div className="flex items-center gap-x-2 mb-4">
+          <BiUserCircle className="text-2xl text-red-400" />
+          <h3 className="text-lg font-semibold">{book.customerName}</h3>
         </div>
-        
-        <button onClick={handleConfirmBooking} className="btn btn-secondary">
-          Confirm Booking
-        </button>
-        <br />
-        <input
-          type="text"
-          placeholder="Enter reason for decline"
-          value={declineReason}
-          onChange={(e) => setDeclineReason(e.target.value)}
-          className="mt-2 p-2 border rounded"
-        />
-        <button onClick={handleDeclineBooking} className="btn btn-secondary mt-2">
-          Decline Booking
-        </button>
+        <p><strong>Vehicle Number:</strong> {book.vehicleNumber}</p>
+        <p><strong>Selected Date:</strong> {book.selectedDate}</p>
+        <p><strong>Selected Time Slot:</strong> {book.selectedTimeSlot}</p>
+        <p><strong>Contact Number:</strong> {book.contactNumber}</p>
+        <div className="flex gap-x-4 mt-4">
+          <button
+            className="bg-green-500 text-white py-2 px-4 rounded"
+            onClick={handleConfirmBooking}
+          >
+            Confirm
+          </button>
+          <button
+            className="bg-red-500 text-white py-2 px-4 rounded"
+            onClick={handleDeclineBooking}
+          >
+            Decline
+          </button>
+        </div>
+        {book.status === "Declined" && (
+          <textarea
+            className="mt-4 w-full p-2 border border-gray-300 rounded"
+            placeholder="Reason for declining"
+            value={declineReason}
+            onChange={(e) => setDeclineReason(e.target.value)}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,21 @@
+/* styles.css or main.css */
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main {
+    flex: 1;
+  }
+  
+  .Footer {
+    background-color: #f87171; /* Tailwind's red-600 */
+    color: white;
+    padding: 2.5rem; /* Tailwind's p-10 */
+  }
+  
