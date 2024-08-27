@@ -146,7 +146,7 @@ function CreateCustomer() {
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Customer Created Successfully", { variant: "success" });
-        navigate("/");
+        navigate("-1");
       })
       .catch((error) => {
         setLoading(false);

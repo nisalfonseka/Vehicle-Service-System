@@ -18,7 +18,7 @@ function DeleteBook() {
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Book Deleted Successfully", { variant: "success" });
-        navigate("/");
+        navigate("-1");
       })
       .catch((error) => {
         setLoading(false);
