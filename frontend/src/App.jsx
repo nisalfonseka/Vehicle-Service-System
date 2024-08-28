@@ -11,6 +11,7 @@ import Dashboard from "./BookingManagement/dashboard";
 import BookSingleCard from "./BookingManagement/BookSingleCard";
 import Bookadmin from "./BookingManagement/Bookadmin";
 import './Home/styles.css';
+import ContactForm from "./CustomerSupport/CreateCustomer";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
         <Route path="/books/card" element={<BookSingleCard/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/Bookadmin" element={<Bookadmin/>}/>
+        <Route path="/support/create" element={<ContactForm/>}/>
+
       </Routes>
 
       <Footer />

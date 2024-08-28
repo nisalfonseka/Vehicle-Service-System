@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import BackButton from "../components/BackButton";
-import Spinner from "../components/Spinner";
+import BackButton from "../BookingManagement/BackButton";
+import Spinner from "../BookingManagement/Spinner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -112,7 +112,7 @@ function ContactForm() {
   return (
     <div style={{ padding: "20px", backgroundColor: "#f0f8ff" }}>
       <BackButton />
-      <h1 style={{ fontSize: "36px", marginBottom: "20px", color: "#1E90FF" }}>Create Customer</h1>
+      <h1 style={{ fontSize: "36px", marginBottom: "20px", color: "#1E90FF" }}>Raise a Ticket</h1>
       {loading && <Spinner />}
       <div style={{ 
           display: "flex", 
