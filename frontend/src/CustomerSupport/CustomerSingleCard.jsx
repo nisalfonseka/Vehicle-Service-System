@@ -50,7 +50,7 @@ const CustomerSingleCard = ({ customer }) => {
         </Link>
       </div>
       {showModel && (
-        <CustomerModel customer={customer} onClose={() => setShowModel(false)} />
+        <CustomerModal customer={customer} onClose={() => setShowModel(false)} />
       )}
     </div>
   );
