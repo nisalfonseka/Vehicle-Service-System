@@ -12,6 +12,14 @@ import BookSingleCard from "./BookingManagement/BookSingleCard";
 import Bookadmin from "./BookingManagement/Bookadmin";
 import './Home/styles.css';
 import ContactForm from "./CustomerSupport/CreateCustomer";
+import ShowCustomer from "./CustomerSupport/ShowCustomer"
+import EditCustomer from "./CustomerSupport/EditCustomer"
+import DeleteCustomer from "./CustomerSupport/DeleteCustomer"
+import CustomerTable from "./CustomerSupport/CustomerTable";
+import CustomerSingleCard from "./CustomerSupport/CustomerSingleCard";
+import CustomerCard from "./CustomerSupport/CustomerCard";
+
+
 
 function App() {
   return (
@@ -29,7 +37,18 @@ function App() {
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/Bookadmin" element={<Bookadmin/>}/>
         <Route path="/support/create" element={<ContactForm/>}/>
+        <Route path="/support/ShowCustomer" element={<ShowCustomer/>}/>
+        <Route path="/support/edit/:id" element={<EditCustomer/>}/>
+        <Route path="/support/delete/:id" element={<DeleteCustomer/>}/>
+
+        <Route path='/support/details/:id' element={<CustomerTable  />} />
+        <Route path='/support/card/:id' element={<CustomerCard />} />
+        <Route path='/support/single/:id' element={<CustomerSingleCard />} />
+
+       
+
         
+
 
       </Routes>
 

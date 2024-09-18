@@ -1,9 +1,43 @@
 import { AiOutlineClose } from 'react-icons/ai';
 import { PiBookOpenTextLight } from 'react-icons/pi';
 import { BiUserCircle } from 'react-icons/bi';
+import { useState, useEffect } from 'react';
 
+const CustomerModal = ({ customer, onClose }) => {
+  const [authorEmail, setAuthorEmail] = useState(customer.email);
+  const [emailError, setEmailError] = useState("");
 
-const CustomerModal = ({customer, onClose }) => {
+  useEffect(() => {
+    setAuthorEmail(customer.email);
+  }, [customer.email]);
+
+  const handleChatOpen = () => {
+    // Logic for opening chat would go here
+  };
+
+  const handleSuccess = () => {
+    if (!isValidEmail(authorEmail)) {
+      setEmailError("Please enter a valid email address.");
+    } else {
+      const message = "Your Ticket has Successfully submitted and Under Progress";
+      window.open(`mailto:${authorEmail}?subject=Ticket Recieved&body=${message}`);
+    }
+  };
+
+  const handleUnsuccess = () => {
+    if (!isValidEmail(authorEmail)) {
+      setEmailError("Please enter a valid email address.");
+    } else {
+      const message = "Your Ticket  Details are unclear please raise a ticket again with clear details";
+      window.open(`mailto:${authorEmail}?subject=Ticket Unsuccessful&body=${message}`);
+    }
+  };
+
+  const isValidEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   return (
     <div
       className='fixed bg-black bg-opacity-60 top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center'
@@ -31,15 +65,25 @@ const CustomerModal = ({customer, onClose }) => {
           <h2 className='my-2'>{customer.vehicleNumber}</h2>
           <h2 className='my-2'>{customer.subject}</h2>
         </div>
-        <p className='mt-4'>Anything You want to show</p>
-        <p className='my-2'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni quia
-          voluptatum sint. Nisi impedit libero eveniet cum vitae qui expedita
-          necessitatibus assumenda laboriosam, facilis iste cumque a pariatur
-          nesciunt cupiditate voluptas? Quis atque earum voluptate dolor nisi
-          dolorum est? Deserunt placeat cumque quo dicta architecto, dolore
-          vitae voluptate sequi repellat!
-        </p>
+        
+        <div className="flex flex-col gap-y-2 mt-4">
+          {emailError && (
+            <p className="text-red-500 text-sm">{emailError}</p>
+          )}
+         
+          <button
+            onClick={handleSuccess}
+            className="bg-green-500 text-white px-4 py-2 rounded-md"
+          >
+            Success
+          </button>
+          <button
+            onClick={handleUnsuccess}
+            className="bg-red-500 text-white px-4 py-2 rounded-md"
+          >
+            Unsuccess
+          </button>
+        </div>
       </div>
     </div>
   );
