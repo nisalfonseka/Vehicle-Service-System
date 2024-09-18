@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.0",
     "@react-pdf/renderer": "^3.4.4",
     "axios": "^1.7.4",
     "framer-motion": "^11.3.28",
@@ -23,7 +26,8 @@
     "react-router-dom": "^6.21.3",
     "react-spinners": "^0.14.1",
     "react-whatsapp": "^0.3.0",
-    "twilio": "^5.2.2"
+    "twilio": "^5.2.2",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

@@ -98,6 +98,14 @@ function CreateCustomer() {
   };
 
   const handleSaveCustomer = () => {
+
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+
+    if (!loggedInUser) {
+      enqueueSnackbar("User not logged in", { variant: "error" });
+      return;
+    }
+    
     if (!customerName.trim()) {
       enqueueSnackbar("Please enter the customer's name", { variant: "error" });
       return;
@@ -145,12 +153,12 @@ function CreateCustomer() {
       .post("http://localhost:5555/books", data)
       .then(() => {
         setLoading(false);
-        enqueueSnackbar("Customer Created Successfully", { variant: "success" });
-        navigate("-1");
+        enqueueSnackbar("Booking Created Successfully", { variant: "success" });
+        navigate("/");
       })
       .catch((error) => {
         setLoading(false);
-        enqueueSnackbar("Error occurred while creating the customer", { variant: "error" });
+        enqueueSnackbar("Error occurred while creating the booking", { variant: "error" });
         console.error(error);
       });
   };
