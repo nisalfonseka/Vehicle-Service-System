@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BookSingleCard from "../BookingManagement/BookSingleCard";
+import BookSingleCard from "./BookSingleCard";
 import axios from "axios";
 
 const BooksCard = () => {

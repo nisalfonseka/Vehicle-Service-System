@@ -75,7 +75,9 @@ const BooksTable = ({ books }) => {
               <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600">
                 Operations
               </th>
-              
+              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600">
+                Status
+              </th>
             </tr>
           </thead>
           <tbody>
