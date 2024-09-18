@@ -97,11 +97,10 @@ function ContactForm() {
     setLoading(true);
     axios
       .post("http://localhost:5555/customer", data)
-      .then((res) => {
-        console.log(res.data)
+      .then(() => {
         setLoading(false);
         enqueueSnackbar("Customer Created Successfully", { variant: "success" });
-        navigate(`/support/details/${res.data._id}`);
+        navigate("/");
       })
       .catch((error) => {
         setLoading(false);

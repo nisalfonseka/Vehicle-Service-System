@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import BackButton from '../BookingManagement/BackButton';
-import Spinner from '../BookingManagement/Spinner';
+import BackButton from '../components/BackButton';
+import Spinner from '../components/Spinner';
 
 const ShowCustomer = () => {
   const [customer, setCustomer] = useState({});

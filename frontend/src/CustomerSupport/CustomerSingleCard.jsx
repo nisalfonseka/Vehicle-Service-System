@@ -1,97 +1,54 @@
 import { Link } from "react-router-dom";
-import { BiUserCircle } from "react-icons/bi";
-import { CiCalendarDate } from "react-icons/ci";
+import { PiBookOpenTextLight } from "react-icons/pi";
+import { BiUserCircle, BiShow } from "react-icons/bi";
+import { BsInfoCircle } from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
+import { MdEdit } from "react-icons/md";
 import { FaCarAlt } from "react-icons/fa";
+import { MdOutlineDelete } from "react-icons/md";
 import { GiConfirmed } from "react-icons/gi";
-import { HiViewGrid } from "react-icons/hi";
-import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { useState } from "react";
+import { CiCalendarDate } from "react-icons/ci";
+import { HiViewGrid } from "react-icons/hi";
 import CustomerModal from "./CustomerModal";
+
 
 const CustomerSingleCard = ({ customer }) => {
   const [showModel, setShowModel] = useState(false);
-
   return (
-    <div
-      style={{
-        backgroundColor: "#E9ECEE", // White background
-        color: "#000000", // Black font color
-        border: "2px solid #808080", // Gray border to match the existing design
-        borderRadius: "10px",
-        padding: "16px",
-        margin: "16px",
-        position: "relative",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow for better visibility
-      }}
-    >
-      {/* Ensure customer data exists before rendering */}
-      {customer && customer.customerName && (
-        <h2
-          style={{
-            position: "absolute",
-            top: "8px",
-            right: "16px",
-            padding: "4px 8px",
-            backgroundColor: "#f44336", // Red background for the customer name
-            borderRadius: "8px",
-          }}
-        >
-          {customer.customerName}
-        </h2>
-      )}
-
-      <h4 style={{ margin: "8px 0", color: "#808080" }}>{customer?._id}</h4>
-
-      {/* Customer Email */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <span style={{ color: "#e57373", fontSize: "24px" }}>
-          <BiUserCircle />
-        </span>
-        <h2 style={{ margin: "4px 0" }}>{customer?.email}</h2>
+    <div className="border-2 border-gray-500 rounded-lg px-4 py-2 m-4 relative hover:shadow-xl">
+      <h2 className="absolute top-1 right-2 px-4 py-1 bg-red-400 rounded-lg">
+        {customer.customerName}
+      </h2>
+      <h4 className="my-2 text-gray-500">{customer._id}</h4>
+      <div className="flex justify-start items-center gap-x-2">
+        <BiUserCircle className="text-red-300 text-2xl " />
+        <h2 className="my-1">{customer.email}</h2>
       </div>
-
-      {/* Customer Vehicle Number */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <span style={{ color: "#e57373", fontSize: "24px" }}>
-          <CiCalendarDate />
-        </span>
-        <h2 style={{ margin: "4px 0" }}>{customer?.vehicleNumber}</h2>
+      <div className="flex justify-start items-center gap-x-2">
+        <CiCalendarDate className="text-red-300 text-2xl" />
+        <h2 className="my-1">{customer.vehicleNumber}</h2>
       </div>
-
-      {/* Customer Mobile Number */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <span style={{ color: "#e57373", fontSize: "24px" }}>
-          <FaCarAlt />
-        </span>
-        <h2 style={{ margin: "4px 0" }}>{customer?.mobileNumber}</h2>
+      <div className="flex justify-start items-center gap-x-2">
+        <FaCarAlt className="text-red-300 text-2xl" />
+        <h2 className="my-1">{customer.mobileNumber}</h2>
       </div>
-
-      {/* Action Buttons */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "16px",
-          padding: "16px",
-        }}
-      >
+      
+      <div className="flex justify-between items-center gap-x-2 mt-4 p-4">
         <GiConfirmed
-          style={{ fontSize: "30px", color: "#1E88E5", cursor: "pointer" }}
+          className="text-3xl text-blue-800 hover:text-black cursor-pointer"
           onClick={() => setShowModel(true)}
         />
-        <Link to={`/support/details/${customer?._id}`}>
-          <HiViewGrid style={{ fontSize: "24px", color: "#43A047" }} />
+        <Link to={`/customer/details/${customer._id}`}>
+          <HiViewGrid className="text-2xl text-green-800 hover:text-black" />
         </Link>
-        <Link to={`/support/edit/${customer?._id}`}>
-          <MdEdit style={{ fontSize: "24px", color: "#FBC02D" }} />
+        <Link to={`/customer/edit/${customer._id}`}>
+          <MdEdit className="text-2xl text-yellow-600 hover:text-black" />
         </Link>
-        <Link to={`/support/delete/${customer?._id}`}>
-          <MdOutlineDelete style={{ fontSize: "24px", color: "#E53935" }} />
+        <Link to={`/customer/delete/${customer._id}`}>
+          <MdOutlineDelete className="text-2xl text-red-600 hover:text-black" />
         </Link>
       </div>
-
-      {/* Modal for Confirmation */}
       {showModel && (
         <CustomerModal customer={customer} onClose={() => setShowModel(false)} />
       )}

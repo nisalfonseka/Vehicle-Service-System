@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import BackButton from '../BookingManagement/BackButton';
-import Spinner from '../BookingManagement/Spinner';
+import BackButton from '../components/BackButton';
+import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -46,10 +46,10 @@ const EditCustomer = () => {
     setLoading(true);
     axios
       .put(`http://localhost:5555/customer/${id}`, data)
-      .then((res) => {
+      .then(() => {
         setLoading(false);
         enqueueSnackbar('Customer edited successfully', { variant: 'success' });
-        navigate(`/support/details/${id}`);
+        navigate('/');
       })
       .catch((error) => {
         setLoading(false);
