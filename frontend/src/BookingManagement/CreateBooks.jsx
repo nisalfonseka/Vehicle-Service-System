@@ -41,7 +41,6 @@ function CreateCustomer() {
     { name: "Detailing", cost: 10000, time: 150 },
     { name: "Body Shop", cost: 9000, time: 60 },
     { name: "Periodic Maintenances", cost: 20000, time: 120 },
-
     { name: "Other", cost: 0, time: 0 },
   ];
 
@@ -58,30 +57,45 @@ function CreateCustomer() {
   ];
 
   useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  
+    // If no user is logged in, show a message and navigate to login
+    if (!loggedInUser || !loggedInUser.username) {
+      enqueueSnackbar("Please log in to make a booking", { variant: "error" });
+      navigate("/login"); // Redirect to login page
+      return;
+    }
+  
+    // Set the customerName from the logged-in user's username
+    setCustomerName(loggedInUser.username);
+  
+    // Fetch bookings based on the selected date
     const fetchBookings = async () => {
       try {
         const response = await axios.get(`http://localhost:5555/books?date=${selectedDate.toISOString().split("T")[0]}`);
         const bookings = response.data;
-
+  
         const availability = timeSlots.reduce((acc, slot) => {
           acc[slot] = 0;
           return acc;
         }, {});
-
+  
         bookings.forEach((booking) => {
           if (availability[booking.selectedTimeSlot] !== undefined) {
             availability[booking.selectedTimeSlot]++;
           }
         });
-
+  
         setTimeSlotsAvailability(availability);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
     };
-
+  
     fetchBookings();
-  }, [selectedDate]);
+  }, [selectedDate, enqueueSnackbar, navigate]);
+  
+  
 
   const handleCheckboxChange = (service) => {
     setSelectedServices((prevSelected) =>
@@ -98,14 +112,13 @@ function CreateCustomer() {
   };
 
   const handleSaveCustomer = () => {
-
-    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
     if (!loggedInUser) {
       enqueueSnackbar("User not logged in", { variant: "error" });
       return;
     }
-    
+
     if (!customerName.trim()) {
       enqueueSnackbar("Please enter the customer's name", { variant: "error" });
       return;
@@ -220,56 +233,41 @@ function CreateCustomer() {
         {/* Service Selection */}
         <div className="my-4">
           <h4 className="text-xl text-lg font-semibold text-black-500">Select Services</h4>
-          <div className="service-grid grid grid-cols-3 gap-4 mt-2">
-            {services.map((service, index) => (
-              <label key={index} className="service-option flex items-center">
+          <div className="service-grid grid grid-cols-2 gap-4">
+            {services.map((service) => (
+              <div key={service.name} className="flex items-center">
                 <input
                   type="checkbox"
+                  className="mr-2"
                   checked={selectedServices.includes(service.name)}
                   onChange={() => handleCheckboxChange(service)}
-                  className="mr-2"
                 />
-                {service.name}
-              </label>
+                <label className="text-lg">{service.name}</label>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Date Picker */}
-        <div className="flex justify-between my-4">
-          <div className="my-4">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Date</label>
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
-              dateFormat="yyyy-MM-dd"
-              minDate={new Date()} // Restrict to current day and future dates
-            />
-          </div>
+        {/* Date and Time Selection */}
+        <div className="my-4">
+          <label className="text-lg font-semibold">Select Date</label>
+          <DatePicker selected={selectedDate} onChange={(date) => setSelectedDate(date)} className="px-4 py-2 border" />
+        </div>
 
-          {/* Time Slot Selection */}
-          <div className="my-4">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Time Slot</label>
-            <select
-              value={selectedTimeSlot}
-              onChange={(e) => setSelectedTimeSlot(e.target.value)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
-            >
-              <option value="" disabled>
-                Select a time slot
+        <div className="my-4">
+          <label className="text-lg font-semibold">Select Time Slot</label>
+          <select
+            value={selectedTimeSlot}
+            onChange={(e) => setSelectedTimeSlot(e.target.value)}
+            className="px-4 py-2 border"
+          >
+            <option value="">Select Time Slot</option>
+            {timeSlots.map((slot) => (
+              <option key={slot} value={slot}>
+                {slot} ({timeSlotsAvailability[slot]} )
               </option>
-              {timeSlots.map((slot, index) => (
-                <option
-                  key={index}
-                  value={slot}
-                  disabled={timeSlotsAvailability[slot] >= 3} // Disable slot if fully booked
-                >
-                  {slot} {timeSlotsAvailability[slot] >= 3 ? "(Fully Booked)" : ""}
-                </option>
-              ))}
-            </select>
-          </div>
+            ))}
+          </select>
         </div>
 
         {/* Estimation Summary */}
@@ -279,7 +277,11 @@ function CreateCustomer() {
           <p className="text-gray-700">Total Time: {formatTime(totalTime)}</p>
         </div>
 
-        <button className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700" onClick={handleSaveCustomer}>
+        {/* Save Booking Button */}
+        <button
+          className="items-center justify-center px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700"
+          onClick={handleSaveCustomer}
+        >
           Add Booking
         </button>
       </div>

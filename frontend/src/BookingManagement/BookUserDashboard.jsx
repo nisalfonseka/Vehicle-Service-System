@@ -5,19 +5,22 @@ import BooksTable from "./BooksTable";
 function BookUserDashboard() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState(null); // Store logged-in user's ID
+  const [userProfile, setUserProfile] = useState(null); // Store user profile details
 
   useEffect(() => {
-    // Fetch the logged-in user's information, e.g., from local storage or context
-    const loggedInUser = JSON.parse(localStorage.getItem('user')); // Replace with your user fetching logic
-    setUserId(loggedInUser?.id);
+    // Fetch the logged-in user's information
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    console.log("Logged In User:", loggedInUser); // Verify the structure and field names
 
     if (loggedInUser) {
+      setUserProfile(loggedInUser); // Set user profile with the logged-in user details
+
       setLoading(true);
       axios
         .get("http://localhost:5555/books")
         .then((response) => {
-          const filteredBooks = response.data.data.filter(book => book.userId === loggedInUser.id);
+          // Filter bookings based on the logged-in user's username
+          const filteredBooks = response.data.data.filter(book => book.customerName === loggedInUser.username);
           setBooks(filteredBooks);
           setLoading(false);
         })
@@ -30,10 +33,22 @@ function BookUserDashboard() {
 
   return (
     <div className="p-4">
-      <div className="flex justify-center items-center gap-x-4">
-      </div>
+      {/* User Profile Section */}
+      {userProfile && (
+        <div className="bg-white shadow-md rounded p-4 mb-8">
+          
+          <div className="flex items-center gap-4">
+            
+            <div>
+              <p> <strong>Hi {userProfile.username}</strong></p>
+              </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bookings Section */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl my-8">My Bookings</h1>
+        <h1 className="text-2xl my-8">My Bookings</h1>
       </div>
       <BooksTable books={books} loading={loading} />
     </div>
