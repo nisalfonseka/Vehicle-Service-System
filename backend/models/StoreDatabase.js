@@ -1,7 +1,6 @@
-// models/StoreDatabase.js
+import mongoose from 'mongoose';
 
-const mongoose = require('mongoose');
-
+// Define the schema
 const StoreItems = new mongoose.Schema({
   name: { type: String, required: true },
   code: { type: String, required: true },
@@ -11,4 +10,7 @@ const StoreItems = new mongoose.Schema({
   photo: { type: String, required: true } // Store Base64 string
 });
 
-module.exports = mongoose.model('StoreDatabase', StoreItems);
+// Export the model using ES module syntax
+const StoreDatabase = mongoose.model('StoreDatabase', StoreItems);
+
+export default StoreDatabase;

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const storeItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -9,4 +9,6 @@ const storeItemSchema = new mongoose.Schema({
   photo: { type: String } // Store Base64 string
 });
 
-module.exports = mongoose.model('StoreItem', storeItemSchema);
+// ES module export
+const StoreItem = mongoose.model('StoreItem', storeItemSchema);
+export default StoreItem;

@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import Order from '../models/Order.js';
+import StoreItem from '../models/StoreItem.js';
+
 const router = express.Router();
-const Order = require('../models/Order');
-const StoreItem = require('../models/StoreItem');
 
 
 // DELETE /api/orders/:orderId
@@ -188,4 +189,4 @@ router.get('/orders/:status', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -3,7 +3,15 @@ import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import bookRoute from "./routes/bookRoute.js";
 import loginRoute from "./routes/loginRoute.js"
+
+//online store routes
+import storeItemRoutes from "./routes/storeItemRoutes.js";
+import orderRoutes from "./routes/Orders.js";
+import SavedCard from "./routes/SavedCard.js";
+import Order from "./models/Order.js";
+import StoreItem from "./models/StoreItem.js";
 import cors from "cors";
+
 
 const app = express();
 
@@ -31,6 +39,12 @@ app.get("/", (request, response) => {
 
 app.use("/books", bookRoute);
 app.use("/api/user", loginRoute);
+
+//online store Routes
+app.use('/store-items', storeItemRoutes);
+app.use('/api', orderRoutes);
+app.use(SavedCard);
+
 
 mongoose
   .connect(mongoDBURL)

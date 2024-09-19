@@ -1,8 +1,9 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const StoreItem = require('../models/StoreItem');
-const StoreDatabase = require('../models/StoreDatabase')
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import StoreItem from '../models/StoreItem.js';
+import StoreDatabase from '../models/StoreDatabase.js';
+
 const router = express.Router();
 
 
@@ -174,5 +175,5 @@ router.get('/:id', async (req, res) => {
     res.status(404).json({ message: 'Item not found', error });
   }
 });
+export default router;
 
-module.exports = router;

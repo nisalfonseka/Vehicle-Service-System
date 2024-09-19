@@ -1,12 +1,14 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
-const SavedCardSchema = new Schema({
-  userId: { type: String , required: true },
-  name: { type: String , required: true },
+// Define the schema
+const SavedCardSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
+  name: { type: String, required: true },
   cardNumber: { type: String, required: true },
   expirationDate: { type: String, required: true },
   cvv: { type: String, required: true },
 });
 
-module.exports = mongoose.model('SavedCard', SavedCardSchema);
+// Export the model using ES module syntax
+const SavedCard = mongoose.model('SavedCard', SavedCardSchema);
+export default SavedCard;

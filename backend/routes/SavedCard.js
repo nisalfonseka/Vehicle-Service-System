@@ -1,6 +1,11 @@
-const express = require('express');
+import express from 'express';
+import SavedCard from '../models/SavedCard.js'; // Assuming you have a SavedCard model
+
 const router = express.Router();
-const SavedCard = require('../models/SavedCard'); // Assuming you have a SavedCard model
+
+// Your routes will go here...
+
+
 
 // Route to save card details
 router.post('/save-card', async (req, res) => {
@@ -24,4 +29,4 @@ router.get('/saved-cards/:userId', async (req, res) => {
     }
   });
 
-module.exports = router;
+  export default router;

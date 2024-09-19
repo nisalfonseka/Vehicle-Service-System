@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
+// Define the schema
 const orderSchema = new mongoose.Schema({
   customerInfo: {
     name: String,
@@ -26,5 +27,6 @@ const orderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true });
 
+// Export the model using ES module syntax
 const Order = mongoose.model('Order', orderSchema);
-module.exports = Order;
+export default Order;
