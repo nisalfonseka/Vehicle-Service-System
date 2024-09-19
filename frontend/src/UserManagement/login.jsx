@@ -34,12 +34,15 @@ function LoginForm() {
       });
   
       if (response.status === 200) {
-        // Assuming your API responds with a success status and user data
-        const { token, username } = response.data;
+        const { token, username, _id: userId } = response.data;
+
+        // Debugging: Check if userId is present
+        if (!userId) {
+          console.error("userId is missing from the response.");
+        }
   
         // Store user details in localStorage
-        localStorage.setItem('user', JSON.stringify({ username, token }));
-  
+        localStorage.setItem('user', JSON.stringify({ username, token, userId }));
         // Show success message
         enqueueSnackbar("Login Successful", { variant: "success" });
   

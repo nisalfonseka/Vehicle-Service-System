@@ -6,13 +6,30 @@ function MyOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
+  const [userId, setUserId] = useState(''); // State to store userId
   const navigate = useNavigate();
-  
-  // Replace with actual user ID once authentication is implemented
-  const userId = '96b0a0f0c9d3f3e16b2a3b28'; // Placeholder user ID
 
   useEffect(() => {
+    // Fetch the logged-in user's information
+    const fetchUserProfile = () => {
+      const loggedInUser = JSON.parse(localStorage.getItem('user'));
+      console.log("Logged In User:", loggedInUser); // Verify the structure and field names
+
+      if (loggedInUser && loggedInUser.userId) {
+        setUserId(loggedInUser.userId); // Set userId from user profile
+        console.log("User Profile Set:", loggedInUser); // Log user profile
+      } else {
+        console.error('User is not logged in or user data is missing.');
+        setError('User is not logged in or user data is missing.');
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return; // Don't fetch orders if userId is not available
+
     const fetchOrders = async () => {
       try {
         const response = await axios.get(`http://localhost:5555/api/orders/${userId}`);

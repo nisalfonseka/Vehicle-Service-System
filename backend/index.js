@@ -109,7 +109,7 @@ app.use("/api/user", loginRoute);
 //online store Routes
 app.use('/store-items', storeItemRoutes);
 app.use('/api', orderRoutes);
-app.use(SavedCard);
+app.use('/api', SavedCard);
 
 
 mongoose

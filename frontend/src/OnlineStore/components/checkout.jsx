@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
-// Add the mockUserId variable here
-const mockUserId = '94b0a0f0c9d3f3e16b2a3b29'; // Replace with any random valid ObjectId for testing
 
 function Checkout({ cart, setCart }) {
   const [customerInfo, setCustomerInfo] = useState({
@@ -21,7 +18,21 @@ function Checkout({ cart, setCart }) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [userProfile, setUserProfile] = useState(null); // Store user profile details
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch the logged-in user's information
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    console.log("Logged In User:", loggedInUser); // Verify the structure and field names
+
+    if (loggedInUser) {
+      setUserProfile(loggedInUser); // Set user profile with the logged-in user details
+      console.log("User Profile Set:", loggedInUser); // Log user profile
+    } else {
+      console.error('User is not logged in or user data is missing.');
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (!validateInputs()) return;
@@ -29,6 +40,8 @@ function Checkout({ cart, setCart }) {
     setLoading(true);
 
     try {
+      if (!userProfile?.userId) throw new Error('User ID is not available.');
+
       const orderData = {
         customerInfo,
         items: cart.map(item => ({
@@ -39,12 +52,12 @@ function Checkout({ cart, setCart }) {
         })),
         paymentInfo,
         totalAmount: cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
-        userId: mockUserId // Include the mockUserId here
+        userId: userProfile.userId // Use the user ID here
       };
 
       console.log('Order Data:', orderData);
 
-      await axios.post('http://localhost:5555/api/orders', orderData);
+      await axios.post(`http://localhost:5555/api/orders/${userProfile.userId}`, orderData); // Use the userId in the URL
       setCart([]);
       alert('Order placed successfully!');
 
@@ -77,6 +90,10 @@ function Checkout({ cart, setCart }) {
       setError('Please fill in all payment information fields.');
       return false;
     }
+    if (!/^\d{12}$/.test(paymentInfo.cardNumber)) { // Example validation for card number
+      setError('Please enter a valid card number.');
+      return false;
+    }
     setError('');
     return true;
   };
@@ -92,8 +109,6 @@ function Checkout({ cart, setCart }) {
     doc.text(`Address: ${orderData.customerInfo.address}`, 14, 42);
     doc.text(`Phone: ${orderData.customerInfo.phone}`, 14, 48);
     doc.text(`Email: ${orderData.customerInfo.email}`, 14, 54);
-
-    // Payment Info
 
     // Order Summary
     doc.text('Order Summary:', 14, 92);

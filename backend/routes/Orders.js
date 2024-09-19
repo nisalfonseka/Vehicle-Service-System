@@ -108,8 +108,8 @@ router.post('/orders', async (req, res) => {
     const { customerInfo, items, paymentInfo } = req.body;
     
     // Use mockUserId if req.user is not available
-    const mockUserId = '96b0a0f0c9d3f3e16b2a3b28'; // Replace with any valid ObjectId for testing
-    const userId = req.user ? req.user._id : mockUserId;
+    //const mockUserId = '96b0a0f0c9d3f3e16b2a3b28'; // Replace with any valid ObjectId for testing
+    //const userId = req.user ? req.user._id : mockUserId;
 
     // Create a new order
     const newOrder = new Order({
@@ -163,7 +163,57 @@ router.get('/orders/:userId', async (req, res) => {
 
 
 
+// Route to create an order by user ID
+router.post('/orders/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { customerInfo, items, paymentInfo, status } = req.body;
 
+  try {
+    // Update inventory
+    for (const item of items) {
+      await StoreItem.updateOne(
+        { _id: item._id },
+        { $inc: { qty: -item.quantity } } // Use 'qty' instead of 'quantity'
+      );
+    }
+
+    // Create a new order
+    const newOrder = new Order({
+      customerInfo,
+      items,
+      paymentInfo,
+      status,
+      userId
+    });
+
+    // Save the new order
+    const savedOrder = await newOrder.save();
+
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ message: 'Failed to create order' });
+  }
+});
+
+// Route to fetch orders by user ID
+router.get('/orders/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Fetch orders where userId matches the parameter
+    const orders = await Order.find({ userId }).populate('userId'); // Optionally populate user details if needed
+    
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this user.' });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ message: 'Failed to fetch orders' });
+  }
+});
 
 
 
