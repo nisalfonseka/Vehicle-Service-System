@@ -1,0 +1,191 @@
+const express = require('express');
+const router = express.Router();
+const Order = require('../models/Order');
+const StoreItem = require('../models/StoreItem');
+
+
+// DELETE /api/orders/:orderId
+router.delete('/orders/:orderId', async (req, res) => {
+  try {
+      const { orderId } = req.params;
+
+      // Find the order by ID and delete it
+      const deletedOrder = await Order.findByIdAndDelete(orderId);
+
+      if (!deletedOrder) {
+          return res.status(404).json({ message: 'Order not found' });
+      }
+
+      // Return a success message
+      res.status(200).json({ message: 'Order deleted successfully' });
+  } catch (error) {
+      console.error('Error deleting order:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+// Route to get order details by ID
+router.get('/orders/:orderId', async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId);
+    
+    if (!order) {
+      return res.status(404).send('Order not found');
+    }
+
+    // Convert MongoDB document to plain JavaScript object
+    const orderData = order.toObject();
+
+    // Optionally convert the ObjectId to a string if needed
+    orderData._id = orderData._id.toString();
+    orderData.items = orderData.items.map(item => ({
+      _id: item._id.toString(),
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity
+    }));
+
+    res.json(orderData);
+  } catch (error) {
+    console.error('Error fetching order details:', error);
+    res.status(500).send('Failed to load order details. Please try again.');
+  }
+});
+
+
+
+
+
+// Get order details by ID
+router.get('/orders/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Populate items within the order to include item details
+    const order = await Order.findById(id).populate('items.itemId').exec();
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Error fetching order:', error);
+    res.status(500).json({ message: 'Failed to load order details', error });
+  }
+});
+
+// Update order status
+router.put('/orders/:id', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    res.status(200).json({ message: `Order status updated to ${status}`, order });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating order status', error });
+  }
+});
+
+// Get all orders
+router.get('/orders', async (req, res) => {
+  try {
+    const orders = await Order.find({});
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching orders', error });
+  }
+});
+
+// Create a new order
+router.post('/orders', async (req, res) => {
+  try {
+    const { customerInfo, items, paymentInfo } = req.body;
+    
+    // Use mockUserId if req.user is not available
+    const mockUserId = '96b0a0f0c9d3f3e16b2a3b28'; // Replace with any valid ObjectId for testing
+    const userId = req.user ? req.user._id : mockUserId;
+
+    // Create a new order
+    const newOrder = new Order({
+      customerInfo,
+      items,
+      paymentInfo,
+      status: 'Pending', // Default status or adjust as needed
+      userId,
+    });
+
+    // Save the order to the database
+    await newOrder.save();
+
+    // Update inventory
+    for (const item of items) {
+      await StoreItem.updateOne(
+        { _id: item._id },
+        { $inc: { qty: -item.quantity } } // Use 'qty' instead of 'quantity'
+      );
+    }
+
+    res.status(201).json({ message: 'Order placed successfully!', order: newOrder });
+  } catch (error) {
+    res.status(500).json({ message: 'Error placing order', error });
+  }
+});
+
+// Backend route to get orders by userId
+router.get('/orders/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    // Validate userId format if needed
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+
+    // Find orders by userId
+    const orders = await Order.find({ userId });
+
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this user.' });
+    }
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get order details by ID
+router.get('/orders/:status', async (req, res) => {
+  const { status } = req.params;
+
+  try {
+    // Populate items within the order to include item details
+    const order = await Order.findById(status).populate('items.status').exec();
+    if (!order) {
+      return res.status(404).json({ message: ' pending orders not found'});
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Error fetching pending order:', error);
+    res.status(500).json({ message: 'Failed to load order details', error });
+  }
+});
+
+module.exports = router;
