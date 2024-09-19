@@ -72,7 +72,7 @@ function Header() {
             <a href="#" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Features</a>
             <a href="#" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Solutions</a>
             <a href="#" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Resources</a>
-            <a href="#" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Pricing</a>
+            <a href="/store" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Store</a>
           </div>
 
           <div>
