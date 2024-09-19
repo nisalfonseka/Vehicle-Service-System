@@ -105,7 +105,7 @@ function Header() {
               
               {username && <li><a>Hi! {username}</a></li>}
               <li>
-                <Link to={"/BookUserDashboard"}>Profile</Link>
+                <Link to={"/profile"}>Profile</Link>
               </li>
 
               

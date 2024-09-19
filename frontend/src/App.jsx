@@ -10,8 +10,15 @@ import BooksTable from "./BookingManagement/BooksTable";
 import BookSingleCard from "./BookingManagement/BookSingleCard";
 import RegisterForm from "./UserManagement/register";
 import LoginForm from "./UserManagement/login";
-import BookUserDashboard from "./BookingManagement/BookUserDashboard";
 import Bookadmin from "./BookingManagement/Bookadmin";
+import CreateCustomer from './CustomerSupport/CreateCustomer';
+import ShowCustomer from './CustomerSupport/ShowCustomer';
+import EditCustomer from './CustomerSupport/EditCustomer';
+import DeleteCustomer from './CustomerSupport/DeleteCustomer';
+import CustomerCard from './CustomerSupport/CustomerCard.jsx';
+import CustomerSingleCard from './CustomerSupport/CustomerSingleCard.jsx';
+import CustomerTable from './CustomerSupport/CustomerTable.jsx'
+import Profile from "./Home/profile.jsx";
 
 
 function App() {
@@ -32,10 +39,18 @@ function App() {
         <Route path="/books/delete/:id" element={<DeleteBook />} />
         <Route path="/books/table" element={<BooksTable />} />
         <Route path="/books/card" element={<BookSingleCard />} />
-        <Route path="/BookUserDashboard" element={<BookUserDashboard />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
+        <Route path='/customer/create' element={<CreateCustomer />} />
+      <Route path='/customer/details/:id' element={<ShowCustomer />} />
+      <Route path='/customer/edit/:id' element={<EditCustomer />} />
+      <Route path='/customer/delete/:id' element={<DeleteCustomer />} />
+      <Route path='/customer/card' element={<CustomerCard />} />
+      <Route path='/customer/single/:id' element={<CustomerSingleCard />} />
+      <Route path='/customer/table' element={<CustomerTable />} />
+      <Route path='/profile' element={<Profile />} />
+
 
       </Routes>
 

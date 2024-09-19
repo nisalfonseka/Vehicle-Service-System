@@ -46,7 +46,12 @@ function LoginForm() {
         // Navigate based on email
         if (email === "bookingAdmin@gmail.com") {
           navigate("/dashboard/Bookadmin");
-        } else {
+        }
+         else if (email === "supportAdmin@gmail.com") {
+          navigate("/customer/card"); // Add the appropriate route for support admin
+        }
+        
+        else {
           navigate("/");
         }
   
