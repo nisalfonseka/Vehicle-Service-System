@@ -49,6 +49,12 @@ function LoginForm() {
         } else {
           navigate("/");
         }
+        // Navigate based on email
+        if (email === "salesmanager@gmail.com") {
+          navigate("/salesmanager");
+        } else {
+          navigate("/");
+        }
   
         // Refresh the page
         window.location.reload();

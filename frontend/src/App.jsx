@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import {Routes, Route, useLocation, Navigate } from "react-router-dom";
+import React, { useState } from 'react';
 import Home from "./Home/Home";
 import CreateBook from "./BookingManagement/CreateBooks";
 import ShowBook from "./BookingManagement/ShowBook";
@@ -13,8 +14,25 @@ import LoginForm from "./UserManagement/login";
 import BookUserDashboard from "./BookingManagement/BookUserDashboard";
 import Bookadmin from "./BookingManagement/Bookadmin";
 
+//online store 
+import AdminHome from './OnlineStore/pages/Home/AdminHome';
+import ManagerHome from './OnlineStore/pages/Home/managerHome';
+import AddItemForm from './OnlineStore/components/AddItemForm';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import ItemList from './OnlineStore/pages/Home/InventoryItems';
+import UpdateItem from './OnlineStore/components/updateItem';
+import Store from './OnlineStore/pages/Home/Store';
+import Cart from './OnlineStore/pages/Home/Cart';
+import Checkout from './OnlineStore/components/checkout';
+import OrderList from './OnlineStore/pages/Home/OrderList';
+import OrderDetails from './OnlineStore/pages/Home/OrderDetails';
+import ItemDetails from './OnlineStore/pages/Home/ItemDetails';
+import CardManagementPage from './OnlineStore/components/CardManagementPage';
+import MyOrders from './OnlineStore/components/MyOrders';
+
 
 function App() {
+  const [cart, setCart] = useState([]);
   const location = useLocation();
 
   // Determine if we are on a dashboard route
@@ -36,6 +54,23 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
+
+        <Route path="/items" element={<ItemList />} />
+        <Route path="/salesmanager" element={<AdminHome/>} />
+        <Route path="/adminhome" element={<AdminHome />} />
+          <Route path="/managerhome" element={<ManagerHome />} />
+          <Route path="/inventory" element ={<ItemList />}/>
+          <Route path="/additem" element= {<AddItemForm />} />
+          <Route path="/updateItem/:id" element={<UpdateItem />} />
+          <Route path="/orderlist" element={<OrderList />}/>
+          <Route path ="/checkout" element={<Checkout cart={cart} setCart={setCart} />} />
+          <Route path="/store-items/:itemId" element={<ItemDetails cart={cart} setCart={setCart} />} />
+          <Route path="/Store" element={<Store cart={cart} setCart={setCart} />} />
+          <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
+          <Route path="/orders" element={<OrderList />} />
+          <Route path="/orders/:orderId" element={<OrderDetails />} />
+          <Route path="/CardManagementPage" element={<CardManagementPage />} />
+          <Route path="/my-orders" element={<MyOrders />} />
 
       </Routes>
 
