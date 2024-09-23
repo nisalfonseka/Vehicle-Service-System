@@ -58,6 +58,12 @@ function LoginForm() {
         } else {
           navigate("/");
         }
+        // Navigate based on email
+        if (email === "senura123@gmail.com") {
+          navigate("/senura");
+        } else {
+          navigate("/");
+        }
   
         // Refresh the page
         window.location.reload();

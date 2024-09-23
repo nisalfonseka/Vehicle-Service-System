@@ -17,8 +17,6 @@ import Bookadmin from "./BookingManagement/Bookadmin";
 //online store 
 import AdminHome from './OnlineStore/pages/Home/AdminHome';
 import ManagerHome from './OnlineStore/pages/Home/managerHome';
-
-//import 'bootstrap/dist/css/bootstrap.min.css';
 import ItemList from './OnlineStore/pages/Home/InventoryItems';
 import UpdateItem from './OnlineStore/components/updateItem';
 import Store from './OnlineStore/pages/Home/Store';
@@ -33,6 +31,10 @@ import CancelledOrders from "./OnlineStore/components/CancelledOrders";
 import CompletedOrders from "./OnlineStore/components/CompletedOrders";
 import PendingOrders from "./OnlineStore/components/PendingOrders";
 import SalesSummary from "./OnlineStore/pages/Home/SalesSummary";
+
+//inventory
+import SenuraInventoryItems from "./InventoryManagement/s-InventoryItems";
+
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -58,12 +60,11 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
 
-        <Route path="/items" element={<ItemList />} />
-        <Route path="/salesmanager" element={<AdminHome/>} />
-        <Route path="/adminhome" element={<AdminHome />} />
+          <Route path="/items" element={<ItemList />} />
+          <Route path="/salesmanager" element={<AdminHome/>} />
+          <Route path="/adminhome" element={<AdminHome />} />
           <Route path="/managerhome" element={<ManagerHome />} />
           <Route path="/inventory" element ={<ItemList />}/>
-         
           <Route path="/updateItem/:id" element={<UpdateItem />} />
           <Route path="/orderlist" element={<OrderList />}/>
           <Route path ="/checkout" element={<Checkout cart={cart} setCart={setCart} />} />
@@ -78,6 +79,8 @@ function App() {
           <Route path="/finish" element={<CompletedOrders />} />
           <Route path="/report" element={<SalesSummary />} />
           <Route path="/pending" element={<PendingOrders />} />
+
+          <Route path="/senura" element ={<SenuraInventoryItems />}/>
 
       </Routes>
 
