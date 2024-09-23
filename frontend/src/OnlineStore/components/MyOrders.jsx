@@ -6,20 +6,15 @@ function MyOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [userId, setUserId] = useState(''); // State to store userId
+  const [userId, setUserId] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the logged-in user's information
     const fetchUserProfile = () => {
       const loggedInUser = JSON.parse(localStorage.getItem('user'));
-      console.log("Logged In User:", loggedInUser); // Verify the structure and field names
-
       if (loggedInUser && loggedInUser.userId) {
-        setUserId(loggedInUser.userId); // Set userId from user profile
-        console.log("User Profile Set:", loggedInUser); // Log user profile
+        setUserId(loggedInUser.userId);
       } else {
-        console.error('User is not logged in or user data is missing.');
         setError('User is not logged in or user data is missing.');
       }
     };
@@ -28,11 +23,11 @@ function MyOrders() {
   }, []);
 
   useEffect(() => {
-    if (!userId) return; // Don't fetch orders if userId is not available
+    if (!userId) return;
 
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`http://localhost:5555/api/orders/${userId}`);
+        const response = await axios.get(`http://localhost:5555/api/user/${userId}`);
         setOrders(response.data);
       } catch (error) {
         setError('Failed to fetch orders. Please try again later.');
@@ -45,7 +40,12 @@ function MyOrders() {
   }, [userId]);
 
   const handleBack = () => {
-    navigate('/store'); // Navigate back to the store page
+    navigate('/store');
+  };
+
+  // Function to calculate total amount for each order
+  const calculateTotalAmount = (items) => {
+    return items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
   };
 
   return (
@@ -58,18 +58,18 @@ function MyOrders() {
           &larr; Back to Store
         </button>
       </div>
-      <h2 className="text-2xl font-bold mb-6">My Orders</h2>
-      {loading && <p>Loading orders...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      <h2 className="text-3xl font-bold mb-6 text-center">My Orders</h2>
+      {loading && <p className="text-center">Loading orders...</p>}
+      {error && <p className="text-red-500 text-center">{error}</p>}
       {orders.length > 0 ? (
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {orders.map((order) => (
-            <div key={order._id} className="border-b border-gray-200 mb-4 pb-4">
-              <h3 className="text-lg font-semibold">Order ID: {order._id}</h3>
-              <p><strong>Status:</strong> {order.status}</p>
-              <p><strong>Total Amount:</strong> LKR {order.totalAmount ? order.totalAmount.toFixed(2) : 'N/A'}</p>
+            <div key={order._id} className="bg-white rounded-lg shadow-md p-4 border border-gray-200 transition-transform transform hover:scale-105">
+              <h3 className="text-lg font-semibold mb-2">Order ID: {order._id}</h3>
+              <p className="text-gray-600"><strong>Status:</strong> {order.status}</p>
+              <p className="text-gray-600"><strong>Total Amount:</strong> LKR {calculateTotalAmount(order.items)}</p>
               <h4 className="text-md font-semibold mt-2">Items:</h4>
-              <ul>
+              <ul className="list-disc pl-5">
                 {order.items.map(item => (
                   <li key={item._id} className="flex justify-between">
                     <span>{item.name} x {item.quantity}</span>
@@ -88,7 +88,7 @@ function MyOrders() {
           ))}
         </div>
       ) : (
-        !loading && <p>No orders found.</p>
+        !loading && <p className="text-center">No orders found.</p>
       )}
     </div>
   );

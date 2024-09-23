@@ -2,33 +2,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../mycss/Home.css';
 
-
 const AdminHome = () => {
   return (
     <div className="sales-manager-container">
+      {/* Sales Manager Section */}
       <div className="section">
-          <Link to="/managerhome" style={{ textDecoration: 'none' }}>
+        <Link to="/inventory" className="section-link">
           <div className="pic1"></div>
           <h2>Sales Manager</h2>
-          <p>This is the Sales Manager section.</p>
-       </Link>
+          <p>Manage sales, inventory, and performance analytics from here.</p>
+        </Link>
       </div>
       
+      {/* Online Store Section */}
       <div className="section">
-      <Link to="/Store" style={{ textDecoration: 'none' }}>
-      
+        <Link to="/Store" className="section-link">
           <div className="pic2"></div>
           <h2>Online Store</h2>
-          <p>This is the online store section.</p>
-          </Link>
+          <p>Explore the online store and manage items and orders.</p>
+        </Link>
       </div>
-      
-      
     </div>
   );
 }
 
-
-
 export default AdminHome;
-

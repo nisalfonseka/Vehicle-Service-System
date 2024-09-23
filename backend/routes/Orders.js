@@ -216,27 +216,49 @@ router.get('/orders/:userId', async (req, res) => {
 });
 
 
-
-
-
-
-
-
-// Get order details by ID
-router.get('/orders/:status', async (req, res) => {
-  const { status } = req.params;
-
+// Route to fetch orders by user ID
+router.get('/user/:userId', async (req, res) => {
   try {
-    // Populate items within the order to include item details
-    const order = await Order.findById(status).populate('items.status').exec();
-    if (!order) {
-      return res.status(404).json({ message: ' pending orders not found'});
+    const { userId } = req.params;
+    const orders = await Order.find({ userId: userId });
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this user' });
     }
-    res.status(200).json(order);
-  } catch (error) {
-    console.error('Error fetching pending order:', error);
-    res.status(500).json({ message: 'Failed to load order details', error });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching orders by user ID', error: err });
   }
 });
+
+// Route to fetch orders with 'Pending' status
+router.get('/pending', async (req, res) => {
+  try {
+    const orders = await Order.find({ status: 'Pending' });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching pending orders', error: err });
+  }
+});
+
+// Route to fetch orders with 'Completed' status
+router.get('/completed', async (req, res) => {
+  try {
+    const orders = await Order.find({ status: 'Completed' });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching completed orders', error: err });
+  }
+});
+
+// Route to fetch orders with 'Cancelled' status
+router.get('/cancelled', async (req, res) => {
+  try {
+    const orders = await Order.find({ status: 'Cancelled' });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching cancelled orders', error: err });
+  }
+});
+
 
 export default router;

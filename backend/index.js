@@ -26,6 +26,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Increase the size limit for JSON payloads
+app.use(express.json({ limit: '50mb' })); // Set to 50MB or any larger limit
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 
 app.get('/store-items/:itemId', async (req, res) => {
   try {
@@ -57,22 +61,6 @@ app.put('/store-items/:id', async (req, res) => {
   }
 });
 
-//get items details to the update form
-app.get('/store-items/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const item = await StoreItem.findById(id);
-
-    if (!item) {
-      return res.status(404).json({ message: 'Item not found' });
-    }
-
-    res.json(item);
-  } catch (error) {
-    console.error('Error fetching item:', error);
-    res.status(500).json({ message: 'Error fetching item', error });
-  }
-});
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
@@ -110,6 +98,7 @@ app.use("/api/user", loginRoute);
 app.use('/store-items', storeItemRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', SavedCard);
+
 
 
 mongoose

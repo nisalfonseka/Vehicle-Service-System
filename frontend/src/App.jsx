@@ -17,7 +17,7 @@ import Bookadmin from "./BookingManagement/Bookadmin";
 //online store 
 import AdminHome from './OnlineStore/pages/Home/AdminHome';
 import ManagerHome from './OnlineStore/pages/Home/managerHome';
-import AddItemForm from './OnlineStore/components/AddItemForm';
+
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import ItemList from './OnlineStore/pages/Home/InventoryItems';
 import UpdateItem from './OnlineStore/components/updateItem';
@@ -29,7 +29,10 @@ import OrderDetails from './OnlineStore/pages/Home/OrderDetails';
 import ItemDetails from './OnlineStore/pages/Home/ItemDetails';
 import CardManagementPage from './OnlineStore/components/CardManagementPage';
 import MyOrders from './OnlineStore/components/MyOrders';
-
+import CancelledOrders from "./OnlineStore/components/CancelledOrders";
+import CompletedOrders from "./OnlineStore/components/CompletedOrders";
+import PendingOrders from "./OnlineStore/components/PendingOrders";
+import SalesSummary from "./OnlineStore/pages/Home/SalesSummary";
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -60,7 +63,7 @@ function App() {
         <Route path="/adminhome" element={<AdminHome />} />
           <Route path="/managerhome" element={<ManagerHome />} />
           <Route path="/inventory" element ={<ItemList />}/>
-          <Route path="/additem" element= {<AddItemForm />} />
+         
           <Route path="/updateItem/:id" element={<UpdateItem />} />
           <Route path="/orderlist" element={<OrderList />}/>
           <Route path ="/checkout" element={<Checkout cart={cart} setCart={setCart} />} />
@@ -71,6 +74,10 @@ function App() {
           <Route path="/orders/:orderId" element={<OrderDetails />} />
           <Route path="/CardManagementPage" element={<CardManagementPage />} />
           <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/cancel" element={<CancelledOrders />} />
+          <Route path="/finish" element={<CompletedOrders />} />
+          <Route path="/report" element={<SalesSummary />} />
+          <Route path="/pending" element={<PendingOrders />} />
 
       </Routes>
 
