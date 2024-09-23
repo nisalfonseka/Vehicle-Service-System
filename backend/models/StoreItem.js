@@ -3,12 +3,20 @@ import mongoose from 'mongoose';
 const storeItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
   code: { type: String, required: true, unique: true },
+  companyName: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   qty: { type: Number, required: true },
+  buyingPrice: { type: Number, required: true },
   price: { type: Number, required: true },
-  photo: { type: String } // Store Base64 string
+  category: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Category', 
+    required: true 
+  }, // Reference to the Category model
+  photo: { type: String } // Store Base64 string for the item's photo
 });
 
-// ES module export
+
+// Export the model using ES module syntax
 const StoreItem = mongoose.model('StoreItem', storeItemSchema);
 export default StoreItem;

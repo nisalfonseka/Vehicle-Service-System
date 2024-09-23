@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ManagerHeader from '../../components/managerHeader';
+import { FaSearch, FaTrashAlt, FaEdit } from 'react-icons/fa';
 
 function ItemList() {
   const [items, setItems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); // State for search input
+  const [searchTerm, setSearchTerm] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(null); // For delete confirmation
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,11 +24,10 @@ function ItemList() {
 
   const handleDeleteItem = async (itemId) => {
     try {
-      const response = await axios.delete(`http://localhost:5555/store-items/item/${itemId}`);
-      if (response.status === 200) {
-        alert('Item deleted successfully');
-        setItems(items.filter(item => item._id !== itemId));
-      }
+      await axios.delete(`http://localhost:5555/store-items/item/${itemId}`);
+      setItems(items.filter(item => item._id !== itemId));
+      setConfirmDelete(null);
+      alert('Item deleted successfully');
     } catch (error) {
       console.error('Error deleting item:', error);
       alert('Failed to delete item');
@@ -37,82 +38,85 @@ function ItemList() {
     navigate(`/updateItem/${itemId}`);
   };
 
-  // Filter items based on the search term
   const filteredItems = items.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="flex">
+    <div className="flex bg-gray-100 min-h-screen">
       <ManagerHeader />
-      <div className="container mx-auto mt-8 px-4">
+      <div className="flex-1 ml-64 p-6">
         <div className="flex justify-between mb-6">
-          <h2 className="text-6xl font-semibold">Inventory Items</h2>
-          <input
-            type="text"
-            placeholder="Search by item name"
-            className="border border-gray-300 rounded-lg px-4 py-2 text-xl"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-          />
+          <h2 className="text-4xl font-bold">Inventory Items</h2>
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search by item name"
+              className="border border-gray-300 rounded-lg px-4 py-2 text-xl"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <FaSearch className="absolute right-3 top-2 text-gray-500" />
+          </div>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-            <thead className="bg-gray-100">
+          <table className="min-w-full bg-white rounded-lg shadow-lg">
+            <thead className="bg-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600">#</th>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600 text-1xl">Name</th>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600 text-1xl">Code</th>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600 text-1xl">Description</th>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600 text-1xl">Quantity</th>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600 text-1xl">Price</th>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600 text-1xl">Photo</th>
-                <th className="px-6 py-3 text-left  font-semibold text-gray-600 text-1xl">Actions</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-600">#</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-600">Name</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-600">Code</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-600">Description</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-600">Quantity</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-600">Price</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-600">Photo</th>
+               
               </tr>
             </thead>
             <tbody>
               {filteredItems.length > 0 ? (
                 filteredItems.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-90">
-                    <td className="px-6 py-4 text-xl">{index + 1}</td>
-                    <td className="px-6 py-4 text-xl text-gray-800">{item.name}</td>
-                    <td className="px-6 py-4 text-xl text-gray-800">{item.code}</td>
-                    <td className="px-6 py-4 text-md text-gray-800">{item.description}</td>
-                    <td className="px-6 py-4 text-xl text-gray-800">{item.qty}</td>
-                    <td className="px-6 py-4 text-xl text-gray-800">LKR: {item.price.toFixed(2)}</td>
+                  <tr key={item._id} className="hover:bg-gray-100 transition duration-150">
+                    <td className="px-6 py-4">{index + 1}</td>
+                    <td className="px-6 py-4 text-gray-800">{item.name}</td>
+                    <td className="px-6 py-4 text-gray-800">{item.code}</td>
+                    <td className="px-6 py-4 text-gray-800">{item.description}</td>
+                    <td className="px-6 py-4 text-gray-800">{item.qty}</td>
+                    <td className="px-6 py-4 text-gray-800">LKR: {item.price.toFixed(2)}</td>
                     <td className="px-6 py-4">
                       {item.photo && (
-                        <img src={item.photo} alt="Item" className="w-500 h-auto rounded-md" />
+                        <img src={item.photo} alt={item.name} className="w-16 h-16 rounded-md" />
                       )}
                     </td>
-                    <td className="px-6 py-4">
-                      <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-                        onClick={() => handleUpdateItem(item._id)}
-                      >
-                        Update
-                      </button>
-                      <button
-                        style={{ marginTop: '10px', marginRight: '5px' }}
-                        className="bg-red-500 text-white px-4 py-2 ml-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300"
-                        onClick={() => handleDeleteItem(item._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                    
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="8" className="text-center py-4 text-xl">
-                    No items found
-                  </td>
+                  <td colSpan="8" className="text-center py-4 text-xl">No items found</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
+
+        {confirmDelete && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-lg font-semibold">Confirm Deletion</h3>
+              <p>Are you sure you want to delete this item?</p>
+              <div className="flex justify-end mt-4">
+                <button className="bg-red-600 text-white px-4 py-2 rounded-lg mr-2" onClick={() => handleDeleteItem(confirmDelete)}>
+                  Delete
+                </button>
+                <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg" onClick={() => setConfirmDelete(null)}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

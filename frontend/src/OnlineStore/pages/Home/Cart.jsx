@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaTrashAlt } from 'react-icons/fa';
 
 function Cart({ cart, setCart }) {
-
   const handleRemoveFromCart = (item) => {
     setCart(cart.filter((cartItem) => cartItem._id !== item._id));
   };
@@ -28,60 +28,67 @@ function Cart({ cart, setCart }) {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
   };
 
-  console.log('Cart items:', cart);
-
   return (
-    <div className="container mx-auto p-4" >
-      <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
+    <div className="container mx-auto p-6">
+      <h2 className="text-3xl font-bold mb-6 text-center">Your Shopping Cart</h2>
       {cart.length === 0 ? (
-        <p className="text-gray-600">Your cart is empty.</p>
+        <p className="text-gray-600 text-center">Your cart is empty.</p>
       ) : (
         <div>
           {cart.map((item) => (
-            <div key={item._id} className="flex items-center bg-white shadow-md rounded-lg p-4 mb-4">
+            <div key={item._id} className="flex items-start bg-white shadow-lg rounded-lg p-4 mb-4 transition-transform transform hover:scale-105">
               <div className="w-1/4">
                 <img src={item.photo} className="w-full h-auto rounded-lg" alt={item.name} />
               </div>
               <div className="w-1/2 px-4">
                 <h5 className="text-lg font-semibold">{item.name}</h5>
                 <p className="text-gray-800"><strong>LKR: {item.price.toFixed(2)}</strong></p>
+                <p className="text-gray-500">Available: {item.qty}</p>
               </div>
-              <div className="w-1/4 flex items-center justify-center">
+              <div className="w-1/4 flex items-center justify-between">
+                <div className="flex items-center">
+                  <button
+                    className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-400 transition duration-200"
+                    onClick={() => handleQuantityChange(item, -1)}
+                  >
+                    -
+                  </button>
+                  <span className="mx-3 text-lg font-semibold">{item.quantity}</span>
+                  <button
+                    className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-400 transition duration-200"
+                    onClick={() => handleQuantityChange(item, 1)}
+                  >
+                    +
+                  </button>
+                </div>
                 <button
-                  className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-400"
-                  onClick={() => handleQuantityChange(item, -1)}
-                >
-                  -
-                </button>
-                <span className="mx-3 text-lg font-semibold">{item.quantity}</span>
-                <button
-                  className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-400"
-                  onClick={() => handleQuantityChange(item, 1)}
-                >
-                  +
-                </button>
-              </div>
-              <div className="w-1/4 flex flex-col items-center justify-center">
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"
+                  className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition duration-200"
                   onClick={() => handleRemoveFromCart(item)}
                 >
-                  Remove
+                  <FaTrashAlt />
                 </button>
-                <p className="mt-2 text-gray-800"><strong>Subtotal: LKR: {(item.price * item.quantity).toFixed(2)}</strong></p>
               </div>
             </div>
           ))}
-          <div className="flex justify-between items-center mt-6">
+          <div className="flex justify-between items-center mt-6 border-t pt-4">
             <h4 className="text-xl font-bold">Total: LKR: {getTotalPrice()}</h4>
-            <Link to="/checkout" className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600" style={{ textDecoration: 'none' }}>
+            <Link to="/checkout" className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-200">
               Checkout
             </Link>
           </div>
+          <div className="flex flex-col items-center mt-6">
+            
+            <button
+              className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition duration-200"
+              onClick={() => alert("Discount code feature coming soon!")}
+            >
+              Apply Discount Code
+            </button>
+          </div>
         </div>
       )}
-      <div className="mt-6 text-center">
-        <Link to="/store" className="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600" style={{ textDecoration: 'none' }}>
+      <div className="flex flex-col items-center mt-6">
+        <Link to="/store" className="bg-gray-500 text-white px-6 py-3 rounded-full hover:bg-gray-600 transition duration-200 mb-4">
           Continue Shopping
         </Link>
       </div>

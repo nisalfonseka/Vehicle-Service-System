@@ -10,20 +10,15 @@ const CardManagementPage = () => {
     expirationDate: '',
     cvv: '',
   });
-  const [editCard, setEditCard] = useState(null); // To track the card being edited
-  const [userProfile, setUserProfile] = useState(null); // Store user profile details
-  const [loading, setLoading] = useState(false); // To manage loading state
+  const [editCard, setEditCard] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch the logged-in user's information
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
-    console.log("Logged In User:", loggedInUser); // Verify the structure and field names
-
     if (loggedInUser) {
-      setUserProfile(loggedInUser); // Set user profile with the logged-in user details
-      console.log("User Profile Set:", loggedInUser); // Log user profile
-
-      fetchCards(loggedInUser.userId); // Fetch cards for the logged-in user
+      setUserProfile(loggedInUser);
+      fetchCards(loggedInUser.userId);
     } else {
       console.error('User is not logged in or user data is missing.');
     }
@@ -31,10 +26,8 @@ const CardManagementPage = () => {
 
   const fetchCards = async (userId) => {
     setLoading(true);
-    console.log("Fetching cards for User ID:", userId); // Log the user ID used for fetching cards
     try {
-      const response = await axios.get(`http://localhost:5555/api/cards/${userId}`); // Fetch cards based on userId
-      console.log("Fetched Cards:", response.data); // Log fetched card data
+      const response = await axios.get(`http://localhost:5555/api/cards/${userId}`);
       setCards(response.data);
     } catch (error) {
       console.error('Failed to fetch cards:', error);
@@ -50,23 +43,17 @@ const CardManagementPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (cards.length >= 3 && !editCard) {
       alert('You can only add up to 3 cards.');
       return;
     }
-
     try {
       if (editCard) {
-        // Update existing card
-        const response = await axios.put(`http://localhost:5555/api/cards/${userProfile.userId}/${editCard._id}`, cardDetails); // Use specific route for updating card
-        console.log("Updated Card:", response.data); // Log updated card data
+        const response = await axios.put(`http://localhost:5555/api/cards/${userProfile.userId}/${editCard._id}`, cardDetails);
         setCards(cards.map(card => (card._id === response.data._id ? response.data : card)));
         setEditCard(null);
       } else {
-        // Add new card
-        const response = await axios.post(`http://localhost:5555/api/cards/${userProfile.userId}`, cardDetails); // Use specific route for adding new card
-        console.log("Added New Card:", response.data); // Log new card data
+        const response = await axios.post(`http://localhost:5555/api/cards/${userProfile.userId}`, cardDetails);
         setCards([...cards, response.data]);
       }
       setCardDetails({ name: '', cardNumber: '', expirationDate: '', cvv: '' });
@@ -77,8 +64,7 @@ const CardManagementPage = () => {
 
   const handleDelete = async (cardId) => {
     try {
-      await axios.delete(`http://localhost:5555/api/cards/${userProfile.userId}/${cardId}`); // Use specific route for deleting card
-      console.log("Deleted Card ID:", cardId); // Log deleted card ID
+      await axios.delete(`http://localhost:5555/api/cards/${userProfile.userId}/${cardId}`);
       setCards(cards.filter(card => card._id !== cardId));
     } catch (error) {
       console.error('Failed to delete card:', error);
@@ -95,20 +81,46 @@ const CardManagementPage = () => {
     setEditCard(card);
   };
 
-  return (
-    <div className="card-management-page p-4">
-      
+  const handleCancel = () => {
+    setEditCard(null);
+    setCardDetails({ name: '', cardNumber: '', expirationDate: '', cvv: '' }); // Clear the form
+  };
 
-      {/* Add/Edit Card Form */}
-      <div className="add-card-form">
-        <h2>{editCard ? 'Update Card' : 'Add New Card'}</h2>
-        <form onSubmit={handleSubmit}>
+  return (
+    <div className="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Left Side: Saved Cards */}
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-lg font-semibold mb-4">Saved Cards</h2>
+        {loading ? <p>Loading...</p> : cards.length === 0 ? <p>No cards saved.</p> : (
+          <div className="space-y-4">
+            {cards.map(card => (
+              <div key={card._id} className="flex justify-between items-center p-4 border-b">
+                <div>
+                  <p className="text-xl">{card.cardNumber.replace(/.(?=.{4})/g, '*')}</p>
+                  <p className="text-gray-600">{card.name}</p>
+                  <p className="text-gray-500">{card.expirationDate}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button onClick={() => handleUpdate(card)} className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Update</button>
+                  <button onClick={() => handleDelete(card._id)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Right Side: Add/Edit Card Form */}
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-lg font-semibold mb-4">{editCard ? 'Update Card' : 'Add New Card'}</h2>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
           <input
             type="text"
             name="name"
             value={cardDetails.name}
             placeholder="Name on Card"
             onChange={handleInputChange}
+            className="p-2 border rounded"
             required
           />
           <input
@@ -117,6 +129,7 @@ const CardManagementPage = () => {
             value={cardDetails.cardNumber}
             placeholder="Card Number"
             onChange={handleInputChange}
+            className="p-2 border rounded"
             required
           />
           <input
@@ -125,6 +138,7 @@ const CardManagementPage = () => {
             value={cardDetails.expirationDate}
             placeholder="Expiration Date (MM/YY)"
             onChange={handleInputChange}
+            className="p-2 border rounded"
             required
           />
           <input
@@ -133,39 +147,20 @@ const CardManagementPage = () => {
             value={cardDetails.cvv}
             placeholder="CVV"
             onChange={handleInputChange}
+            className="p-2 border rounded"
             required
           />
-          <button type="submit" disabled={cards.length >= 3 && !editCard}>
-            {editCard ? 'Update Card' : 'Add Card'}
-          </button>
-          {editCard && (
-            <button type="button" onClick={() => setEditCard(null)}>
-              Cancel
+          <div className="flex justify-between">
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" disabled={cards.length >= 3 && !editCard}>
+              {editCard ? 'Update Card' : 'Add Card'}
             </button>
-          )}
-        </form>
-      </div>
-
-      {/* Saved Cards Section */}
-      <div className="saved-cards">
-        <h2>Saved Cards</h2>
-        {loading ? <p>Loading...</p> : cards.length === 0 ? <p>No cards saved.</p> : (
-          <div className="cards-container">
-            {cards.map(card => (
-              <div key={card._id} className="card">
-                <div className="card-info">
-                  <p className="card-number">{card.cardNumber.replace(/.(?=.{4})/g, '*')}</p>
-                  <p className="card-name">{card.name}</p>
-                  <p className="card-expiration">{card.expirationDate}</p>
-                </div>
-                <div className="card-actions">
-                  <button onClick={() => handleUpdate(card)}>Update</button>
-                  <button onClick={() => handleDelete(card._id)}>Delete</button>
-                </div>
-              </div>
-            ))}
+            {editCard && (
+              <button type="button" onClick={handleCancel} className="text-gray-500 hover:underline">
+                Cancel
+              </button>
+            )}
           </div>
-        )}
+        </form>
       </div>
     </div>
   );

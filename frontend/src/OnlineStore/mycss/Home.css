@@ -1,0 +1,45 @@
+.sales-manager-container {
+    display: flex;
+    user-select: none;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  .section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 40%;
+    user-select: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Apply outer shadow */
+    border-radius: 8px; /* Optional: adds rounded corners */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pic1, .pic2 {
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px; /* Optional: if you want to round the corners of the image container */
+  }
+  
+  .pic1 {
+    background: url('../Pics/undraw_Co_workers_re_1i6i.png') no-repeat center center/cover;
+  }
+  
+  .pic2 {
+    background: url('../Pics/undraw_heavy_box_agqi.png') no-repeat center center/cover; /* Use your image path here */
+  }
+  
+  h2 {
+    color: #333;
+    margin-top: 10px;
+    user-select: none;
+  }
+  
+  p {
+    color: #555;
+  }
+  

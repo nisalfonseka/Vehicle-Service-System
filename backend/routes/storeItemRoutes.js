@@ -2,30 +2,9 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import StoreItem from '../models/StoreItem.js';
-import StoreDatabase from '../models/StoreDatabase.js';
+
 
 const router = express.Router();
-
-
-/*// Route to add a new item to the StoreDatabase collection
-router.post('/addNewOne', async (req, res) => {
-  try {
-    const newItem = new StoreDatabase({
-      name: req.body.name,
-      code: req.body.code,
-      description: req.body.description,
-      qty: req.body.qty,
-      price: req.body.price,
-      photo: req.body.photo // Base64 string of the image
-    });
-
-    await newItem.save();
-    res.status(201).json({ message: 'Item saved to another database successfully!' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error saving item to another database', error });
-  }
-});*/
-
 // Get all items
 router.get('/store-items', async (req, res) => {
   try {
@@ -48,7 +27,6 @@ router.get('/:orderId', async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 });
-
 // Update item quantity
 router.put('/store-items/:id', async (req, res) => {
   try {
@@ -60,7 +38,6 @@ router.put('/store-items/:id', async (req, res) => {
     res.status(500).json({ message: 'Error updating item quantity', error });
   }
 });
-
 // Update item quantity
 router.put('/:id', async (req, res) => {
   try {
@@ -125,35 +102,6 @@ router.delete('/item/:id', async (req, res) => {
   }
 });
 
-// Route to add a new store item
-router.post('/add', async (req, res) => {
-  try {
-    let photoPath = null;
-
-    if (req.body.photo) {
-      const base64Data = req.body.photo.replace(/^data:image\/\w+;base64,/, '');
-      const buffer = Buffer.from(base64Data, 'base64');
-      const fileName = `${Date.now()}.png`;
-      const filePath = path.join(__dirname, '../uploads', fileName);
-      fs.writeFileSync(filePath, buffer);
-      photoPath = fileName;
-    }
-
-    const newItem = new StoreItem({
-      name: req.body.name,
-      code: req.body.code,
-      description: req.body.description,
-      qty: req.body.qty,
-      price: req.body.price,
-      photo: photoPath
-    });
-
-    await newItem.save();
-    res.status(201).json({ message: 'Item added successfully!' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error adding item', error });
-  }
-});
 
 // Route to get all Inventory items
 router.get('/', async (req, res) => {
