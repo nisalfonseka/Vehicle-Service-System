@@ -86,9 +86,10 @@ function ItemList() {
                     <td className="px-6 py-4 text-gray-800">LKR: {item.price.toFixed(2)}</td>
                     <td className="px-6 py-4">
                       {item.photo && (
-                        <img src={item.photo} alt={item.name} className="w-16 h-16 rounded-md" />
+                        <img src={`data:image/jpeg;base64,${item.photo}`} alt={item.name} className="w-16 h-16 rounded-md" />
                       )}
                     </td>
+                    
                     
                   </tr>
                 ))

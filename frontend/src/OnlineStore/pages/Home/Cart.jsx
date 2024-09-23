@@ -38,7 +38,7 @@ function Cart({ cart, setCart }) {
           {cart.map((item) => (
             <div key={item._id} className="flex items-start bg-white shadow-lg rounded-lg p-4 mb-4 transition-transform transform hover:scale-105">
               <div className="w-1/4">
-                <img src={item.photo} className="w-full h-auto rounded-lg" alt={item.name} />
+                <img src={`data:image/jpeg;base64,${item.photo}`} className="w-full h-auto rounded-lg" alt={item.name} />
               </div>
               <div className="w-1/2 px-4">
                 <h5 className="text-lg font-semibold">{item.name}</h5>

@@ -56,7 +56,7 @@ function ItemDetails({ cart, setCart }) {
                     
                     <div className="flex flex-col lg:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
                         <img
-                            src={item.photo}
+                            src={`data:image/jpeg;base64,${item.photo}`}
                             alt={item.name}
                             className="w-full lg:w-1/2 h-auto object-cover object-center p-4"
                             style={{ maxHeight: '700px' }} // Adjust as needed
