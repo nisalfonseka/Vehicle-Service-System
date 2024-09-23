@@ -10,8 +10,15 @@ import bodyParser from 'body-parser';
 import storeItemRoutes from "./routes/storeItemRoutes.js";
 import orderRoutes from "./routes/Orders.js";
 import SavedCard from "./routes/SavedCard.js";
-import Order from "./models/Order.js";
 import StoreItem from "./models/StoreItem.js";
+
+//inventory items
+import inventory from "./routes/InventoryItems.js";
+import categories from "./routes/Catagory.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+
+
+
 import cors from "cors";
 
 
@@ -25,6 +32,9 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Middleware
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Increase the size limit for JSON payloads
 app.use(express.json({ limit: '50mb' })); // Set to 50MB or any larger limit
@@ -98,6 +108,12 @@ app.use("/api/user", loginRoute);
 app.use('/store-items', storeItemRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', SavedCard);
+app.use('/api', uploadRoutes);
+
+//inventory routes 
+app.use(inventory);
+app.use(categories);
+
 
 
 
