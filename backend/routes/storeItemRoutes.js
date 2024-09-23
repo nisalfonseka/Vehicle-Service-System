@@ -14,6 +14,15 @@ router.get('/store-items', async (req, res) => {
     res.status(500).json({ message: 'Error fetching items', error });
   }
 });
+// GET route to fetch all inventory items
+router.get('/inventory-items', async (req, res) => {
+  try {
+    const items = await StoreItem.find().populate('category'); // Populate category if needed
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching inventory items', error });
+  }
+});
 
 // Get order details by ID and populate item details
 router.get('/:orderId', async (req, res) => {

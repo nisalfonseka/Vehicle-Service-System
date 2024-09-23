@@ -27,6 +27,7 @@
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.3",
     "react-spinners": "^0.14.1",
+    "react-to-print": "^2.15.1",
     "react-whatsapp": "^0.3.0",
     "twilio": "^5.2.2",
     "uuid": "^10.0.0"

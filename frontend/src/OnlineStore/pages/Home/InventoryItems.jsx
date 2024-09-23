@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ManagerHeader from '../../components/managerHeader';
-import { FaSearch, FaTrashAlt, FaEdit } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 function ItemList() {
   const [items, setItems] = useState([]);
@@ -42,6 +42,9 @@ function ItemList() {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Filter items with quantity less than 4
+  const lowQuantityItems = items.filter(item => item.qty < 4);
+
   return (
     <div className="flex bg-gray-100 min-h-screen">
       <ManagerHeader />
@@ -71,7 +74,6 @@ function ItemList() {
                 <th className="px-6 py-3 text-left font-semibold text-gray-600">Quantity</th>
                 <th className="px-6 py-3 text-left font-semibold text-gray-600">Price</th>
                 <th className="px-6 py-3 text-left font-semibold text-gray-600">Photo</th>
-               
               </tr>
             </thead>
             <tbody>
@@ -86,11 +88,13 @@ function ItemList() {
                     <td className="px-6 py-4 text-gray-800">LKR: {item.price.toFixed(2)}</td>
                     <td className="px-6 py-4">
                       {item.photo && (
-                        <img src={`data:image/jpeg;base64,${item.photo}`} alt={item.name} className="w-16 h-16 rounded-md" />
+                        <img
+                          src={`data:image/jpeg;base64,${item.photo}`}
+                          alt={item.name}
+                          className="w-16 h-16 rounded-md"
+                        />
                       )}
                     </td>
-                    
-                    
                   </tr>
                 ))
               ) : (
@@ -102,16 +106,36 @@ function ItemList() {
           </table>
         </div>
 
+        {/* Low Quantity Items Section */}
+        {lowQuantityItems.length > 0 && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold mb-4 text-red-600">Low Quantity Items</h3>
+            <ul className="list-disc pl-6">
+              {lowQuantityItems.map(item => (
+                <li key={item._id} className="mb-2">
+                  <span className="font-semibold">{item.name}</span> - Quantity: {item.qty}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {confirmDelete && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h3 className="text-lg font-semibold">Confirm Deletion</h3>
               <p>Are you sure you want to delete this item?</p>
               <div className="flex justify-end mt-4">
-                <button className="bg-red-600 text-white px-4 py-2 rounded-lg mr-2" onClick={() => handleDeleteItem(confirmDelete)}>
+                <button
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg mr-2"
+                  onClick={() => handleDeleteItem(confirmDelete)}
+                >
                   Delete
                 </button>
-                <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg" onClick={() => setConfirmDelete(null)}>
+                <button
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg"
+                  onClick={() => setConfirmDelete(null)}
+                >
                   Cancel
                 </button>
               </div>
