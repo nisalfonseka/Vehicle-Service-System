@@ -12,6 +12,11 @@ import RegisterForm from "./UserManagement/register";
 import LoginForm from "./UserManagement/login";
 import BookUserDashboard from "./BookingManagement/BookUserDashboard";
 import Bookadmin from "./BookingManagement/Bookadmin";
+import CreateRequest from './BreakdownService/CreateRequests';
+import ShowRequest from './BreakdownService/ShowRequests';
+import EditRequest from './BreakdownService/EditRequest';
+import DeleteRequest from './BreakdownService/DeleteRequest';
+import BreakdownCard from './BreakdownService/BreakdownCard';
 
 
 function App() {
@@ -36,6 +41,11 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
+        <Route path="/dashboard/breakdownAdmin" element={<BreakdownCard/>}/>
+        <Route path='/breakdownRequests/create' element={<CreateRequest />} />
+        <Route path='/breakdownRequests/details/:id' element={<ShowRequest />} />
+        <Route path='/breakdownRequests/edit/:id' element={<EditRequest />} />
+        <Route path='/breakdownRequests/delete/:id' element={<DeleteRequest />} />
 
       </Routes>
 

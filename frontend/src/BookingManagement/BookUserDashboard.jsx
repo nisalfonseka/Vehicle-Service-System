@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BooksTable from "./BooksTable";
+import BreakdownTable from "../BreakdownService/BreakdownTable";
 
 function BookUserDashboard() {
   const [books, setBooks] = useState([]);
+  const [breakdownRequests, setBreakdownRequests] = useState([]); // State for breakdown requests
   const [loading, setLoading] = useState(false);
   const [userProfile, setUserProfile] = useState(null); // Store user profile details
 
@@ -16,16 +18,32 @@ function BookUserDashboard() {
       setUserProfile(loggedInUser); // Set user profile with the logged-in user details
 
       setLoading(true);
+      
+      // Fetch books for the logged-in user
       axios
         .get("http://localhost:5555/books")
         .then((response) => {
-          // Filter bookings based on the logged-in user's username
           const filteredBooks = response.data.data.filter(book => book.customerName === loggedInUser.username);
           setBooks(filteredBooks);
-          setLoading(false);
         })
         .catch((error) => {
           console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      // Fetch breakdown requests for the logged-in user
+      axios
+        .get("http://localhost:5555/breakdownRequests")
+        .then((response) => {
+          const filteredRequests = response.data.data.filter(request => request.customerName === loggedInUser.username);
+          setBreakdownRequests(filteredRequests);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
           setLoading(false);
         });
     }
@@ -36,12 +54,10 @@ function BookUserDashboard() {
       {/* User Profile Section */}
       {userProfile && (
         <div className="bg-white shadow-md rounded p-4 mb-8">
-          
           <div className="flex items-center gap-4">
-            
             <div>
-              <p> <strong>Hi {userProfile.username}</strong></p>
-              </div>
+              <p><strong>Hi {userProfile.username}</strong></p>
+            </div>
           </div>
         </div>
       )}
@@ -51,6 +67,10 @@ function BookUserDashboard() {
         <h1 className="text-2xl my-8">My Bookings</h1>
       </div>
       <BooksTable books={books} loading={loading} />
+
+      {/* Breakdown Requests Section */}
+      <h1 className="text-2xl my-8">My Breakdown Requests</h1>
+      <BreakdownTable breakdownRequests={breakdownRequests} loading={loading} />
     </div>
   );
 }

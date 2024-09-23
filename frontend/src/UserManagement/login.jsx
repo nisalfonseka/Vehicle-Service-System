@@ -46,9 +46,12 @@ function LoginForm() {
         // Navigate based on email
         if (email === "bookingAdmin@gmail.com") {
           navigate("/dashboard/Bookadmin");
-        } else {
+      } else if (email === "breakdownAdmin@gmail.com") {
+          navigate("/dashboard/BreakdownAdmin"); // Adjusted to the correct path for breakdown admin
+      } else {
           navigate("/");
-        }
+      }
+      
   
         // Refresh the page
         window.location.reload();
