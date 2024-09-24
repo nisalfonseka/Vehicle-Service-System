@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import ManagerHeader from './managerHeader';
+import ManagerHeader from '../InventoryManagement/managerHeader';
 import { useReactToPrint } from 'react-to-print';
 
 const InventorySummaryReport = () => {

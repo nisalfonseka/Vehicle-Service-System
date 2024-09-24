@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ManagerHeader from './managerHeader';
+import ManagerHeader from '../InventoryManagement/managerHeader';
 import axios from 'axios';
 const AddCategoryForm = () => {
   const [categoryCode, setCategoryCode] = useState('');

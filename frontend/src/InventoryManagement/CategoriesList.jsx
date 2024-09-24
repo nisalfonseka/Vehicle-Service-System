@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'; // For navigation
-import ManagerHeader from './managerHeader';
+import ManagerHeader from '../InventoryManagement/managerHeader';
 
 const CategoriesList = () => {
   const [categories, setCategories] = useState([]);

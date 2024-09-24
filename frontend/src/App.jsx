@@ -34,7 +34,13 @@ import SalesSummary from "./OnlineStore/pages/Home/SalesSummary";
 
 //inventory
 import SenuraInventoryItems from "./InventoryManagement/s-InventoryItems";
-
+import CategoriesList from './InventoryManagement/CategoriesList';
+import AddCategoryForm from './InventoryManagement/addCatagory';
+import UpdateCategory from './InventoryManagement/UpdateCategory';
+import CategoryDetail from './InventoryManagement/CategoryDetail';
+import AddItemForm from './InventoryManagement/AddItem';
+import ItemDetailsssss from "./InventoryManagement/ItemDetails";
+import InventorySummaryReport from './InventoryManagement/summery';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -81,6 +87,12 @@ function App() {
           <Route path="/pending" element={<PendingOrders />} />
 
           <Route path="/senura" element ={<SenuraInventoryItems />}/>
+          <Route path="/addcatagory" element ={<AddCategoryForm />}/>
+          <Route path="/catagory" element ={<CategoriesList />}/>
+          <Route path="/additem" element ={<AddItemForm />}/>
+          <Route path="/categories/:id" element={<CategoryDetail />} />
+          <Route path="/categories/:id/edit" element={<UpdateCategory />} />
+          
 
       </Routes>
 

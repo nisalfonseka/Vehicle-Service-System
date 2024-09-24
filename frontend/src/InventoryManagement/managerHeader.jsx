@@ -22,7 +22,7 @@ function ManagerHeader() {
           <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/catagory">
               Category
           </Link>
-          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/">
+          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/addcatagory">
             add Catagory
           </Link>
           <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="#">

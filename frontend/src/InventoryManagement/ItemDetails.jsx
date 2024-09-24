@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Modal, Button, Form } from 'react-bootstrap';
 
-const ItemDetails = () => {
+
+const ItemDetailsssss = () => {
   const { id } = useParams(); // Get item ID from URL
   const navigate = useNavigate();
   const [item, setItem] = useState(null);
@@ -186,4 +186,4 @@ const ItemDetails = () => {
   );
 };
 
-export default ItemDetails;
+export default ItemDetailsssss;

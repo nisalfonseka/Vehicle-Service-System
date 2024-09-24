@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import ManagerHeader from './managerHeader';
+import ManagerHeader from '../InventoryManagement/managerHeader';
 
 const AddItemForm = () => {
   const [categories, setCategories] = useState([]);
