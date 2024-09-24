@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ManagerHeader from '../InventoryManagement/managerHeader';
 
-const senuraInventoryItems = () => {
+const SenuraInventoryItems = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]); // For displaying filtered results
   const [loading, setLoading] = useState(true);
@@ -30,56 +30,60 @@ const senuraInventoryItems = () => {
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    
+
     // Filter items based on the search query
-    const filtered = items.filter(item =>
+    const filtered = items.filter((item) =>
       item.name.toLowerCase().includes(query)
     );
     setFilteredItems(filtered);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-600 text-center mt-6">{error}</div>;
+  }
 
   return (
     <div className="flex">
       <ManagerHeader />
-      <div className="container">
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <h1 className="text-center">Inventory Items</h1>
+      <div className="container mx-auto p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Inventory Items</h1>
           <input
             type="text"
             placeholder="Search items by name"
-            className="form-control"
-            style={{ width: '300px' }}
+            className="py-2 px-4 w-64 rounded-lg shadow-md focus:ring-2 focus:ring-indigo-500 outline-none"
             value={searchQuery}
             onChange={handleSearch}
           />
         </div>
-        <div className="row">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item) => (
-            <div key={item._id} className="col-md-4 mb-4">
-              <Link to={`/items/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div className="card">
-                  {item.photo && (
-                    <img
-                      src={`data:image/jpeg;base64,${item.photo}`}
-                      className="card-img-top"
-                      alt={item.name}
-                      style={{ height: '200px', objectFit: 'cover' }}
-                    />
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title">{item.name}</h5>
-                    <p className="card-text">Price: LKR:{item.price.toFixed(2)}</p>
-                    <p className="card-text">Quantity Available: {item.qty}</p>
-                    <p className="card-text">
-                      <strong>Company:</strong> {item.companyName}
-                    </p>
-                    <p className="card-text">
-                      <strong>Category:</strong> {item.category?.name || 'N/A'}
-                    </p>
-                  </div>
+            <div key={item._id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+              <Link to={`/items/${item._id}`} className="block">
+                {item.photo && (
+                  <img
+                    src={`data:image/jpeg;base64,${item.photo}`}
+                    className="rounded-t-lg w-full h-48 object-cover"
+                    alt={item.name}
+                  />
+                )}
+                <div className="p-4">
+                  <h5 className="text-lg font-semibold text-gray-800 mb-2">{item.name}</h5>
+                  <p className="text-gray-600 mb-1">Price: LKR {item.price.toFixed(2)}</p>
+                  <p className="text-gray-600 mb-1">Quantity Available: {item.qty}</p>
+                  <p className="text-gray-600 mb-1"><strong>Company:</strong> {item.companyName}</p>
+                  <p className="text-gray-600 mb-1"><strong>Category:</strong> {item.category?.name || 'N/A'}</p>
                 </div>
               </Link>
             </div>
@@ -90,4 +94,4 @@ const senuraInventoryItems = () => {
   );
 };
 
-export default senuraInventoryItems;
+export default SenuraInventoryItems;

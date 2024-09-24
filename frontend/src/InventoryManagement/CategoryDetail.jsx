@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, Link, useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 const CategoryDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Use useNavigate instead of history
+  const navigate = useNavigate();
   const [category, setCategory] = useState(null);
   const [error, setError] = useState(null);
 
@@ -25,7 +25,7 @@ const CategoryDetail = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:5555/categories/${id}`);
-      navigate('/catagory'); // Redirect to categories list after deletion
+      navigate('/catagory');
     } catch (error) {
       setError('Failed to delete category.');
       console.error('Error deleting category:', error);
@@ -33,53 +33,53 @@ const CategoryDetail = () => {
   };
 
   const handleUpdate = () => {
-    navigate(`/categories/${id}/edit`); // Redirect to update page
+    navigate(`/categories/${id}/edit`);
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Category Details</h1>
+    <div className="min-h-screen bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 p-6 flex flex-col items-center justify-center">
+      <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-900">Category Details</h1>
 
-      {error && <p className="text-red-600 text-center">{error}</p>}
+      {error && <p className="text-red-600 text-center mb-4">{error}</p>}
 
       {category && (
-        <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-          <div className="mb-4">
-            <strong className="text-gray-800">Category Code:</strong>
+        <div className="bg-white p-8 rounded-lg shadow-2xl max-w-xl w-full">
+          <div className="mb-6">
+            <strong className="text-xl font-semibold text-gray-800">Category Code:</strong>
             <p className="text-gray-600">{category.categoryCode}</p>
           </div>
-          <div className="mb-4">
-            <strong className="text-gray-800">Name:</strong>
+          <div className="mb-6">
+            <strong className="text-xl font-semibold text-gray-800">Name:</strong>
             <p className="text-gray-600">{category.name}</p>
           </div>
-          <div className="mb-4">
-            <strong className="text-gray-800">Description:</strong>
+          <div className="mb-6">
+            <strong className="text-xl font-semibold text-gray-800">Description:</strong>
             <p className="text-gray-600">{category.description}</p>
           </div>
-          <div className="mb-4">
-            <strong className="text-gray-800">Created At:</strong>
+          <div className="mb-6">
+            <strong className="text-xl font-semibold text-gray-800">Created At:</strong>
             <p className="text-gray-600">{new Date(category.createdAt).toLocaleString()}</p>
           </div>
-          <div className="mb-4">
-            <strong className="text-gray-800">Updated At:</strong>
+          <div className="mb-6">
+            <strong className="text-xl font-semibold text-gray-800">Updated At:</strong>
             <p className="text-gray-600">{new Date(category.updatedAt).toLocaleString()}</p>
           </div>
 
-          <div className="flex space-x-4 justify-center">
+          <div className="flex justify-between mt-8">
             <Link to="/catagory">
-              <button className="py-2 px-4 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700">
+              <button className="py-3 px-6 bg-gradient-to-r from-gray-600 to-gray-800 text-white font-semibold rounded-md shadow-lg hover:scale-105 transition-transform duration-300">
                 Back
               </button>
             </Link>
             <button
               onClick={handleUpdate}
-              className="py-2 px-4 bg-yellow-600 text-white font-semibold rounded-md hover:bg-yellow-700"
+              className="py-3 px-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-semibold rounded-md shadow-lg hover:scale-105 transition-transform duration-300"
             >
               Update
             </button>
             <button
               onClick={handleDelete}
-              className="py-2 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700"
+              className="py-3 px-6 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-md shadow-lg hover:scale-105 transition-transform duration-300"
             >
               Delete
             </button>
