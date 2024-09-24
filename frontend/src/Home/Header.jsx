@@ -86,6 +86,7 @@ function Header() {
               <button
                 onClick={handleSignOut}
                 className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700"
+                className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-500 border border-transparent rounded-md lg:inline-flex hover:bg-red-400 focus:bg-red-700"
                 role="button"
               >
                 Sign Out
