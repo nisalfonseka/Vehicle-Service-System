@@ -35,6 +35,7 @@ function Header() {
 
   return (
     <header className="pb-6 bg-white lg:pb-0">
+    <header className="pb-6 bg-white-200 lg:pb-0">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-16 lg:h-20">
           <div className="flex-shrink-0">
@@ -86,7 +87,6 @@ function Header() {
               <button
                 onClick={handleSignOut}
                 className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700"
-                className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-500 border border-transparent rounded-md lg:inline-flex hover:bg-red-400 focus:bg-red-700"
                 role="button"
               >
                 Sign Out
