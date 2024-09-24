@@ -46,20 +46,11 @@ function LoginForm() {
         // Show success message
         enqueueSnackbar("Login Successful", { variant: "success" });
   
-        // Navigate based on email
         if (email === "bookingAdmin@gmail.com") {
           navigate("/dashboard/Bookadmin");
-        } else {
-          navigate("/");
-        }
-        // Navigate based on email
-        if (email === "salesmanager@gmail.com") {
+        } else if (email === "salesmanager@gmail.com") {
           navigate("/salesmanager");
-        } else {
-          navigate("/");
-        }
-        // Navigate based on email
-        if (email === "senura123@gmail.com") {
+        } else if (email === "senura123@gmail.com") {
           navigate("/senura");
         } else {
           navigate("/");

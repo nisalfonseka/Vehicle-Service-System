@@ -35,7 +35,6 @@ function Header() {
 
   return (
     <header className="pb-6 bg-white lg:pb-0">
-    <header className="pb-6 bg-white-200 lg:pb-0">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-16 lg:h-20">
           <div className="flex-shrink-0">
@@ -95,7 +94,7 @@ function Header() {
           </div>
 
           <div className="ml-8"></div>
-          
+
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar bg-red-600">
               <div className="w-10 rounded-full">
@@ -103,13 +102,10 @@ function Header() {
               </div>
             </div>
             <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-              
               {username && <li><a>Hi! {username}</a></li>}
               <li>
                 <Link to={"/BookUserDashboard"}>Profile</Link>
               </li>
-
-              
             </ul>
           </div>
         </nav>

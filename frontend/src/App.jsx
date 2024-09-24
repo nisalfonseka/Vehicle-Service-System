@@ -41,6 +41,7 @@ import CategoryDetail from './InventoryManagement/CategoryDetail';
 import AddItemForm from './InventoryManagement/AddItem';
 import ItemDetailsssss from "./InventoryManagement/ItemDetails";
 import InventorySummaryReport from './InventoryManagement/summery';
+import BooksCard from "./BookingManagement/BooksCard";
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -60,6 +61,7 @@ function App() {
         <Route path="/books/edit/:id" element={<EditBook />} />
         <Route path="/books/delete/:id" element={<DeleteBook />} />
         <Route path="/books/table" element={<BooksTable />} />
+        <Route path="/books/cardview" element={<BooksCard />} />
         <Route path="/books/card" element={<BookSingleCard />} />
         <Route path="/BookUserDashboard" element={<BookUserDashboard />} />
         <Route path="/register" element={<RegisterForm />} />
