@@ -92,6 +92,8 @@ function App() {
           <Route path="/additem" element ={<AddItemForm />}/>
           <Route path="/categories/:id" element={<CategoryDetail />} />
           <Route path="/categories/:id/edit" element={<UpdateCategory />} />
+          <Route path="/summery" element={<InventorySummaryReport />}/>
+          <Route path="/items/:id" element={<ItemDetailsssss />} />
           
 
       </Routes>
