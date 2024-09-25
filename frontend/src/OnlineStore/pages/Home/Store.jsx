@@ -84,7 +84,7 @@ function Store({ cart, setCart }) {
           placeholder="Search items by name"
           value={searchQuery}
           onChange={handleSearch}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className="w-[350px] p-2 border border-gray-300 rounded-md"
         />
       </div>
 

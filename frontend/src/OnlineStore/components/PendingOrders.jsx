@@ -27,15 +27,17 @@ const PendingOrders = () => {
       setOrders(orders.filter(order => order._id !== orderId));
     } catch (error) {
       console.error('Error deleting order:', error);
+      // Optionally display an error message here
     }
   };
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
-      
+      <div className="mt-52 mb-12"> {/* Adjusted bottom margin for better layout */}
         <ManagerHeader />
-     
-      <div className="-1 ml-64 p-6">
+      </div>
+
+      <div className="ml-64 p-6 flex-grow"> {/* Fixed class for margin-left */}
         <h1 className="text-3xl font-bold text-yellow-600 mb-6 text-center">Pending Orders</h1>
         {loading ? (
           <p className="text-center">Loading...</p>
