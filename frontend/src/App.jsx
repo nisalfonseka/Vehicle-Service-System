@@ -39,7 +39,7 @@ import AddCategoryForm from './InventoryManagement/addCatagory';
 import UpdateCategory from './InventoryManagement/UpdateCategory';
 import CategoryDetail from './InventoryManagement/CategoryDetail';
 import AddItemForm from './InventoryManagement/AddItem';
-import ItemDetailsssss from "./InventoryManagement/ItemDetails";
+import ItemDetail from "./InventoryManagement/ItemDetail";
 import InventorySummaryReport from './InventoryManagement/summery';
 
 function App() {
@@ -93,7 +93,7 @@ function App() {
           <Route path="/categories/:id" element={<CategoryDetail />} />
           <Route path="/categories/:id/edit" element={<UpdateCategory />} />
           <Route path="/summery" element={<InventorySummaryReport />}/>
-          <Route path="/items/:id" element={<ItemDetailsssss />} />
+          <Route path="/items/:id" element={<ItemDetail />} />
           
 
       </Routes>
