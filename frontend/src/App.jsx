@@ -13,7 +13,8 @@ import RegisterForm from "./UserManagement/register";
 import LoginForm from "./UserManagement/login";
 import BookUserDashboard from "./BookingManagement/BookUserDashboard";
 import Bookadmin from "./BookingManagement/Bookadmin";
-import dashboardHeader from "./AdminDashboard/dashboardHeader"
+import DashboardHeader from "./AdminDashboard/dashboardHeader"
+import BookOverview from "./AdminDashboard/BookOverview"
 
 //online store 
 import AdminHome from './OnlineStore/pages/Home/AdminHome';
@@ -54,11 +55,15 @@ function App() {
   return (
     <>
       {!isDashboardRoute && <Header />} {/* Render Header if not on dashboard route */}
+      {isDashboardRoute && <DashboardHeader />}
       
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/books/create" element={<CreateBook />} />
         <Route path="/books/details/:id" element={<ShowBook />} />
+        <Route path="/dashboard/books/details/:id" element={<ShowBook />} />
+        <Route path="/dashboard/books/edit/:id" element={<EditBook />} />
+        <Route path="/dashboard/books/delete/:id" element={<DeleteBook />} />
         <Route path="/books/edit/:id" element={<EditBook />} />
         <Route path="/books/delete/:id" element={<DeleteBook />} />
         <Route path="/books/table" element={<BooksTable />} />
@@ -69,6 +74,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
         <Route path="/dashboard/header" element={<dashboardHeader/>}/>
+        <Route path="/dashboard/books/overview" element={<BookOverview/>}/>
 
           <Route path="/items" element={<ItemList />} />
           <Route path="/salesmanager" element={<AdminHome/>} />

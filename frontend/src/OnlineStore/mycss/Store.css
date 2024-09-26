@@ -15,6 +15,10 @@
   align-items: center; /* Centers items vertically */
 }
 
+.Footer{
+  position: fixed;
+}
+
 
 .cartbtn, #profil {
   display: flex;

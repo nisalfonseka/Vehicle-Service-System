@@ -23,7 +23,7 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
 
   return (
     <div className="border border-gray-300 rounded-xl p-6 m-4 relative bg-white shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl">
-      <Link to={`/books/details/${book._id}`}>
+      <Link to={`/dashboard/books/details/${book._id}`}>
         <div role="button">
           <div className={`absolute top-3 right-3 text-white text-xs font-semibold px-3 py-1 rounded-full ${getStatusClass(book.status)}`}>
             {book.status}
@@ -48,10 +48,10 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
           className="text-2xl text-blue-500 hover:text-blue-700 cursor-pointer"
           onClick={() => setShowModel(true)}
         />
-        <Link to={`/books/edit/${book._id}`}>
+        <Link to={`/dashboard/books/edit/${book._id}`}>
           <MdEdit className="text-2xl text-yellow-500 hover:text-yellow-700" />
         </Link>
-        <Link to={`/books/delete/${book._id}`}>
+        <Link to={`/dashboard/books/delete/${book._id}`}>
           <MdOutlineDelete className="text-2xl text-red-500 hover:text-red-700" />
         </Link>
       </div>
