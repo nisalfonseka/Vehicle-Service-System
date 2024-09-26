@@ -5,11 +5,6 @@ import axios from "axios";
 const BooksCard = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(""); // State to hold selected date
-  const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
-  const [selectedStatus, setSelectedStatus] = useState(""); // State to hold selected status
 
   useEffect(() => {
     // Fetch books from the backend
@@ -17,105 +12,117 @@ const BooksCard = () => {
       try {
         const response = await axios.get("http://localhost:5555/books");
         setBooks(response.data.data);
-        setFilteredBooks(response.data.data); // Initially display all books
+        setFilteredBooks(response.data.data.filter((book) => book.status === "New"));
       } catch (error) {
-        setError("Failed to load books.");
         console.error("Error fetching books:", error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchBooks();
   }, []);
 
-  // Function to filter books by date, name, and status
-  const filterBooks = () => {
-    let filtered = books;
+  const handleStatusUpdate = (id, newStatus) => {
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book._id === id ? { ...book, status: newStatus } : book
+      )
+    );
+    setFilteredBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book._id === id ? { ...book, status: newStatus } : book
+      ).filter((book) => book.status === "New") // Filter according to the selected status
+    );
+  };
 
-    // Apply date filter if a date is selected
-    if (selectedDate) {
-      filtered = filtered.filter((book) => {
-        const bookDate = new Date(book.selectedDate).toISOString().split("T")[0]; // Assuming book.selectedDate is a valid ISO date string
-        return bookDate === selectedDate; // Compare book date with selected date
-      });
+  const handleFilterChange = (status) => {
+    if (status === "All") {
+      setFilteredBooks(books);
+    } else {
+      setFilteredBooks(books.filter((book) => book.status === status));
     }
-
-    // Apply search filter if a search term is provided
-    if (searchTerm) {
-      filtered = filtered.filter((book) =>
-        book.customerName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Apply status filter if a status is selected
-    if (selectedStatus) {
-      filtered = filtered.filter((book) => book.status === selectedStatus);
-    }
-
-    setFilteredBooks(filtered);
   };
-
-  // Handle date change
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
-    filterBooks(); // Filter books after updating the date
-  };
-
-  // Handle search input change
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    filterBooks(); // Filter books after updating the search term
-  };
-
-  // Handle status change
-  const handleStatusChange = (e) => {
-    setSelectedStatus(e.target.value);
-    filterBooks(); // Filter books after updating the status
-  };
-
-  if (loading) {
-    return <p>Loading books...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
 
   return (
     <div>
-      {/* Top bar with date picker, search input, and status dropdown */}
-      <div className="flex justify-end mb-4">
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={handleDateChange} // Filter books by date
-          className="border border-gray-300 rounded p-2 mr-4" // Adds space between date and search
-        />
-
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={handleSearchChange} // Filter books by name
-          className="border border-gray-300 rounded p-2 mr-4"
-        />
-
-        <select
-          value={selectedStatus}
-          onChange={handleStatusChange} // Filter books by status
-          className="border border-gray-300 rounded p-2"
-        >
-          <option value="">All Statuses</option>
-          <option value="New">New</option>
-          <option value="Confirmed">Confirmed</option>
-          <option value="Declined">Declined</option>
-        </select>
+      <div className="hero-content text-center">
+        <div className="max-w-md">
+          <h1 className="text-5xl font-bold">Admin Dashboard</h1>
+        </div>
       </div>
 
-      {/* Books grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+      <br />
+      <br />
+      <br />
+
+      {/* Modern-looking search bar */}
+      <div className="flex justify-center mb-8">
+        <div className="relative w-full max-w-xs">
+          <input
+            type="text"
+            className="input input-bordered w-full pl-10 pr-4 py-2 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+            placeholder="Search by customer name or vehicle number"
+            onChange={(e) =>
+              setFilteredBooks(
+                books.filter(
+                  (book) =>
+                    (book.customerName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                      book.vehicleNumber.toLowerCase().includes(e.target.value.toLowerCase())) &&
+                    (book.status === "New" || book.status === "Confirmed" || book.status === "Declined")
+                )
+              )
+            }
+          />
+          <svg
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1015.5 15.5a7.5 7.5 0 001.15 10.65z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* Filter Buttons */}
+      <div className="flex justify-center mb-8">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded mx-2"
+          onClick={() => handleFilterChange('All')}
+        >
+          All
+        </button>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded mx-2"
+          onClick={() => handleFilterChange('New')}
+        >
+          New
+        </button>
+        <button
+          className="bg-green-500 text-white px-4 py-2 rounded mx-2"
+          onClick={() => handleFilterChange('Confirmed')}
+        >
+          Confirmed
+        </button>
+        <button
+          className="bg-red-500 text-white px-4 py-2 rounded mx-2"
+          onClick={() => handleFilterChange('Declined')}
+        >
+          Declined
+        </button>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredBooks.map((item) => (
-          <BookSingleCard key={item._id} book={item} />
+          <BookSingleCard
+            key={item._id}
+            book={item}
+            onStatusUpdate={handleStatusUpdate}
+          />
         ))}
       </div>
     </div>

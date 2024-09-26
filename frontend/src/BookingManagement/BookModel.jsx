@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { PiBookOpenTextLight } from "react-icons/pi";
 import { BiUserCircle } from "react-icons/bi";
+import Reactwhatsapp from "react-whatsapp";
 
 const BookModel = ({ book, onClose, onStatusUpdate }) => {
   const [declineReason, setDeclineReason] = useState("");
@@ -15,34 +17,22 @@ const BookModel = ({ book, onClose, onStatusUpdate }) => {
       const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle: ${book.vehicleNumber}\n  Date: ${book.selectedDate}\n  Time: ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
       const whatsappLink = createWhatsAppLink(confirmMessage);
       window.open(whatsappLink, "_blank");
-  
+
       // Update booking status to Confirmed
-      const response = await fetch(`/books/${book._id}/status`, {
+      await fetch(`/api/bookings/${book._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: 'Confirmed' })
       });
-  
-      // Check if the response is ok
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Error ${response.status}: ${errorData.message || 'Unknown error'}`);
-      }
-  
-      const data = await response.json();
-      console.log('Update Response:', data);
-  
-      onStatusUpdate(book._id, 'Confirmed'); // Ensure this function updates the state in the parent component
+
+      onStatusUpdate(book._id, 'Confirmed');
       onClose();
     } catch (error) {
       console.error('Error updating booking status:', error);
     }
   };
-  
-  
-  
 
   const handleDeclineBooking = async () => {
     try {
@@ -51,7 +41,7 @@ const BookModel = ({ book, onClose, onStatusUpdate }) => {
       window.open(whatsappLink, "_blank");
 
       // Update booking status to Declined
-      await fetch(`/books/${book._id}/status`, {
+      await fetch(`/api/bookings/${book._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
