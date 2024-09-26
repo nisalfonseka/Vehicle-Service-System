@@ -166,29 +166,21 @@ router.delete("/:id", async (request, response) => {
 // Route to update a booking's status
 router.patch("/:id/status", async (req, res) => {
   try {
-    const { id } = req.params;
     const { status } = req.body;
-
-    // Validate status
     const validStatuses = ['New', 'Confirmed', 'Declined'];
+
     if (!validStatuses.includes(status)) {
       return res.status(400).send({ message: 'Invalid status' });
     }
 
-    // Find and update the booking status
-    const updatedBooking = await Book.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true, runValidators: true } // Ensure validators run on update
-    );
-
+    const updatedBooking = await Book.findByIdAndUpdate(req.params.id, { status }, { new: true });
     if (!updatedBooking) {
       return res.status(404).send({ message: 'Booking not found' });
     }
 
     res.status(200).send(updatedBooking);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send({ message: error.message });
   }
 });
@@ -205,13 +197,9 @@ router.get("/status/:status", async (req, res) => {
     }
 
     const books = await Book.find({ status });
-
-    res.status(200).json({
-      count: books.length,
-      data: books
-    });
+    res.status(200).json({ count: books.length, data: books });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send({ message: error.message });
   }
 });

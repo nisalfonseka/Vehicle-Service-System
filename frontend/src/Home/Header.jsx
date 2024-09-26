@@ -96,7 +96,7 @@ function Header() {
           <div className="ml-8"></div>
 
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar bg-red-600">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar bg-white-600">
               <div className="w-10 rounded-full">
                 <img alt="User Avatar" src="../images/user.png" />
               </div>

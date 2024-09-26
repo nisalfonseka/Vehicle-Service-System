@@ -72,8 +72,9 @@ function CreateCustomer() {
     // Fetch bookings based on the selected date
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://localhost:5555/books?date=${selectedDate.toISOString().split("T")[0]}`);
-        const bookings = response.data;
+        const formattedDate = selectedDate.toISOString().split("T")[0]; // Format date correctly
+      const response = await axios.get(`http://localhost:5555/books?date=${formattedDate}`);
+      const bookings = response.data;
   
         const availability = timeSlots.reduce((acc, slot) => {
           acc[slot] = 0;

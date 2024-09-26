@@ -28,7 +28,6 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
           <div className={`absolute top-3 right-3 text-white text-xs font-semibold px-3 py-1 rounded-full ${getStatusClass(book.status)}`}>
             {book.status}
           </div>
-          <h4 className="text-sm text-gray-400">{book._id}</h4>
           <div className="flex items-center gap-x-2 mt-2">
             <BiUserCircle className="text-red-400 text-xl" />
             <h2 className="text-lg font-semibold text-gray-700">{book.customerName}</h2>

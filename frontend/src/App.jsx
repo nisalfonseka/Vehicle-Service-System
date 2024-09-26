@@ -13,6 +13,7 @@ import RegisterForm from "./UserManagement/register";
 import LoginForm from "./UserManagement/login";
 import BookUserDashboard from "./BookingManagement/BookUserDashboard";
 import Bookadmin from "./BookingManagement/Bookadmin";
+import dashboardHeader from "./AdminDashboard/dashboardHeader"
 
 //online store 
 import AdminHome from './OnlineStore/pages/Home/AdminHome';
@@ -67,6 +68,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
+        <Route path="/dashboard/header" element={<dashboardHeader/>}/>
 
           <Route path="/items" element={<ItemList />} />
           <Route path="/salesmanager" element={<AdminHome/>} />
