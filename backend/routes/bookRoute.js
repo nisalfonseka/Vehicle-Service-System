@@ -164,7 +164,7 @@ router.delete("/:id", async (request, response) => {
 });
 
 // Route to update a booking's status
-router.patch("/:id/status", async (req, res) => {
+router.patch("/books/:id/status", async (req, res) => {
   try {
     const { status } = req.body;
     const validStatuses = ['New', 'Confirmed', 'Declined'];
@@ -187,7 +187,7 @@ router.patch("/:id/status", async (req, res) => {
 
 
 // Route to get books by status
-router.get("/status/:status", async (req, res) => {
+router.get("/books/status/:status", async (req, res) => {
   try {
     const { status } = req.params;
     const validStatuses = ['New', 'Confirmed', 'Declined'];

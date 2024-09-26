@@ -6,6 +6,7 @@ import loginRoute from "./routes/loginRoute.js"
 import multer from 'multer';
 import path from 'path';
 import bodyParser from 'body-parser';
+import { Book } from "./models/bookModel.js";
 //online store routes
 import storeItemRoutes from "./routes/storeItemRoutes.js";
 import orderRoutes from "./routes/Orders.js";
@@ -39,6 +40,31 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Increase the size limit for JSON payloads
 app.use(express.json({ limit: '50mb' })); // Set to 50MB or any larger limit
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+
+app.patch('/books/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+      const validStatuses = ['Confirmed', 'Declined', 'Pending']; // Adjust according to your requirements
+      if (!validStatuses.includes(status)) {
+          return res.status(400).json({ message: 'Invalid status' });
+      }
+
+      const updatedBooking = await Book.findByIdAndUpdate(id, { status }, { new: true });
+      if (!updatedBooking) {
+          return res.status(404).json({ message: 'Booking not found' });
+      }
+
+      res.json(updatedBooking);
+  } catch (error) {
+      console.error('Error updating booking status:', error); // Log the error for debugging
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+// Route to get books by status
+
 
 
 app.get('/store-items/:itemId', async (req, res) => {

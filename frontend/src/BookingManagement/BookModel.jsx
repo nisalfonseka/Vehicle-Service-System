@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { PiBookOpenTextLight } from "react-icons/pi";
 import { BiUserCircle } from "react-icons/bi";
-import Reactwhatsapp from "react-whatsapp";
 
 const BookModel = ({ book, onClose, onStatusUpdate }) => {
   const [declineReason, setDeclineReason] = useState("");
@@ -14,47 +12,48 @@ const BookModel = ({ book, onClose, onStatusUpdate }) => {
 
   const handleConfirmBooking = async () => {
     try {
-      const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle: ${book.vehicleNumber}\n  Date: ${book.selectedDate}\n  Time: ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
-      const whatsappLink = createWhatsAppLink(confirmMessage);
-      window.open(whatsappLink, "_blank");
+        const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle: ${book.vehicleNumber}\n  Date: ${book.selectedDate}\n  Time: ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
+        const whatsappLink = createWhatsAppLink(confirmMessage);
+        window.open(whatsappLink, "_blank");
 
-      // Update booking status to Confirmed
-      await fetch(`/api/bookings/${book._id}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status: 'Confirmed' })
-      });
+        // Update booking status to Confirmed
+        await fetch(`http://localhost:5555/books/${book._id.trim()}/status`, {  // Use template literals
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: 'Confirmed' })  // Ensure the status is valid
+        });
 
-      onStatusUpdate(book._id, 'Confirmed');
-      onClose();
+        onStatusUpdate(book._id, 'Confirmed');
+        onClose();
     } catch (error) {
-      console.error('Error updating booking status:', error);
+        console.error('Error updating booking status:', error);
     }
-  };
+};
 
-  const handleDeclineBooking = async () => {
+const handleDeclineBooking = async () => {
     try {
-      const declineMessage = `Sorry! Your booking has been declined for vehicle ${book.vehicleNumber}. Reason: ${declineReason}`;
-      const whatsappLink = createWhatsAppLink(declineMessage);
-      window.open(whatsappLink, "_blank");
+        const declineMessage = `Sorry! Your booking has been declined for vehicle ${book.vehicleNumber}. Reason: ${declineReason}`;
+        const whatsappLink = createWhatsAppLink(declineMessage);
+        window.open(whatsappLink, "_blank");
 
-      // Update booking status to Declined
-      await fetch(`/api/bookings/${book._id}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status: 'Declined' })
-      });
+        // Update booking status to Declined
+        await fetch(`http://localhost:5555/books/${book._id.trim()}/status`, {  // Use template literals
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: 'Declined' })  // Ensure the status is valid
+        });
 
-      onStatusUpdate(book._id, 'Declined');
-      onClose();
+        onStatusUpdate(book._id, 'Declined');
+        onClose();
     } catch (error) {
-      console.error('Error updating booking status:', error);
+        console.error('Error updating booking status:', error);
     }
-  };
+};
+
 
   return (
     <div
