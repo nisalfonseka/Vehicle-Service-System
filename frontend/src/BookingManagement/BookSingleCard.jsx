@@ -17,7 +17,7 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
       case 'Declined':
         return 'bg-red-500';
       default:
-        return 'bg-blue-500';
+        return 'bg-yellow-300';
     }
   };
 
