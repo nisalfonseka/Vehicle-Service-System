@@ -8,6 +8,8 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import { Book } from "./models/bookModel.js";
 import customerRoute from "./routes/customerRoute.js"
+import breakdownRoute from "./routes/breakdownRoute.js"
+
 //online store routes
 import storeItemRoutes from "./routes/storeItemRoutes.js";
 import orderRoutes from "./routes/Orders.js";
@@ -30,6 +32,7 @@ import userRoute from "./routes/userRoute.js"; // Added user route
 import empmanageRoute from "./routes/empmanageRoute.js";
 import ShiftRoute from "./routes/ShiftRoute.js";
 import profileRoute from "./routes/profileRoute.js";
+import employee from "./routes/breakdownEmpRoute.js"
 
 
 
@@ -171,6 +174,10 @@ app.use("/Shift",ShiftRoute );
 
 // Profile Routes
 app.use("/Profile",profileRoute);
+
+//breakdown route
+app.use("/breakdownRequests", breakdownRoute);
+app.use(employee);
 
 
 

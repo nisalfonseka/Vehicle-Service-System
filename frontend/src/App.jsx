@@ -81,6 +81,16 @@ import CustomerOverview from "./CustomerSupport/CustomerOverview.jsx";
 import CustomerDashboard from "./CustomerSupport/CustomerDashboard.jsx"
 
 
+//brakdown service
+import CreateRequest from './BreakdownService/CreateRequests';
+import ShowRequest from './BreakdownService/ShowRequests';
+import EditRequest from './BreakdownService/EditRequest';
+import DeleteRequest from './BreakdownService/DeleteRequest';
+import BreakdownCard from './BreakdownService/BreakdownCard';
+import BreakdownView from "./BreakdownService/BreakdownView";
+import BreakdownDashboard from "./BreakdownService/BreakdownDashboard.jsx"
+
+
 function App() {
   const [cart, setCart] = useState([]);
   const location = useLocation();
@@ -176,6 +186,17 @@ function App() {
       <Route path='/profile' element={<Profile />} />
       <Route path="/dashboard/Customer/overview" element={<CustomerOverview/>}/>
       <Route path="/dashboard/Customer/dashboard" element={<CustomerDashboard/>}/>
+
+      <Route path='/breakdownRequests/create' element={<CreateRequest />} />
+        <Route path='/breakdownRequests/details/:id' element={<ShowRequest />} />
+        <Route path='/breakdownRequests/edit/:id' element={<EditRequest />} />
+        <Route path='/breakdownRequests/delete/:id' element={<DeleteRequest />} />
+        <Route path='/dashboard/breakdownRequests/details/:id' element={<ShowRequest />} />
+        <Route path='/dashboard/breakdownRequests/edit/:id' element={<EditRequest />} />
+        <Route path='/dashboard/breakdownRequests/delete/:id' element={<DeleteRequest />} />
+        <Route path="/dashboard/BreakdownView" element={<BreakdownView/>}/>
+        <Route path="/dashboard/breakdownAdmin" element={<BreakdownCard/>}/>
+        <Route path="/dashboard/breakdown/dashboard" element={<BreakdownDashboard/>}/>
 
 
       </Routes>
