@@ -43,7 +43,7 @@ const Employee = () => {
           Employee Record Details
         </h3>
       </div>
-      <Link to="/dashboard/add_employee" className="bg-green-600 text-white rounded-md px-4 py-2 mb-5 hover:bg-green-500 transition">
+      <Link to="/dashboard/emp/add_employee" className="bg-green-600 text-white rounded-md px-4 py-2 mb-5 hover:bg-green-500 transition">
         Add Employee
       </Link>
       <div className="mt-3">
