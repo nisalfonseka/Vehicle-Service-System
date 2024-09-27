@@ -1,0 +1,175 @@
+/* Parent container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+}
+
+/* Existing styles for income-list-container */
+.income-list-container {
+  width: 100%;
+  max-width: 1200px; /* Maximum width of the table container */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; /* Center container horizontally */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1; /* Allow the container to expand */
+  margin-top: auto; /* Push to the bottom */
+}
+
+/* Add Income Button */
+.add-income-btn {
+  padding: 12px 24px;
+  background-color: #007bff; /* Primary blue color */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  margin-bottom: 20px; /* Spacing at the bottom */
+}
+
+.add-income-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Table Styles */
+.income-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fefefe; /* Soft white background for the table */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Table Header Styles */
+.income-table th,
+.income-table td {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 16px;
+  border-bottom: 1px solid #ddd; /* Light border between rows */
+}
+
+/* Table Header Styling */
+.income-table th {
+  background-color: #0a2f56;
+  color: rgb(255, 255, 254);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Table Row Styling */
+.income-table tr {
+  background-color: white; /* Set rows to white background */
+  color: black; /* Set text to black */
+  border-bottom: 1px solid #ddd; /* Keep the light border between rows */
+}
+
+/* Footer Row Styling */
+.income-table tfoot {
+  background-color: #646f7a;
+}
+
+.income-table tfoot td {
+  padding: 16px 20px;
+  text-align: right;
+  font-size: 16px;
+}
+
+.income-table tfoot td.font-bold {
+  font-weight: 700;
+  text-align: right;
+}
+
+.income-table tfoot tr {
+  background-color: #b33535; /* Slightly different color for footer row */
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+}
+
+/* Close Button in Modal */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Error Message Styling */
+.error-message {
+  color: #dc3545;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .income-table th, .income-table td {
+    padding: 12px 15px; /* Adjust padding for smaller screens */
+  }
+
+  .add-income-btn {
+    padding: 10px 20px; /* Adjust button size for mobile */
+  }
+}
+.download-pdf-btn {
+  padding: 12px 24px; /* Adjust padding values here */
+  background-color: #4c8f3c; /* Button color */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  background-color: #dc4242; 
+}
+
+.download-pdf-btn:hover {
+  background-color: #0056b3; /* Darker button color on hover */
+}
+.text-4xl.my-0{
+  margin-bottom: -10px;
+  margin-top: 3px;
+}
+.text-2xl.my-0{
+  margin-bottom: -10px;
+  color:#5e5959 ;
+}

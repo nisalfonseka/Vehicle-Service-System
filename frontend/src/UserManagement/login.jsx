@@ -52,7 +52,10 @@ function LoginForm() {
           navigate("/salesmanager");
         } else if (email === "senura123@gmail.com") {
           navigate("/senura");
-        } else {
+        }
+        else if (email === "financeManager@gmail.com") {
+          navigate("/dashboard/finance/dashboard");
+        }  else {
           navigate("/");
         }
   

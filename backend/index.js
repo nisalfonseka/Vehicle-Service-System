@@ -19,6 +19,13 @@ import categories from "./routes/Catagory.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 
 
+//finanve import
+import invoiceRoute from "./routes/invoiceRoute.js";
+import incomeRoute from "./routes/incomeRoute.js";
+import expenseRoute from "./routes/expenseRoute.js";
+import userRoute from "./routes/userRoute.js"; // Added user route
+
+
 
 import cors from "cors";
 
@@ -139,6 +146,12 @@ app.use('/api', uploadRoutes);
 //inventory routes 
 app.use(inventory);
 app.use(categories);
+
+//finance routes
+app.use("/invoiceRequests", invoiceRoute);
+app.use("/incomeRequests", incomeRoute);
+app.use("/expenseRequests", expenseRoute);
+app.use("/userRequests", userRoute); // Added user route
 
 
 

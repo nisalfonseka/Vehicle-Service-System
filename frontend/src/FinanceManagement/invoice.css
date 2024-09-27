@@ -1,0 +1,404 @@
+/* General Styles */
+.invoice-list {
+    padding: 60px;
+    width: 100%; /* Make the invoice list full width */
+    min-height: 100vh; /* Ensure it covers the full viewport height */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    display: flex;
+    flex-direction: column; /* Layout the content in a column */
+    align-items: center; /* Center content horizontally */
+    position: relative; /* Relative positioning to anchor the button */
+  }
+  
+  /* Card Container */
+  .invoice-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Center the cards within the container */
+    width: 100%; /* Full width of the container */
+    max-width: 1200px; /* Limit the maximum width for better readability */
+  }
+  
+  /* Individual Card */
+.invoice-card {
+  background: #9d9999;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0; /* Start with invisible cards */
+  transform: translateX(-30px); /* Start with cards slightly to the left */
+  animation: slideInFromLeft 0.6s ease forwards; /* Animation on load */
+  animation-delay: calc(0.2s * var(--i)); /* Use CSS variable --i for delay */
+  text-align: center; /* Center-align text */
+}
+
+  
+  /* Animation for cards sliding in from left */
+  @keyframes slideInFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-30px); /* Start from the left */
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0); /* Move to original position */
+    }
+  }
+  
+  /* Card Header */
+  .invoice-card-header {
+    background: #1c4979; /* Main color for header */
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+  }
+  
+  /* Card Content */
+  .invoice-card-content {
+    padding: 16px;
+    color: #333;
+  }
+  
+  /* Title Style */
+  .invoice-title {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    color: #ffffff;
+  }
+  
+  /* Text Styles */
+  .invoice-card-content p {
+    margin: 8px 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .invoice-card-content strong {
+    color: #392c2c;
+  }
+  
+  /* Card Actions */
+  .invoice-card-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    background: #f9f9f9;
+    border-top: 0px solid #eee;
+  }
+  
+  .invoice-card-actions button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #fff;
+    transition: background 0.3s ease;
+  }
+  
+  .invoice-card-actions button.edit-button {
+    background-color: #28a745; /* Green for Edit */
+  }
+  
+  .invoice-card-actions button.edit-button:hover {
+    background-color: #218838;
+  }
+  
+  .invoice-card-actions button.delete-button {
+    background-color: #dc3545; /* Red for Delete */
+  }
+  
+  .invoice-card-actions button.delete-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Card Hover Effect */
+  .invoice-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Modal Styles */
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgb(197, 184, 184);
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    overflow: auto;
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Button Styles */
+  .add-button {
+    position: absolute; /* Position button absolutely */
+    bottom: 20px; /* Distance from the bottom */
+    left: 88%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust horizontal center */
+    padding: 10px 20px;
+    background-color: #007bff; /* Button color */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+  }
+  
+  .add-button:hover {
+    background-color: #0056b3; /* Darker button color on hover */
+  }
+  .search-bar {
+    margin: 20px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+  }
+  .search-bar-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .search-bar {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .search-icon {
+    margin-left: -30px; /* Adjust based on your layout */
+    font-size: 20px;
+    color: #b31919;
+  }
+    
+
+  .add-income-button {
+    position: fixed; /* Fix position to the bottom of the viewport */
+    bottom: 20px; /* Distance from the bottom */
+    right: 20px; /* Distance from the right */
+    padding: 10px 20px;
+    background-color: #28a745; /* Button color */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+    z-index: 1000; /* Ensure it is above other content */
+  }
+  
+  .add-income-button:hover {
+    background-color: #218838; /* Darker button color on hover */
+  }
+  .search-bar-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+  }
+  .add-invoice-form {
+    background-color: #fefefe; /* Light background for the form */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    padding: 20px; /* Inner padding */
+    max-width: 500px; /* Limit max width for better readability */
+    margin: 20px auto; /* Centering */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+.form-title {
+    text-align: center;
+    color: #1c4979; /* Title color */
+    margin-bottom: 20px; /* Space below the title */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space between form fields */
+}
+
+.form-group label {
+    display: block; /* Labels on new lines */
+    margin-bottom: 5px; /* Space below labels */
+    font-weight: bold; /* Bold labels */
+    color: #333; /* Label color */
+}
+
+.form-group input,
+.form-group select {
+    width: 100%; /* Full width inputs */
+    padding: 10px; /* Inner padding */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 5px; /* Rounded input fields */
+    font-size: 16px; /* Input font size */
+    transition: border 0.3s ease; /* Transition for focus effect */
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #1c4979; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between; /* Space out buttons */
+}
+
+.submit-button,
+.cancel-button,
+.generate-button {
+    padding: 10px 15px; /* Inner button padding */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded buttons */
+    cursor: pointer; /* Pointer on hover */
+    font-size: 16px; /* Button font size */
+    transition: background 0.3s ease; /* Smooth background transition */
+}
+
+.submit-button {
+    background-color: #28a745; /* Green for Submit */
+    color: white; /* Text color */
+}
+
+.submit-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.cancel-button {
+    background-color: #dc3545; /* Red for Cancel */
+    color: white; /* Text color */
+}
+
+.cancel-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+.generate-button {
+    background-color: #007bff; /* Blue for Generate */
+    color: white; /* Text color */
+}
+
+.generate-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.error {
+    color: red; /* Error message color */
+    text-align: center; /* Center error message */
+    margin-bottom: 15px; /* Space below error message */
+}
+.text-4xl.my-8{
+  margin-top: 30px;
+}
+
+/* General Form Styling */
+.edit-invoice-form {
+  width: 100%;
+  max-width: 800px; /* Increased maximum width for better readability */
+  margin: 0 auto; /* Center the form */
+  padding: 20px; /* Inner padding for the form */
+  background-color: #fefefe; /* Light background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Grid Layout */
+.invoice-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns layout */
+  grid-gap: 20px; /* Space between the fields */
+}
+
+/* Form Group Styling */
+.form-group {
+  display: flex;
+  flex-direction: column; /* Stack label and input */
+}
+
+/* Label Styling */
+.form-group label {
+  font-weight: bold; /* Bold labels */
+  color: #333; /* Darker color for readability */
+  margin-bottom: 0px; /* Space below label */
+}
+
+/* Input and Select Styling */
+.form-group input,
+.form-group select {
+  padding: 10px; /* Inner padding */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+  transition: border 0.3s ease; /* Smooth border transition */
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Action Buttons */
+.form-actions {
+  grid-column: span 2; /* Button spans two columns */
+  text-align: center; /* Center the buttons */
+  margin-top: -10px; /* Space above buttons */
+}
+
+/* Submit Button */
+.submit-button {
+  padding: 12px 20px; /* Inner padding */
+  background-color: #007bff; /* Blue background */
+  color: white; /* Text color */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px; /* Font size */
+  transition: background 0.3s ease; /* Smooth background transition */
+}
+
+.submit-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Error Message Styling */
+.error {
+  color: red; /* Error message color */
+  text-align: center; /* Center error message */
+  margin-bottom: 15px; /* Space below error message */
+}
+
+.text-2xl.my-9{
+  color:#fff7f7;
+}

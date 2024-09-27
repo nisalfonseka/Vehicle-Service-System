@@ -45,6 +45,17 @@ import ItemDetailsssss from "./InventoryManagement/ItemDetails";
 import InventorySummaryReport from './InventoryManagement/summery';
 import BooksCard from "./BookingManagement/BooksCard";
 
+
+//finance 
+import Dashboard from './FinanceManagement/Dashboard';
+import InvoiceList from './FinanceManagement/invoiceList';
+import Navbar from './FinanceManagement/Navbar';
+import Income from './FinanceManagement/income';
+import CreateIncome from './FinanceManagement/CreateIncome';
+import CreateExpenses from './FinanceManagement/CreateExpenses';
+import Expenses from './FinanceManagement/expenses';
+import UserProfile from './FinanceManagement/userProfile';
+
 function App() {
   const [cart, setCart] = useState([]);
   const location = useLocation();
@@ -102,11 +113,22 @@ function App() {
           <Route path="/additem" element ={<AddItemForm />}/>
           <Route path="/categories/:id" element={<CategoryDetail />} />
           <Route path="/categories/:id/edit" element={<UpdateCategory />} />
+
+
+          <Route path="/dashboard/finance/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/finance/invoices" element={<InvoiceList />} />
+        <Route path="/dashboard/finance/incomes" element={<Income />} />
+        <Route path="/dashboard/finance/create-income" element={<CreateIncome />} />
+        <Route path="/dashboard/finance/expenses" element={<Expenses />} />
+        <Route path="/dashboard/finance/create-expense" element={<CreateExpenses />} />
+        <Route path="/dashboard/finance/profile" element={<UserProfile />} />
+        <Route path="/dashboard/header" element={<Navbar />} />
           
 
       </Routes>
 
-      {!isDashboardRoute && <Footer />} {/* Render Footer if not on dashboard route */}
+      {!isDashboardRoute && <Footer />}
+       {/* Render Footer if not on dashboard route */}
     </>
   );
 }

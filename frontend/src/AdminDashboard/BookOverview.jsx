@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./BookOverview.css"; // Importing the CSS file for animation
 
 const BookOverview = ({ onStatusUpdate }) => {
   const [books, setBooks] = useState([]);

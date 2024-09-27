@@ -1,0 +1,83 @@
+/* Styles for the vertical navbar */
+.nav-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 80px; /* Collapsed width */
+  height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease; /* Smooth transition for expanding */
+}
+
+.nav-vertical.expanded {
+  width: 250px; /* Expanded width */
+}
+
+.nav-header {
+  text-align: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.nav-logo {
+  width: 150px;
+  height: auto;
+}
+
+.project-name {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 10px 0;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.nav-link {
+  font-size: 1.2rem;
+  color: #007bff;
+  text-decoration: none;
+  margin: 15px 0;
+  padding-left: 10px;
+  text-align: left;
+  transition: opacity 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0056b3;
+  background-color: #e9ecef;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.nav-vertical.expanded .nav-link {
+  opacity: 1;
+}
+
+.nav-vertical:not(.expanded) .nav-link {
+  opacity: 0; /* Hide links when collapsed */
+}
+
+/* Toggle Button Styles */
+.toggle-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 10px;
+}
+
+.toggle-button:focus {
+  outline: none;
+}

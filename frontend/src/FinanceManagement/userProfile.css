@@ -1,0 +1,389 @@
+/* Container for user profiles */
+.user-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Heading for the profile section */
+.heading {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #efe8e8;
+}
+
+/* Flexbox layout for user cards */
+.user-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Individual user card */
+.user-card {
+  background-color: #f3f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+/* Hover effect for user cards */
+.user-card:hover {
+  transform: translateY(-10px);
+}
+
+/* User details within the card */
+.user-details h3 {
+  font-size: 1.8rem;
+  color: #0e1115;
+  margin-bottom: 10px;
+}
+.user-details p {
+  font-size: 1rem;
+  margin: 8px 0;
+  color: #555;
+  text-align: left; /* Text alignment */
+}
+
+
+/* Button to delete user */
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect for delete button */
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+/* Container for user profiles */
+.user-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Heading for the profile section */
+.heading {
+  font-size: 3.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 50px;
+  color: #0c0606;
+}
+
+/* Flexbox layout for user cards */
+.user-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Individual user card */
+.user-card {
+  background-color: #8c8585;
+  padding: 50px; /* Increased padding */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 350px; /* Increased width */
+  text-align: center;
+  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* Hover effect for user cards */
+.user-card:hover {
+  transform: translateY(-10px);
+}
+
+/* Profile image styling */
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid #1a1b1c;
+}
+
+/* User details within the card */
+.user-details h3 {
+  font-size: 1.8rem;
+  color: #181818;
+  margin-bottom: 10px;
+}
+
+.user-details p {
+  font-size: 1rem;
+  margin: 8px 0;
+  color: #fffcfc;
+}
+
+/* Button to delete user */
+.delete-btn {
+  background-color: #e5dcdc;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect for delete button */
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+/* User Profile Styles */
+.user-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.heading {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.user-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.user-card {
+  background-color: #948a8a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.user-card:hover {
+  transform: translateY(-10px);
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid #0a0a0a;
+}
+
+.user-details h3 {
+  font-size: 1.8rem;
+  color: #121314;
+  margin-bottom: 10px;
+}
+
+.user-details p {
+  font-size: 1rem;
+  margin: 8px 0;
+}
+
+.actions {
+  margin-top: 15px;
+}
+
+.delete-btn {
+  background-color: #b31616;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s;
+}
+.edit-btn{
+  background-color: #228b30;
+  color:  #d5e1d6;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover, .edit-btn:hover {
+  background-color: #eaeaea;
+}
+
+/* Edit Form Styles */
+.edit-form-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.edit-form input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  
+}
+
+.update-btn, .cancel-btn {
+  background-color: #040505;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+}
+
+.update-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
+/* UserProfile.css */
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Styling */
+.modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  position: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal h3 {
+  margin-bottom: 15px;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.edit-form input {
+  margin-bottom: 15px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  color: #040505;
+}
+
+.update-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update-btn:hover,
+.cancel-btn:hover {
+  opacity: 0.8;
+}
+.delete-btn {
+  background-color: #d9534f; /* New color for delete button */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #f3efee; /* Darker shade on hover */
+}
+
+.update-btn {
+  background-color: #438e2f; /* New color for update button */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+}
+
+.update-btn:hover {
+  background-color: #dfdfdf; /* Darker shade on hover */
+}
