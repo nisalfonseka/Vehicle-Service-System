@@ -25,6 +25,12 @@ import incomeRoute from "./routes/incomeRoute.js";
 import expenseRoute from "./routes/expenseRoute.js";
 import userRoute from "./routes/userRoute.js"; // Added user route
 
+//emplyee routes
+import empmanageRoute from "./routes/empmanageRoute.js";
+import ShiftRoute from "./routes/ShiftRoute.js";
+import profileRoute from "./routes/profileRoute.js";
+
+
 
 
 import cors from "cors";
@@ -118,6 +124,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 // Serve static files (e.g., uploaded images)
 app.use('/uploads', express.static('uploads'));
+// Serve static files from the 'uploads' directory
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Option 2: Allow Custom Origins
 /*
 app.use(
@@ -152,6 +160,15 @@ app.use("/invoiceRequests", invoiceRoute);
 app.use("/incomeRequests", incomeRoute);
 app.use("/expenseRequests", expenseRoute);
 app.use("/userRequests", userRoute); // Added user route
+
+// Employee Record Management Routes
+app.use("/empmanageRequests", empmanageRoute);
+
+// Shift Routes
+app.use("/Shift",ShiftRoute );
+
+// Profile Routes
+app.use("/Profile",profileRoute);
 
 
 

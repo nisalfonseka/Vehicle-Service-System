@@ -1,4 +1,5 @@
 import {Routes, Route, useLocation, Navigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState } from 'react';
 import Home from "./Home/Home";
 import CreateBook from "./BookingManagement/CreateBooks";
@@ -56,17 +57,32 @@ import CreateExpenses from './FinanceManagement/CreateExpenses';
 import Expenses from './FinanceManagement/expenses';
 import UserProfile from './FinanceManagement/userProfile';
 
+
+//employeee
+import HomeEmp from './EmployeeManagement/Home';
+import Employee from './EmployeeManagement/Employee';
+import CreateRecords from './EmployeeManagement/CreateRecords';
+import EditRecord from './EmployeeManagement/EditRecord';
+import DeleteRecord from './EmployeeManagement/DeleteRecord';
+import Profile from './EmployeeManagement/Profile';
+import DashboardEmp from './EmployeeManagement/Dashboard';
+import Shiftschedular from './EmployeeManagement/Shiftschedular';
+import AddShifts from './EmployeeManagement/AddShifts';
+
+
 function App() {
   const [cart, setCart] = useState([]);
   const location = useLocation();
 
   // Determine if we are on a dashboard route
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
+  const isEmployeeDashboardRoute = location.pathname.startsWith('/dashboard/emp');
 
   return (
     <>
       {!isDashboardRoute && <Header />} {/* Render Header if not on dashboard route */}
       {isDashboardRoute && <DashboardHeader />}
+      {isEmployeeDashboardRoute && <DashboardEmp />} {/* Render DashboardEmp only on /dashboard/emp routes */}
       
       <Routes>
         <Route path="/" element={<Home />} />
@@ -124,6 +140,16 @@ function App() {
         <Route path="/dashboard/finance/profile" element={<UserProfile />} />
         <Route path="/dashboard/header" element={<Navbar />} />
           
+
+        
+        <Route path='/dashboard/emp/home' element={<HomeEmp />}></Route>
+         <Route path='/dashboard/emp/employee' element={<Employee />}> </Route>
+        <Route path='/dashboard/emp/shiftschedular' element={<Shiftschedular  />}></Route>
+        <Route path='/dashboard/emp/profile' element={<Profile />}></Route>
+        <Route path='/dashboard/emp/add_shifts' element={<AddShifts/>}></Route>
+        <Route path='/dashboard/emp/add_employee' element={<CreateRecords />}></Route>
+        <Route path='/dashboard/emp/edit_employee/:id' element={<EditRecord />}></Route>
+        <Route path='/dashboard/emp/delete_employee/:id' element={<DeleteRecord />}></Route>
 
       </Routes>
 

@@ -55,6 +55,9 @@ function LoginForm() {
         }
         else if (email === "financeManager@gmail.com") {
           navigate("/dashboard/finance/dashboard");
+        } 
+        else if (email === "hrManager@gmail.com") {
+          navigate("/dashboard/emp/home");
         }  else {
           navigate("/");
         }
