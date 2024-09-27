@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../mycss/Home.css';
 import ManagerHeader from '../../components/managerHeader';
 import ItemList from './InventoryItems';
 

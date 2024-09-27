@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Notification from '../../components/Notification'; // Import the Notification component
-import '../../mycss/Store.css';
 
 function Store({ cart, setCart }) {
   const [items, setItems] = useState([]);

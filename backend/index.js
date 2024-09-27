@@ -7,6 +7,7 @@ import multer from 'multer';
 import path from 'path';
 import bodyParser from 'body-parser';
 import { Book } from "./models/bookModel.js";
+import customerRoute from "./routes/customerRoute.js"
 //online store routes
 import storeItemRoutes from "./routes/storeItemRoutes.js";
 import orderRoutes from "./routes/Orders.js";
@@ -144,6 +145,7 @@ app.get("/", (request, response) => {
 
 app.use("/books", bookRoute);
 app.use("/api/user", loginRoute);
+app.use("/customer", customerRoute);
 
 //online store Routes
 app.use('/store-items', storeItemRoutes);

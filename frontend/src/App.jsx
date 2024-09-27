@@ -69,6 +69,17 @@ import DashboardEmp from './EmployeeManagement/Dashboard';
 import Shiftschedular from './EmployeeManagement/Shiftschedular';
 import AddShifts from './EmployeeManagement/AddShifts';
 
+//cus support
+import CreateCustomer from './CustomerSupport/CreateCustomer';
+import ShowCustomer from './CustomerSupport/ShowCustomer';
+import EditCustomer from './CustomerSupport/EditCustomer';
+import DeleteCustomer from './CustomerSupport/DeleteCustomer';
+import CustomerCard from './CustomerSupport/CustomerCard.jsx';
+import CustomerSingleCard from './CustomerSupport/CustomerSingleCard.jsx';
+import CustomerTable from './CustomerSupport/CustomerTable.jsx'
+import CustomerOverview from "./CustomerSupport/CustomerOverview.jsx";
+import CustomerDashboard from "./CustomerSupport/CustomerDashboard.jsx"
+
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -150,6 +161,22 @@ function App() {
         <Route path='/dashboard/emp/add_employee' element={<CreateRecords />}></Route>
         <Route path='/dashboard/emp/edit_employee/:id' element={<EditRecord />}></Route>
         <Route path='/dashboard/emp/delete_employee/:id' element={<DeleteRecord />}></Route>
+
+
+        <Route path='/customer/create' element={<CreateCustomer />} />
+      <Route path='/customer/details/:id' element={<ShowCustomer />} />
+      <Route path='/customer/edit/:id' element={<EditCustomer />} />
+      <Route path='/customer/delete/:id' element={<DeleteCustomer />} />
+      <Route path='/dashboard/customer/details/:id' element={<ShowCustomer />} />
+      <Route path='/dashboard/customer/edit/:id' element={<EditCustomer />} />
+      <Route path='/dashboard/customer/delete/:id' element={<DeleteCustomer />} />
+      <Route path='/customer/card' element={<CustomerCard />} />
+      <Route path='/customer/single/:id' element={<CustomerSingleCard />} />
+      <Route path='/customer/table' element={<CustomerTable />} />
+      <Route path='/profile' element={<Profile />} />
+      <Route path="/dashboard/Customer/overview" element={<CustomerOverview/>}/>
+      <Route path="/dashboard/Customer/dashboard" element={<CustomerDashboard/>}/>
+
 
       </Routes>
 

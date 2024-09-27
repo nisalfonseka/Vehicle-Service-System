@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineSearch } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import { MdOutlineDelete } from "react-icons/md";
-import Bookreport from "../BookingManagement/Bookreport";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ClipLoader } from "react-spinners"; // You can use any spinner from a library like react-spinners
 
 const BooksTable = ({ books }) => {
@@ -20,14 +18,6 @@ const BooksTable = ({ books }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const checkIfDeletable = (selectedDate, selectedTimeSlot) => {
-    const bookingDateTime = new Date(`${selectedDate}T${selectedTimeSlot}`);
-    const currentTime = new Date();
-    const timeDifference = (bookingDateTime - currentTime) / (1000 * 60 * 60); // difference in hours
-
-    return timeDifference > 2;
-  };
-
   // Filter books based on the search query
   const filteredBooks = books.filter((book) =>
     book.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -41,11 +31,10 @@ const BooksTable = ({ books }) => {
           <input
             type="text"
             placeholder="Search by customer name or vehicle number"
-            className="w-full p-2 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+            className="w-full p-2 pl-10 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 transition duration-200 ease-in-out"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <AiOutlineSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500" />
         </div>
       </div>
 
@@ -78,7 +67,6 @@ const BooksTable = ({ books }) => {
               <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600">
                 Operations
               </th>
-              
             </tr>
           </thead>
           <tbody>
@@ -98,22 +86,18 @@ const BooksTable = ({ books }) => {
                 </td>
                 <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
                   {book.selectedTimeSlot}
-                
                 </td>
                 <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
-                   {book.status === 'New' ? 'Pending' : book.status}
+                  {book.status === 'New' ? 'Pending' : book.status}
                 </td>
-
                 <td className="border-b border-gray-300 p-4 text-left">
                   <div className="flex justify-start gap-x-4">
                     <Link to={`/books/details/${book._id}`}>
                       <BsInfoCircle className="text-2xl text-green-800" />
                     </Link>
-
                     <Link to={`/books/edit/${book._id}`}>
                       <AiOutlineEdit className="text-2xl text-yellow-600" />
                     </Link>
-
                     <Link to={`/books/delete/${book._id}`}>
                       <MdOutlineDelete className="text-2xl text-red-600" />
                     </Link>
