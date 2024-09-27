@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./BookOverview.css"; // Importing the CSS file for animation
 
 const BookOverview = ({ onStatusUpdate }) => {
   const [books, setBooks] = useState([]);
@@ -49,15 +50,33 @@ const BookOverview = ({ onStatusUpdate }) => {
 
   return (
     <div>
-    <div>
       <h1 className="text-3xl font-medium text-black text-center mt-2">
         Today Booking Overview
-      </h1><br />
+      </h1>
+      <br />
       <div className="flex flex-wrap justify-center mx-auto max-w-7xl">
 
         {/* New Bookings Card */}
+        <style>
+        {`
+          @keyframes alert {
+            0% {
+              transform: scale(1);
+            }
+            50% {
+              transform: scale(1.05);
+            }
+            100% {
+              transform: scale(1);
+            }
+          }
+          .alert-effect {
+            animation: alert 0.8s infinite;
+          }
+        `}
+      </style>
         <div
-          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-green-400 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
+          className="border border-red-500 rounded-xl p-6 m-2 relative bg-red-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center alert-effect"
           style={{ width: "350px", height: "180px" }}
         >
           <h2 className="text-6xl font-semibold text-white text-center">
@@ -80,7 +99,6 @@ const BookOverview = ({ onStatusUpdate }) => {
             Upcoming Services for Today's Date
           </h1>
         </div>
-        <br />
 
         {/* Bookings Received Today Card */}
         <div
@@ -97,7 +115,7 @@ const BookOverview = ({ onStatusUpdate }) => {
 
         {/* Confirmed Bookings Today Card */}
         <div
-          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-blue-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
+          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-green-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
           style={{ width: "350px", height: "180px" }}
         >
           <h2 className="text-6xl font-semibold text-white text-center">
@@ -110,7 +128,7 @@ const BookOverview = ({ onStatusUpdate }) => {
 
         {/* Declined Bookings Today Card */}
         <div
-          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-red-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
+          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-red-400 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
           style={{ width: "350px", height: "180px" }}
         >
           <h2 className="text-6xl font-semibold text-white text-center">
@@ -120,58 +138,55 @@ const BookOverview = ({ onStatusUpdate }) => {
             Declined Bookings Today
           </h1>
         </div>
-        </div>
-        </div>
-        <br></br>
-        <br></br>
-        <div>
-      <h1 className="text-3xl font-medium text-black text-center mt-2">
-        Alltime Booking Overview
-      </h1>
-      <br></br>
-      
-    <div className="flex flex-wrap justify-center mx-auto max-w-7xl">
-        {/* Total Bookings Card */}
-        <div
-          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-blue-600 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
-          style={{ width: "250px", height: "150px" }}
-        >
-          <h2 className="text-4xl font-semibold text-white text-center">
-            {allBooksCount}
-          </h2>
-          <h1 className="text-lg font-medium text-white text-center mt-2">
-            Total Bookings
-          </h1>
-        </div>
-
-        {/* Confirmed Bookings Card */}
-        <div
-          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-green-600 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
-          style={{ width: "250px", height: "150px" }}
-        >
-          <h2 className="text-4xl font-semibold text-white text-center">
-            {confirmBooksCount}
-          </h2>
-          <h1 className="text-lg font-medium text-white text-center mt-2">
-            Confirmed
-          </h1>
-        </div>
-
-        {/* Declined Bookings Card */}
-        <div
-          className="border border-gray-300 rounded-xl p-6 m-2 relative bg-red-600 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
-          style={{ width: "250px", height: "150px" }}
-        >
-          <h2 className="text-4xl font-semibold text-white text-center">
-            {declineBooksCount}
-          </h2>
-          <h1 className="text-lg font-medium text-white text-center mt-2">
-            Declined
-          </h1>
-        </div>
-
       </div>
-    </div>
+      <br />
+      <br />
+      <div>
+        <h1 className="text-3xl font-medium text-black text-center mt-2">
+          Alltime Booking Overview
+        </h1>
+        <br />
+        <div className="flex flex-wrap justify-center mx-auto max-w-7xl">
+          {/* Total Bookings Card */}
+          <div
+            className="border border-gray-300 rounded-xl p-6 m-2 relative bg-blue-600 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
+            style={{ width: "250px", height: "150px" }}
+          >
+            <h2 className="text-4xl font-semibold text-white text-center">
+              {allBooksCount}
+            </h2>
+            <h1 className="text-lg font-medium text-white text-center mt-2">
+              Total Bookings
+            </h1>
+          </div>
+
+          {/* Confirmed Bookings Card */}
+          <div
+            className="border border-gray-300 rounded-xl p-6 m-2 relative bg-green-600 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
+            style={{ width: "250px", height: "150px" }}
+          >
+            <h2 className="text-4xl font-semibold text-white text-center">
+              {confirmBooksCount}
+            </h2>
+            <h1 className="text-lg font-medium text-white text-center mt-2">
+              Confirmed
+            </h1>
+          </div>
+
+          {/* Declined Bookings Card */}
+          <div
+            className="border border-gray-300 rounded-xl p-6 m-2 relative bg-red-600 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
+            style={{ width: "250px", height: "150px" }}
+          >
+            <h2 className="text-4xl font-semibold text-white text-center">
+              {declineBooksCount}
+            </h2>
+            <h1 className="text-lg font-medium text-white text-center mt-2">
+              Declined
+            </h1>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

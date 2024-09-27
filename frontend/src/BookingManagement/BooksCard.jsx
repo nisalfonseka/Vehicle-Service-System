@@ -68,7 +68,7 @@ const BooksCard = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white-600">
       {/* Search and Date Filters */}
       <div className="flex justify-between mb-8">
         <input

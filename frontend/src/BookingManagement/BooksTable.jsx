@@ -72,6 +72,9 @@ const BooksTable = ({ books }) => {
               <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600 max-md:hidden">
                 Time
               </th>
+              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600 max-md:hidden">
+                Status
+              </th>
               <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600">
                 Operations
               </th>
@@ -95,7 +98,12 @@ const BooksTable = ({ books }) => {
                 </td>
                 <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
                   {book.selectedTimeSlot}
+                
                 </td>
+                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
+                   {book.status === 'New' ? 'Pending' : book.status}
+                </td>
+
                 <td className="border-b border-gray-300 p-4 text-left">
                   <div className="flex justify-start gap-x-4">
                     <Link to={`/books/details/${book._id}`}>
@@ -105,15 +113,6 @@ const BooksTable = ({ books }) => {
                     <Link to={`/books/edit/${book._id}`}>
                       <AiOutlineEdit className="text-2xl text-yellow-600" />
                     </Link>
-                    <PDFDownloadLink document={<Bookreport book={book} />} fileName="FORM">
-                      {({ loading }) =>
-                        loading ? (
-                          <button>loading...</button>
-                        ) : (
-                          <button className="font-bold text-black">Report</button>
-                        )
-                      }
-                    </PDFDownloadLink>
 
                     <Link to={`/books/delete/${book._id}`}>
                       <MdOutlineDelete className="text-2xl text-red-600" />
