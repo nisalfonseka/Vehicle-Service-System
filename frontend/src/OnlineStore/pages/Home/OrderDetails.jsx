@@ -9,15 +9,20 @@ function OrderDetails() {
     const [order, setOrder] = useState(null);
     const [error, setError] = useState(null);
     const [result, setResult] = useState("");
+    const [loading, setLoading] = useState(true); // Added loading state
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
+            setLoading(true); // Set loading to true before fetching
             try {
                 const response = await axios.get(`http://localhost:5555/api/orders/${orderId}`);
                 setOrder(response.data);
+                setError(null); // Reset error on successful fetch
             } catch (error) {
                 console.error('Error fetching order details:', error);
                 setError('Failed to load order details. Please try again.');
+            } finally {
+                setLoading(false); // Set loading to false after fetch attempt
             }
         };
 
@@ -82,12 +87,16 @@ function OrderDetails() {
     };
 
     const handleDownloadReport = () => {
-        const doc = new jsPDF();
+        if (!order || !order.items || order.items.length === 0) {
+            console.error('No order items found to generate the report.');
+            alert('No items available to generate the report.');
+            return;
+        }
 
+        const doc = new jsPDF();
         doc.setFontSize(20);
         doc.setTextColor('#007BFF');
         doc.text('Order Report', 14, 22);
-
         doc.setFontSize(12);
         doc.setTextColor('#333');
         doc.text(`Order ID: ${order._id}`, 14, 32);
@@ -104,13 +113,9 @@ function OrderDetails() {
         ]);
 
         doc.autoTable({
-            startY: 80,
-            head: [['Item Name', 'Quantity', 'Price']],
-            body: items,
-            styles: {
-                fillColor: [41, 128, 185],
-                textColor: 255,
-            },
+            startY: 98,
+            head: [['Item', 'Quantity', 'Price']],
+            body: items, // Use items here instead of orderData.items
         });
 
         const totalPrice = order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
@@ -119,14 +124,17 @@ function OrderDetails() {
         doc.save('Order_Report.pdf');
     };
 
+    // Render error message if any
     if (error) {
         return <p className="text-red-600 font-bold text-lg">{error}</p>;
     }
 
-    if (!order) {
+    // Render loading state if data is being fetched
+    if (loading) {
         return <p className="text-gray-500">Loading order details...</p>;
     }
 
+    // Render main component once order data is available
     return (
         <div className="container mx-auto p-8 bg-white rounded-lg shadow-md">
             <button
@@ -175,14 +183,14 @@ function OrderDetails() {
                         </div>
                         <div className="mb-4">
                             <label htmlFor="message" className="block text-gray-700 font-bold mb-2">Message</label>
-                            <textarea id="message" name="message" required className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            <textarea id="message" name="message" rows="4" required className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                         </div>
                         <div className="flex justify-between">
-                            <button type="button" onClick={handleClear} className="bg-gray-400 text-white py-2 px-4 rounded-lg shadow hover:bg-gray-500 transition duration-200">Clear</button>
-                            <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow hover:bg-blue-700 transition duration-200">Send Message</button>
+                            <button type="button" onClick={handleClear} className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg">Clear</button>
+                            <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded-lg">Send Message</button>
                         </div>
-                        {result && <p className="text-green-600 mt-3">{result}</p>}
                     </form>
+                    {result && <p className="mt-4 text-lg text-blue-800">{result}</p>}
                 </div>
             </div>
         </div>
