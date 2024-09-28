@@ -42,8 +42,8 @@ function Cart({ cart, setCart }) {
               </div>
               <div className="w-1/2 px-4">
                 <h5 className="text-lg font-semibold">{item.name}</h5>
-                <p className="text-gray-800"><strong>LKR: {item.price.toFixed(2)}</strong></p>
-                <p className="text-gray-500">Available: {item.qty}</p>
+                <h5 className="text-gray-800"><strong>LKR: {item.price.toFixed(2)}</strong></h5>
+                <h5 className="text-gray-500">Available: {item.qty}</h5>
               </div>
               <div className="w-1/4 flex items-center justify-between">
                 <div className="flex items-center">

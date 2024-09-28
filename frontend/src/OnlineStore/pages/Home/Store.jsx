@@ -98,7 +98,7 @@ function Store({ cart, setCart }) {
               <img src={`data:image/jpeg;base64,${item.photo}`} alt={item.name} className="w-full h-48 object-cover" />
             </Link>
             <div className="p-4">
-              <h5 className="text-lg font-semibold">{item.name}</h5>
+              <h5 className="text-lg font-semibold text-gray-500">{item.name}</h5>
               <p className="text-gray-500"><strong>RS: {item.price.toFixed(2)}</strong></p>
               <p className="text-gray-600">Available: {item.qty}</p>
               <button
