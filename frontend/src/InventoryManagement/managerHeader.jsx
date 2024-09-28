@@ -16,22 +16,22 @@ function ManagerHeader() {
       {/* Sidebar Navigation */}
       <nav className="bg-gray-100 border-r border-gray-300 fixed left-0 top-0 h-full w-64 flex flex-col justify-between p-4 shadow-lg">
         <div className="flex flex-col space-y-4">
-          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/senura">
+          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/dashboard/senura">
             Inventory
           </Link>
-          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/catagory">
+          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/dashboard/catagory">
               Category
           </Link>
-          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/addcatagory">
+          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/dashboard/addcatagory">
             add Catagory
           </Link>
           <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="#">
             
           </Link>
-          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/summery">
+          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/dashboard/summery">
             Report
           </Link>
-          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/additem">
+          <Link className="text-gray-700 hover:text-blue-600 font-semibold" to="/dashboard/additem">
             Add Item
           </Link>
         </div>
