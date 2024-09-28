@@ -70,12 +70,12 @@ router.put('/:id', async (request, response) => {
       !request.body.contactNumber ||
       !request.body.vehicleNumber ||
       !request.body.location ||
-      !request.body.issueType ||
-      !request.body.assignedDriver ||
-      !request.body.status
+      !request.body.issueType
+      //!request.body.assignedDriver ||
+      //!request.body.status
     ) {
       return response.status(400).send({
-        message: 'Send all required Send all required fields: customerName, contactNumber, vehicleNumber, location, issueType,assignedDriver',
+        message: 'Send all required Send all required fields: customerName, contactNumber, vehicleNumber, location, issueType',
       });
     }
 
