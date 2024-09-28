@@ -117,7 +117,7 @@ function App() {
         <Route path="/books/table" element={<BooksTable />} />
         <Route path="/books/cardview" element={<BooksCard />} />
         <Route path="/books/card" element={<BookSingleCard />} />
-        <Route path="/BookUserDashboard" element={<BookUserDashboard />} />
+        <Route path="/profile" element={<BookUserDashboard />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
