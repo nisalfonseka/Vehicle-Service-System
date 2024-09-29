@@ -43,6 +43,18 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
     localStorage.setItem(`selectedDriver_${breakdownRequest._id}`, driverId);
 
     try {
+      // Check if the driver is already assigned to another active request
+      const response = await axios.get(`http://localhost:5555/breakdownRequests/active?driverId=${driverId}`);
+      const activeRequests = response.data;
+
+      if (activeRequests.length > 0) {
+        // If the driver is found to be assigned to an active request, prevent further assignment
+        alert(`Driver ${selectedDriverData.employeeName} is already assigned to another active request.`);
+        setSelectedDriver(''); // Reset selected driver
+        return;
+      }
+
+      // If the driver is not assigned, proceed with assignment
       await axios.put(`http://localhost:5555/breakdownRequests/${breakdownRequest._id}/assign-driver`, {
         assignedDriver: selectedDriverData.employeeName,
       });
@@ -74,6 +86,18 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
     updateStatusInDatabase('Declined');
 
     const message = encodeURIComponent('Your request has been declined. Try again.');
+    const phoneNumber = encodeURIComponent(breakdownRequest.contactNumber);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleComplete = async () => {
+    setStatus('Completed');
+    localStorage.setItem(`status_${breakdownRequest._id}`, 'Completed');
+
+    updateStatusInDatabase('Completed');
+
+    const message = encodeURIComponent('Your request has been marked as completed.');
     const phoneNumber = encodeURIComponent(breakdownRequest.contactNumber);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
@@ -111,6 +135,7 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
     New: 'bg-green-500 text-white',
     Accepted: 'bg-blue-500 text-white',
     Declined: 'bg-red-500 text-white',
+    Completed: 'bg-yellow-500 text-white',
   };
 
   return (
@@ -154,18 +179,32 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
       </div>
 
       <div className="mt-4 flex justify-between">
-        <button
+        <div
           onClick={handleAccept}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out"
+          className="bg-blue-500 text-white p-2 rounded-full cursor-pointer hover:bg-blue-700 transition duration-300 ease-in-out"
+          style={{ width: '40px', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          title="Accept"
         >
-          Accept
-        </button>
-        <button
+          <BsInfoCircle className="text-white text-xl" />
+        </div>
+
+        <div
           onClick={handleDecline}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 ease-in-out"
+          className="bg-red-500 text-white p-2 rounded-full cursor-pointer hover:bg-red-700 transition duration-300 ease-in-out"
+          style={{ width: '40px', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          title="Decline"
         >
-          Decline
-        </button>
+          <BsInfoCircle className="text-white text-xl" />
+        </div>
+
+        <div
+          onClick={handleComplete}
+          className="bg-yellow-500 text-white p-2 rounded-full cursor-pointer hover:bg-yellow-700 transition duration-300 ease-in-out"
+          style={{ width: '40px', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          title="Complete"
+        >
+          <BsInfoCircle className="text-white text-xl" />
+        </div>
       </div>
 
       <div className="flex justify-between items-center gap-x-2 mt-4 p-4">

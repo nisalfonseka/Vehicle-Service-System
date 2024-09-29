@@ -94,7 +94,7 @@ router.put('/:id', async (request, response) => {
   }
 });
 
-// Route for Delete a book
+// Route for Delete a request
 router.delete('/:id', async (request, response) => {
   try {
     const { id } = request.params;
@@ -111,11 +111,22 @@ router.delete('/:id', async (request, response) => {
     response.status(500).send({ message: error.message });
   }
 });
+
 // Route for Assigning a driver to a request
 router.put('/:id/assign-driver', async (request, response) => {
   try {
     const { id } = request.params;
     const { assignedDriver } = request.body;
+
+    // Check if the driver is already assigned to another active request
+    const existingRequest = await BreakdownRequest.findOne({
+      assignedDriver,
+      status: { $ne: 'Completed' } // Exclude completed requests
+    });
+
+    if (existingRequest) {
+      return response.status(400).json({ message: 'Driver is already assigned to another request.' });
+    }
 
     const breakdownRequest = await BreakdownRequest.findByIdAndUpdate(
       id,
@@ -133,19 +144,21 @@ router.put('/:id/assign-driver', async (request, response) => {
     response.status(500).send({ message: error.message });
   }
 });
-// Route to update a booking's status
+
+
+// Route to update a request's status
 router.patch("/:id/status", async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
 
     // Validate status
-    const validStatuses = ['New', 'Accepted', 'Declined'];
+    const validStatuses = ['New', 'Accepted', 'Declined', 'Completed'];
     if (!validStatuses.includes(status)) {
       return res.status(400).send({ message: 'Invalid status' });
     }
 
-    // Find and update the booking status
+    // Find and update the request status
     const updatedBooking = await BreakdownRequest.findByIdAndUpdate(
       id,
       { status },
@@ -153,7 +166,7 @@ router.patch("/:id/status", async (req, res) => {
     );
 
     if (!updatedBooking) {
-      return res.status(404).send({ message: 'Booking not found' });
+      return res.status(404).send({ message: 'Request not found' });
     }
 
     res.status(200).send(updatedBooking);
@@ -164,11 +177,11 @@ router.patch("/:id/status", async (req, res) => {
 });
 
 
-// Route to get books by status
+// Route to get request by status
 router.get("/status/:status", async (req, res) => {
   try {
     const { status } = req.params;
-    const validStatuses = ['New', 'Accepted', 'Declined'];
+    const validStatuses = ['New', 'Accepted', 'Declined', 'Completed'];
 
     if (!validStatuses.includes(status)) {
       return res.status(400).send({ message: 'Invalid status' });
