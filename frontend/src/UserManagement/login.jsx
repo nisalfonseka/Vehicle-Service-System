@@ -52,7 +52,7 @@ function LoginForm() {
         } else if (email === "salesmanager@gmail.com") {
           navigate("/salesmanager");
         } else if (email === "senura123@gmail.com") {
-          navigate("/senura");
+          navigate("/dashboard/senura");
         } else if (email === "financeManager@gmail.com") {
           navigate("/dashboard/finance/dashboard");
         } else if (email === "hrManager@gmail.com") {
