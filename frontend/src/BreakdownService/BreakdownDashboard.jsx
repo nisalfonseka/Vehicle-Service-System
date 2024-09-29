@@ -80,7 +80,7 @@ function BreakdownDashboard() {
         <span
           className={`${currentView === "overview" ? "text-white" : "text-black"}`}
         >
-          Overview
+          Requests Overview
         </span>
       </a>
     </nav>
@@ -114,7 +114,7 @@ function BreakdownDashboard() {
         <span
           className={`${currentView === "dashboard" ? "text-white" : "text-black"}`}
         >
-          Dashboard
+          Requests Dashboard
         </span>
       </a>
     </nav>
