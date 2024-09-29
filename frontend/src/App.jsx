@@ -69,6 +69,27 @@ import DashboardEmp from './EmployeeManagement/Dashboard';
 import Shiftschedular from './EmployeeManagement/Shiftschedular';
 import AddShifts from './EmployeeManagement/AddShifts';
 
+//cus support
+import CreateCustomer from './CustomerSupport/CreateCustomer';
+import ShowCustomer from './CustomerSupport/ShowCustomer';
+import EditCustomer from './CustomerSupport/EditCustomer';
+import DeleteCustomer from './CustomerSupport/DeleteCustomer';
+import CustomerCard from './CustomerSupport/CustomerCard.jsx';
+import CustomerSingleCard from './CustomerSupport/CustomerSingleCard.jsx';
+import CustomerTable from './CustomerSupport/CustomerTable.jsx'
+import CustomerOverview from "./CustomerSupport/CustomerOverview.jsx";
+import CustomerDashboard from "./CustomerSupport/CustomerDashboard.jsx"
+
+
+//brakdown service
+import CreateRequest from './BreakdownService/CreateRequests';
+import ShowRequest from './BreakdownService/ShowRequests';
+import EditRequest from './BreakdownService/EditRequest';
+import DeleteRequest from './BreakdownService/DeleteRequest';
+import BreakdownCard from './BreakdownService/BreakdownCard';
+import BreakdownView from "./BreakdownService/BreakdownView";
+import BreakdownDashboard from "./BreakdownService/BreakdownDashboard.jsx"
+
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -96,7 +117,7 @@ function App() {
         <Route path="/books/table" element={<BooksTable />} />
         <Route path="/books/cardview" element={<BooksCard />} />
         <Route path="/books/card" element={<BookSingleCard />} />
-        <Route path="/BookUserDashboard" element={<BookUserDashboard />} />
+        <Route path="/profile" element={<BookUserDashboard />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
@@ -123,12 +144,14 @@ function App() {
           <Route path="/report" element={<SalesSummary />} />
           <Route path="/pending" element={<PendingOrders />} />
 
-          <Route path="/senura" element ={<SenuraInventoryItems />}/>
-          <Route path="/addcatagory" element ={<AddCategoryForm />}/>
-          <Route path="/catagory" element ={<CategoriesList />}/>
-          <Route path="/additem" element ={<AddItemForm />}/>
+          <Route path="/dashboard/senura" element ={<SenuraInventoryItems />}/>
+          <Route path="/dashboard/addcatagory" element ={<AddCategoryForm />}/>
+          <Route path="/dashboard/catagory" element ={<CategoriesList />}/>
+          <Route path="/dashboard/additem" element ={<AddItemForm />}/>
           <Route path="/categories/:id" element={<CategoryDetail />} />
           <Route path="/categories/:id/edit" element={<UpdateCategory />} />
+          <Route path="/dashboard/summery" element={<InventorySummaryReport />} />
+          <Route path="/items/:id" element={<ItemDetailsssss/>} />
 
 
           <Route path="/dashboard/finance/dashboard" element={<Dashboard />} />
@@ -151,6 +174,33 @@ function App() {
         <Route path='/dashboard/emp/edit_employee/:id' element={<EditRecord />}></Route>
         <Route path='/dashboard/emp/delete_employee/:id' element={<DeleteRecord />}></Route>
         </Route>
+
+
+        <Route path='/customer/create' element={<CreateCustomer />} />
+      <Route path='/customer/details/:id' element={<ShowCustomer />} />
+      <Route path='/customer/edit/:id' element={<EditCustomer />} />
+      <Route path='/customer/delete/:id' element={<DeleteCustomer />} />
+      <Route path='/dashboard/customer/details/:id' element={<ShowCustomer />} />
+      <Route path='/dashboard/customer/edit/:id' element={<EditCustomer />} />
+      <Route path='/dashboard/customer/delete/:id' element={<DeleteCustomer />} />
+      <Route path='/customer/card' element={<CustomerCard />} />
+      <Route path='/customer/single/:id' element={<CustomerSingleCard />} />
+      <Route path='/customer/table' element={<CustomerTable />} />
+      <Route path='/profile' element={<Profile />} />
+      <Route path="/dashboard/Customer/overview" element={<CustomerOverview/>}/>
+      <Route path="/dashboard/Customer/dashboard" element={<CustomerDashboard/>}/>
+
+      <Route path='/breakdownRequests/create' element={<CreateRequest />} />
+        <Route path='/breakdownRequests/details/:id' element={<ShowRequest />} />
+        <Route path='/breakdownRequests/edit/:id' element={<EditRequest />} />
+        <Route path='/breakdownRequests/delete/:id' element={<DeleteRequest />} />
+        <Route path='/dashboard/breakdownRequests/details/:id' element={<ShowRequest />} />
+        <Route path='/dashboard/breakdownRequests/edit/:id' element={<EditRequest />} />
+        <Route path='/dashboard/breakdownRequests/delete/:id' element={<DeleteRequest />} />
+        <Route path="/dashboard/BreakdownView" element={<BreakdownView/>}/>
+        <Route path="/dashboard/breakdownAdmin" element={<BreakdownCard/>}/>
+        <Route path="/dashboard/breakdown/dashboard" element={<BreakdownDashboard/>}/>
+
 
       </Routes>
 
