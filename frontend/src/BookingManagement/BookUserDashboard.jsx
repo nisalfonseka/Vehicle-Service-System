@@ -5,7 +5,7 @@ import CustomerTable from "../CustomerSupport/CustomerTable";
 
 function BookUserDashboard() {
   const [books, setBooks] = useState([]);
-  const [customer, setCustomer] = useState([]);
+  const [customer, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true); // Start loading as true
   const [userProfile, setUserProfile] = useState(null); // Store user profile details
 
@@ -27,7 +27,7 @@ function BookUserDashboard() {
           const filteredCustomers = customerResponse.data.data.filter(customer => customer.customerName === loggedInUser.username);
 
           setBooks(filteredBooks);
-          setCustomer(filteredCustomers); // Set customer data
+          setCustomers(filteredCustomers); // Set customer data
         } catch (error) {
           console.error("Error fetching data:", error);
         } finally {

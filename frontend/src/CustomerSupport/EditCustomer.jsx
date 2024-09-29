@@ -30,9 +30,9 @@ const EditCustomer = () => {
         setMobileNumber(mobileNumber);
         setVehicleNumber(vehicleNumber);
         setSubject(subject);
-        setCategory(category);  // Load the category
-        setPriority(priority);  // Load the priority
-        setEstimatedTime(estimatedTime);  // Load the estimated time
+        setCategory(category);
+        setPriority(priority);
+        setEstimatedTime(estimatedTime);
         setLoading(false);
       }).catch((error) => {
         setLoading(false);
@@ -48,9 +48,9 @@ const EditCustomer = () => {
       mobileNumber,
       vehicleNumber,
       subject,
-      category,  // Include category
-      priority,  // Include priority
-      estimatedTime,  // Include estimated time
+      category,
+      priority,
+      estimatedTime,
     };
     setLoading(true);
     axios
@@ -68,71 +68,62 @@ const EditCustomer = () => {
   };
 
   return (
-    <div style={{ padding: '16px', backgroundColor: '#ffffff' }}>
+    <div className="p-4 bg-white">
       <BackButton />
-      <h1 style={{ fontSize: '24px', margin: '16px 0', color: '#000000' }}>Edit Ticket</h1>
+      <h1 className="text-2xl my-4 text-black">Edit Ticket</h1>
       {loading && <Spinner />}
-      <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          border: '2px solid #000000', 
-          borderRadius: '12px', 
-          width: '600px', 
-          padding: '24px', 
-          margin: '0 auto', 
-          backgroundColor: '#e0f7fa'  
-        }}>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Customer Name :</label>
+      <div className="flex flex-col border-2 border-black rounded-xl w-[600px] p-6 mx-auto bg-cyan-100">
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Customer Name :</label>
           <input
             type='text'
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#ffe6e6' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
         </div>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Email :</label>
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Email :</label>
           <input
             type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#ffe6e6' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
         </div>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Mobile :</label>
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Mobile :</label>
           <input
             type='text'
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#ffe6e6' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
         </div>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Vehicle Registration :</label>
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Vehicle Registration :</label>
           <input
             type='text'
             value={vehicleNumber}
             onChange={(e) => setVehicleNumber(e.target.value)}
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#ffe6e6' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
         </div>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Subject :</label>
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Subject :</label>
           <input
             type='text'
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#ffe6e6' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
         </div>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Category :</label>
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Category :</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#ffe6e6' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           >
             <option value="">Select Category</option>
             <option value="Service Booking">Service Booking</option>
@@ -142,12 +133,12 @@ const EditCustomer = () => {
             <option value="Other">Other</option>
           </select>
         </div>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Priority :</label>
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Priority :</label>
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#ffe6e6' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           >
             <option value="">Select Priority</option>
             <option value="High">High</option>
@@ -155,27 +146,18 @@ const EditCustomer = () => {
             <option value="Low">Low</option>
           </select>
         </div>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ fontSize: '18px', marginRight: '16px', color: '#000000' }}>Estimated Time :</label>
+        <div className="mb-4">
+          <label className="text-lg mr-4 text-black">Estimated Time :</label>
           <input
             type='text'
             value={estimatedTime}
             readOnly
-            style={{ border: '2px solid #000000', borderRadius: '8px', padding: '8px', width: '100%', color: '#000000', backgroundColor: '#f0f0f0' }}
+            className="border-2 border-black rounded-lg p-2 w-full text-black bg-gray-200"
           />
         </div>
         <button
           onClick={handleEditCustomer}
-          style={{ 
-            padding: '12px', 
-            backgroundColor: '#cc0000', 
-            color: '#fff', 
-            borderRadius: '8px', 
-            margin: '24px 0', 
-            fontWeight: 'bold', 
-            cursor: 'pointer', 
-            border: 'none' 
-          }}
+          className="p-3 bg-red-600 text-white rounded-lg mt-6 font-bold cursor-pointer"
         >
           Save Customer
         </button>
@@ -185,4 +167,3 @@ const EditCustomer = () => {
 }
 
 export default EditCustomer;
-

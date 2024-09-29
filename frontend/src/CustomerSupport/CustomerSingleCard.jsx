@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BiUserCircle } from "react-icons/bi";
+import { BiInfoSquare, BiPhone, BiUserCircle } from "react-icons/bi";
 import { BsInfoCircle } from 'react-icons/bs';
 import { CiCalendarDate } from "react-icons/ci";
 import { FaCarAlt } from "react-icons/fa";
@@ -46,34 +46,34 @@ const CustomerSingleCard = ({ customer }) => {
           top: "8px",
           right: "16px",
           padding: "4px 8px",
-          backgroundColor: "#f44336", // Red background for the customer name
+          backgroundColor: "#dc2626", // Red background for the customer name
           borderRadius: "8px",
         }}
       >
         {customer.customerName}
       </h2>
-      <h4 style={{ margin: "8px 0", color: "#808080" }}>{customer.customer_id}</h4>
+      <h4 style={{ margin: "8px 0", color: "#0c0a09" }}>{customer.customer_id}</h4>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <BiUserCircle className="text-red-300 text-2xl" />
+        <BiUserCircle className="text-red-600 text-2xl" />
         <h2 style={{ margin: "4px 0" }}>{customer.email}</h2>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <CiCalendarDate className="text-red-300 text-2xl" />
+        <BiPhone className="text-red-600 text-2xl" />
         <h2 style={{ margin: "4px 0" }}>{customer.mobileNumber}</h2>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <FaCarAlt className="text-red-300 text-2xl" />
+        <FaCarAlt className="text-red-600 text-2xl" />
         <h2 style={{ margin: "4px 0" }}>{customer.vehicleNumber}</h2>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <CiCalendarDate className="text-red-300 text-2xl" />
+        <BiInfoSquare className="text-red-600 text-2xl" />
         <h2 style={{ margin: "4px 0" }}>{customer.subject}</h2>
       </div>
 
       {/* Display the email status */}
       {emailStatus && (
         <div className="mt-2">
-          <p className={`text-${emailStatus === 'Success' ? 'green' : emailStatus === 'Pending' ? 'orange' : 'red'}-500 font-semibold`}>
+          <p className={`text-${emailStatus === 'Success' ? 'bg-green-500' : emailStatus === 'Pending' ? 'bg-yellow-500' : 'red'}-500 font-semibold`}>
             Ticket Status: {emailStatus}
           </p>
         </div>

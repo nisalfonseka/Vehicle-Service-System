@@ -79,7 +79,7 @@ function CustomerDashboard() {
         <span
           className={`${currentView === "overview" ? "text-white" : "text-black"}`}
         >
-          Overview
+         Ticket  Overview
         </span>
       </a>
     </nav>
@@ -113,7 +113,7 @@ function CustomerDashboard() {
         <span
           className={`${currentView === "dashboard" ? "text-white" : "text-black"}`}
         >
-          Dashboard
+         Ticket  Details
         </span>
       </a>
     </nav>

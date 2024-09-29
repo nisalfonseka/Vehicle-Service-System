@@ -5,9 +5,8 @@ import CustomerSingleCard from "./CustomerSingleCard";
 const CustomerCard = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showType, setShowType] = useState("table");
   const [searchId, setSearchId] = useState("");
-  const [emailStatuses, setEmailStatuses] = useState({}); // New state to manage email statuses
+  const [ticketFilter, setTicketFilter] = useState(localStorage.getItem("ticketFilter") || "all"); // Get filter from local storage
 
   useEffect(() => {
     axios
@@ -27,42 +26,25 @@ const CustomerCard = () => {
     setSearchId(event.target.value);
   };
 
-  // Function to filter customers based on the search ID
-  const filteredCustomers = customers.filter((item) =>
-    item.customerName.includes(searchId)
-  );
+  // Function to filter customers based on the search ID and ticket status
+  const filteredCustomers = customers
+    .filter((item) => item.customerName.includes(searchId))
+    .filter((item) => {
+      const emailStatus = localStorage.getItem(`emailStatus_${item.customer_id}`) || "Pending"; // Fetch email status from local storage
+      if (ticketFilter === "all") return true;
+      return emailStatus === ticketFilter; // Filter based on email status
+    });
 
-  // Function to update the email status
-  const updateEmailStatus = (customerId, status) => {
-    setEmailStatuses((prevStatuses) => ({
-      ...prevStatuses,
-      [customerId]: status,
-    }));
+  // Function to handle ticket status filter and save it to local storage
+  const handleTicketFilterChange = (status) => {
+    setTicketFilter(status);
+    localStorage.setItem("ticketFilter", status); // Store status in local storage
   };
-
-  // Placeholder data for customer satisfaction percentages
-  const satisfactionData = {
-    verySatisfied: 80,
-    satisfied: 70,
-    neutral: 20,
-    unsatisfied: 10,
-  };
-
-  // Placeholder data for customer ratings
-  const customerRatings = [
-    { name: "Oshan Wijekoon", stars: 5 },
-    { name: "Nisal Fonseka", stars: 4 },
-    { name: "Senura Dinilka", stars: 3 },
-    { name: "David Watson", stars: 2 },
-    { name: "Binuri Perera", stars: 5 },
-  ];
 
   return (
     <div style={{ display: "flex", backgroundColor: "#ffffff", padding: "20px" }}>
       {/* Main content section */}
       <div style={{ flexGrow: 1 }}>
-        
-
         <br />
         <br />
         <br />
@@ -118,62 +100,77 @@ const CustomerCard = () => {
           </div>
         </div>
 
+        {/* Filter Buttons for Ticket Status */}
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <button
+            style={{
+              backgroundColor: ticketFilter === "all" ? "#1e40af" : "#ccc",
+              color: "#fff",
+              padding: "10px 15px",
+              marginRight: "10px",
+              borderRadius: "5px",
+              border: "none",
+            }}
+            onClick={() => handleTicketFilterChange("all")}
+          >
+            All
+          </button>
+          <button
+            style={{
+              backgroundColor: ticketFilter === "Pending " ? "#facc15" : "#ccc",
+              color: "#fff",
+              padding: "10px 15px",
+              marginRight: "10px",
+              borderRadius: "5px",
+              border: "none",
+            }}
+            onClick={() => handleTicketFilterChange("Pending")}
+          >
+            Pending Tickets
+          </button>
+          <button
+            style={{
+              backgroundColor: ticketFilter === "Success" ? "#4CAF50" : "#ccc",
+              color: "#fff",
+              padding: "10px 15px",
+              marginRight: "10px",
+              borderRadius: "5px",
+              border: "none",
+            }}
+            onClick={() => handleTicketFilterChange("Success")}
+          >
+            Success Tickets
+          </button>
+          <button
+            style={{
+              backgroundColor: ticketFilter === "Unsuccess" ? "#dc2626" : "#ccc",
+              color: "#fff",
+              padding: "10px 15px",
+              borderRadius: "5px",
+              border: "none",
+            }}
+            onClick={() => handleTicketFilterChange("Unsuccess")}
+          >
+            Unsuccess Tickets
+          </button>
+        </div>
+
         {/* Grid to display filtered customers */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2">
-          {filteredCustomers.map((item) => (
-            <CustomerSingleCard
-              key={item._id}
-              customer={item}
-              emailStatus={emailStatuses[item._id] || "Pending"} // Get the email status or set it as "Pending"
-            />
-          ))}
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            filteredCustomers.map((item) => (
+              <CustomerSingleCard
+                key={item._id}
+                customer={item}
+              />
+            ))
+          )}
         </div>
       </div>
 
-      {/* Satisfaction Percentage Section */}
-      <div
-        style={{
-          width: "300px",
-          marginLeft: "20px",
-          padding: "20px",
-          backgroundColor: "#fff",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <h2 className="text-3xl font-bold" style={{ marginBottom: "20px", textAlign: "center" }}>
-          Customer Satisfaction
-        </h2>
-        <div style={{ fontSize: "18px", lineHeight: "1.6" }}>
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Very Satisfied:</strong> {satisfactionData.verySatisfied}%
-          </div>
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Satisfied:</strong> {satisfactionData.satisfied}%
-          </div>
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Neutral:</strong> {satisfactionData.neutral}%
-          </div>
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Unsatisfied:</strong> {satisfactionData.unsatisfied}%
-          </div>
-        </div>
-
-        {/* Customer Ratings Section */}
-        <h2 className="text-3xl font-bold" style={{ marginTop: "30px", marginBottom: "20px", textAlign: "center" }}>
-          Customer Ratings
-        </h2>
-        <div style={{ fontSize: "16px", lineHeight: "1.6" }}>
-          {customerRatings.map((rating, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <strong>{rating.name}:</strong>{" "}
-              <span style={{ color: "gold", fontSize: "20px" }}>
-                {"★".repeat(rating.stars)}{"☆".repeat(5 - rating.stars)}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Customer Satisfaction and Ratings Section can go here if needed */}
     </div>
   );
 };

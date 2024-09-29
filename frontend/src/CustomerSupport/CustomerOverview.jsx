@@ -29,7 +29,7 @@ const CustomerOverview = () => {
     fetchCustomers();
   }, []);
 
-  // Callback to update customer when modal closes (you may modify this part based on your modal logic)
+  // Callback to update customer when modal closes
   const handleCustomerUpdate = (customerId, updatedFields) => {
     setCustomers((prevCustomers) =>
       prevCustomers.map((customer) =>
@@ -51,17 +51,9 @@ const CustomerOverview = () => {
   const lowPriorityCount = customers.filter((customer) => customer.priority === "Low").length;
   const allCustomersCount = customers.length;
 
-  // Debugging: Log counts
-  console.log("High Priority Count: ", highPriorityCount);
-  console.log("Medium Priority Count: ", mediumPriorityCount);
-  console.log("Low Priority Count: ", lowPriorityCount);
-  console.log("Total Customers: ", allCustomersCount);
-
   return (
     <div>
-      <h1 className="text-3xl font-medium text-black text-center mt-2">
-        Ticket Overview
-      </h1>
+      <h1 className="text-3xl font-medium text-black text-center mt-2">Ticket Overview</h1>
       <br />
 
       {errorMessage && (
@@ -69,31 +61,26 @@ const CustomerOverview = () => {
       )}
 
       <div className="flex flex-wrap justify-center mx-auto max-w-7xl">
-      <style>
-        {`
-          @keyframes alert {
-            0% {
-              transform: scale(1);
+        <style>
+          {`
+            @keyframes alert {
+              0% { transform: scale(1); }
+              50% { transform: scale(1.05); }
+              100% { transform: scale(1); }
             }
-            50% {
-              transform: scale(1.05);
+            .alert-effect {
+              animation: alert 0.8s infinite;
             }
-            100% {
-              transform: scale(1);
-            }
-          }
-          .alert-effect {
-            animation: alert 0.8s infinite;
-          }
-        `}
-      </style>
+          `}
+        </style>
+        
         {/* High Priority Tickets Card */}
         <div
-          className="border border-red-500 rounded-xl p-6 m-2 relative bg-red-400 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center alert-effect"
-          style={{ width: "350px", height: "180px" }}
+          className="border border-red-600 rounded-xl p-6 m-2 bg-red-600 shadow-lg transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center alert-effect transition"
           onClick={() =>
             setSelectedCustomer(customers.find((customer) => customer.priority === "High"))
           }
+          style={{ width: "350px", height: "180px" }}
         >
           <h2 className="text-6xl font-semibold text-white text-center">
             {highPriorityCount}
@@ -105,11 +92,11 @@ const CustomerOverview = () => {
 
         {/* Medium Priority Tickets Card */}
         <div
-          className="border border-yellow-500 rounded-xl p-6 m-2 relative bg-yellow-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
-          style={{ width: "350px", height: "180px" }}
+          className="border border-yellow-500 rounded-xl p-6 m-2 bg-yellow-500 shadow-lg transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center transition"
           onClick={() =>
             setSelectedCustomer(customers.find((customer) => customer.priority === "Medium"))
           }
+          style={{ width: "350px", height: "180px" }}
         >
           <h2 className="text-6xl font-semibold text-white text-center">
             {mediumPriorityCount}
@@ -121,11 +108,11 @@ const CustomerOverview = () => {
 
         {/* Low Priority Tickets Card */}
         <div
-          className="border border-green-500 rounded-xl p-6 m-2 relative bg-green-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
-          style={{ width: "350px", height: "180px" }}
+          className="border border-green-500 rounded-xl p-6 m-2 bg-green-500 shadow-lg transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center transition"
           onClick={() =>
             setSelectedCustomer(customers.find((customer) => customer.priority === "Low"))
           }
+          style={{ width: "350px", height: "180px" }}
         >
           <h2 className="text-6xl font-semibold text-white text-center">
             {lowPriorityCount}
@@ -140,14 +127,14 @@ const CustomerOverview = () => {
       <br />
       <div>
         <h1 className="text-3xl font-medium text-black text-center mt-2">
-          All-time Ticket Overview
+          All type Ticket Overview
         </h1>
         <br />
         <div className="flex flex-wrap justify-center mx-auto max-w-7xl">
           {/* Total Customers Card */}
           <div
-            className="border border-gray-300 rounded-xl p-6 m-2 relative bg-blue-600 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center"
-            style={{ width: "250px", height: "150px" }}
+            className="border border-gray-300 rounded-xl p-6 m-2 bg-blue-600 shadow-lg transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center transition"
+            style={{ width: "350px", height: "180px" }}
           >
             <h2 className="text-4xl font-semibold text-white text-center">
               {allCustomersCount}
