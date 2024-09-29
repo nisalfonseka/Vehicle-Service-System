@@ -15,6 +15,7 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
   //const [assignedDrivers, setAssignedDrivers] = useState([]); // Track currently assigned drivers
   const [selectedDriver, setSelectedDriver] = useState('');
   const [status, setStatus] = useState(localStorage.getItem(`status_${breakdownRequest._id}`) || breakdownRequest.status || 'New');
+  const [driverError, setDriverError] = useState(false); // Track driver assignment errors
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,8 +26,15 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
         setDrivers(driverList);
 
         const storedDriver = localStorage.getItem(`selectedDriver_${breakdownRequest._id}`);
+        const isPending = localStorage.getItem(`driverError_${breakdownRequest._id}`) === 'true';
         if (storedDriver) {
           setSelectedDriver(storedDriver);
+        }
+
+        // Check if driver is pending and set state accordingly
+        if (isPending) {
+          setSelectedDriver('Pending');
+          setDriverError(true);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -50,11 +58,13 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
   
       alert(`Assigned ${selectedDriverData.employeeName} to ${breakdownRequest.customerName}`);
       setDriverError(false); // Reset the error state if assignment is successful
+      localStorage.removeItem(`driverError_${breakdownRequest._id}`); // Clear error from localStorage
     } catch (error) {
       if (error.response && error.response.status === 400) {
         alert('This driver is already assigned to another active request. Please choose another driver.');
         setSelectedDriver('Not Available'); // Set "Not Available" in the dropdown
         setDriverError(true); // Indicate that the driver is unavailable
+        localStorage.setItem(`driverError_${breakdownRequest._id}`, 'true'); // Store error state in localStorage
       } else {
         console.error('Error assigning driver:', error);
       }
@@ -193,13 +203,13 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
         <select
           value={selectedDriver}
           onChange={handleAssignDriver}
-          className="w-full p-2 mt-2 border border-gray-300 rounded-lg"
+          className={`border rounded px-2 py-1 ${driverError ? 'bg-yellow-200' : ''}`} // Change background if error
+          style={{ width: '200px', maxWidth: '100%' }} // Set a specific width for the dropdown
         >
           <option value="">Select a driver</option>
-          <option value="Not Available" disabled={true}>Not Available</option> {/* Show this if driver is unavailable */}
           {drivers.map((driver) => (
             <option key={driver._id} value={driver._id}>
-              {driver.employeeName}
+              {driver.employeeName} {driverError && selectedDriver === 'Pending' ? '(Pending)' : ''}
             </option>
           ))}
         </select>
