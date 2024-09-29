@@ -40,7 +40,7 @@ function BreakdownDashboard() {
             <div className="flex items-center flex-shrink-0 px-4">
               <img
                 className="w-auto h-12"
-                src="../images/AaaaAuto (1).png"
+                src="../../../images/AaaaAuto (1).png"
                 alt="Logo"
               />
             </div>
