@@ -39,18 +39,23 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
     const driverId = event.target.value;
     const selectedDriverData = drivers.find(driver => driver._id === driverId);
     setSelectedDriver(driverId);
-
+  
     localStorage.setItem(`selectedDriver_${breakdownRequest._id}`, driverId);
-
+  
     try {
-      await axios.put(`http://localhost:5555/breakdownRequests/${breakdownRequest._id}/assign-driver`, {
+      const response = await axios.put(`http://localhost:5555/breakdownRequests/${breakdownRequest._id}/assign-driver`, {
         assignedDriver: selectedDriverData.employeeName,
       });
+  
       alert(`Assigned ${selectedDriverData.employeeName} to ${breakdownRequest.customerName}`);
     } catch (error) {
-      console.error('Error assigning driver:', error);
+      if (error.response && error.response.status === 400) {
+        alert('This driver is already assigned to another active request. Please choose another driver.');
+      } else {
+        console.error('Error assigning driver:', error);
+      }
     }
-  };
+  };  
 
   const handleAccept = async () => {
     const selectedDriverData = drivers.find(driver => driver._id === selectedDriver);

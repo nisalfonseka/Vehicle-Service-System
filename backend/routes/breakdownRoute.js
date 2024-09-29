@@ -118,6 +118,19 @@ router.put('/:id/assign-driver', async (request, response) => {
     const { id } = request.params;
     const { assignedDriver } = request.body;
 
+    // Check if the driver is already assigned to another ongoing request
+    const existingRequest = await BreakdownRequest.findOne({
+      assignedDriver: assignedDriver,
+      status: { $in: ['New', 'Accepted'] }, // Only consider requests that are still active
+    });
+
+    if (existingRequest) {
+      return response.status(400).send({ 
+        message: 'This driver is already assigned to another active request.' 
+      });
+    }
+
+    // Proceed with driver assignment if no active request is found
     const breakdownRequest = await BreakdownRequest.findByIdAndUpdate(
       id,
       { assignedDriver },
@@ -128,13 +141,15 @@ router.put('/:id/assign-driver', async (request, response) => {
       return response.status(404).json({ message: 'Breakdown Request not found' });
     }
 
-    return response.status(200).send({ message: 'Driver assigned successfully', data: breakdownRequest });
+    return response.status(200).send({ 
+      message: 'Driver assigned successfully', 
+      data: breakdownRequest 
+    });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
   }
 });
-
 
 // Route to update a request's status
 router.patch("/:id/status", async (req, res) => {
