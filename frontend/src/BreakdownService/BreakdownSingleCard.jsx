@@ -12,6 +12,7 @@ import { AiOutlineFilePdf } from 'react-icons/ai'; // Import PDF icon
 const BreakdownSingleCard = ({ breakdownRequest }) => {
   const [showModal, setShowModal] = useState(false);
   const [drivers, setDrivers] = useState([]);
+  //const [assignedDrivers, setAssignedDrivers] = useState([]); // Track currently assigned drivers
   const [selectedDriver, setSelectedDriver] = useState('');
   const [status, setStatus] = useState(localStorage.getItem(`status_${breakdownRequest._id}`) || breakdownRequest.status || 'New');
 
@@ -48,9 +49,12 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
       });
   
       alert(`Assigned ${selectedDriverData.employeeName} to ${breakdownRequest.customerName}`);
+      setDriverError(false); // Reset the error state if assignment is successful
     } catch (error) {
       if (error.response && error.response.status === 400) {
         alert('This driver is already assigned to another active request. Please choose another driver.');
+        setSelectedDriver('Not Available'); // Set "Not Available" in the dropdown
+        setDriverError(true); // Indicate that the driver is unavailable
       } else {
         console.error('Error assigning driver:', error);
       }
@@ -163,6 +167,7 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
           className="w-full p-2 mt-2 border border-gray-300 rounded-lg"
         >
           <option value="">Select a driver</option>
+          <option value="Not Available" disabled={true}>Not Available</option> {/* Show this if driver is unavailable */}
           {drivers.map((driver) => (
             <option key={driver._id} value={driver._id}>
               {driver.employeeName}
