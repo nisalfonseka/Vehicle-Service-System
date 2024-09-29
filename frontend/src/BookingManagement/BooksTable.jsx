@@ -29,57 +29,59 @@ const BooksTable = ({ books }) => {
           <input
             type="text"
             placeholder="Search by customer name or vehicle number"
-            className="w-full p-2 pl-10 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 transition duration-200 ease-in-out"
+            className="w-full p-2 pl-10 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <AiOutlineSearch className="absolute left-2 top-2 text-gray-400" />
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <ClipLoader color="#E53E3E" loading={loading} size={50} />
-        </div>
-      ) : (
         <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-red-600 text-white">
             <tr>
-              <th className="border-b-2 border-red-600 p-4 text-left">Booking ID</th>
-              <th className="border-b-2 border-red-600 p-4 text-left">Customer Name</th>
-              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Vehicle Number</th>
-              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Date</th>
-              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Time</th>
-              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Status</th>
-              <th className="border-b-2 border-red-600 p-4 text-left">Operations</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Booking ID</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Customer Name</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Vehicle Number</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Date</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Time</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Status</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Operations</th>
             </tr>
           </thead>
           <tbody>
-            {filteredBooks.map((book, index) => (
-              <tr key={book._id} className="even:bg-gray-100 odd:bg-white hover:bg-gray-200">
-                <td className="border-b border-gray-300 p-4 text-left">{index + 1}</td>
-                <td className="border-b border-gray-300 p-4 text-left">{book.customerName}</td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.vehicleNumber}</td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.selectedDate}</td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.selectedTimeSlot}</td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.status === 'New' ? 'Pending' : book.status}</td>
-                <td className="border-b border-gray-300 p-4 text-left">
-                  <div className="flex justify-start gap-x-4">
-                    <Link to={`/books/details/${book._id}`}>
-                      <BsInfoCircle className="text-2xl text-green-800" />
-                    </Link>
-                    <Link to={`/books/edit/${book._id}`}>
-                      <AiOutlineEdit className="text-2xl text-yellow-600" />
-                    </Link>
-                    <Link to={`/books/delete/${book._id}`}>
-                      <MdOutlineDelete className="text-2xl text-red-600" />
-                    </Link>
-                  </div>
-                </td>
+            {filteredBooks.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="text-center p-4">No bookings found</td>
               </tr>
-            ))}
+            ) : (
+              filteredBooks.map((book, index) => (
+                <tr key={book._id} className="even:bg-gray-100 odd:bg-white transition duration-200 hover:bg-gray-200">
+                  <td className="border-b border-gray-300 p-3 text-left text-sm">{index + 1}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-sm">{book.customerName}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.vehicleNumber}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.selectedDate}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.selectedTimeSlot}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.status === 'New' ? 'Pending' : book.status}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-sm">
+                    <div className="flex justify-start gap-x-2">
+                      <Link to={`/books/details/${book._id}`} title="View Details">
+                        <BsInfoCircle className="text-xl text-green-800 transition duration-200 hover:scale-110" />
+                      </Link>
+                      <Link to={`/books/edit/${book._id}`} title="Edit Booking">
+                        <AiOutlineEdit className="text-xl text-yellow-600 transition duration-200 hover:scale-110" />
+                      </Link>
+                      <Link to={`/books/delete/${book._id}`} title="Delete Booking">
+                        <MdOutlineDelete className="text-xl text-red-600 transition duration-200 hover:scale-110" />
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
-      )}
+      
     </div>
   );
 };
