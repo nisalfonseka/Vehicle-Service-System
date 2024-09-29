@@ -117,7 +117,7 @@ function App() {
         <Route path="/books/table" element={<BooksTable />} />
         <Route path="/books/cardview" element={<BooksCard />} />
         <Route path="/books/card" element={<BookSingleCard />} />
-        <Route path="/BookUserDashboard" element={<BookUserDashboard />} />
+        <Route path="/profile" element={<BookUserDashboard />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
@@ -144,13 +144,13 @@ function App() {
           <Route path="/report" element={<SalesSummary />} />
           <Route path="/pending" element={<PendingOrders />} />
 
-          <Route path="/senura" element ={<SenuraInventoryItems />}/>
-          <Route path="/addcatagory" element ={<AddCategoryForm />}/>
-          <Route path="/catagory" element ={<CategoriesList />}/>
-          <Route path="/additem" element ={<AddItemForm />}/>
+          <Route path="/dashboard/senura" element ={<SenuraInventoryItems />}/>
+          <Route path="/dashboard/addcatagory" element ={<AddCategoryForm />}/>
+          <Route path="/dashboard/catagory" element ={<CategoriesList />}/>
+          <Route path="/dashboard/additem" element ={<AddItemForm />}/>
           <Route path="/categories/:id" element={<CategoryDetail />} />
           <Route path="/categories/:id/edit" element={<UpdateCategory />} />
-          <Route path="/summery" element={<InventorySummaryReport />} />
+          <Route path="/dashboard/summery" element={<InventorySummaryReport />} />
           <Route path="/items/:id" element={<ItemDetailsssss/>} />
 
 
