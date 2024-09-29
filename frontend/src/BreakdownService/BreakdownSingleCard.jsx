@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import BreakdownModal from './BreakdownModal';
 import axios from 'axios';
 import { jsPDF } from 'jspdf'; // Import jsPDF
+import { AiOutlineFilePdf } from 'react-icons/ai'; // Import PDF icon
 
 const BreakdownSingleCard = ({ breakdownRequest }) => {
   const [showModal, setShowModal] = useState(false);
@@ -178,12 +179,10 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
         <Link to={`/breakdownRequests/delete/${breakdownRequest._id}`}>
           <MdOutlineDelete className="text-2xl text-red-600 hover:text-black" />
         </Link>
-        <button
+        <AiOutlineFilePdf
           onClick={generateReport}
-          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 ease-in-out"
-        >
-          Report
-        </button>
+          className="text-2xl text-green-600 hover:text-green-800 cursor-pointer"
+        />
       </div>
 
       {showModal && (
