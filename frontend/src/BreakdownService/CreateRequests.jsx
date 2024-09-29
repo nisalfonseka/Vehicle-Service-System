@@ -82,6 +82,19 @@ const CreateRequests = () => {
   };
 
   useEffect(() => {
+    // Fetch the logged-in user from localStorage
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    
+    if (loggedInUser && loggedInUser.username) {
+      setCustomerName(loggedInUser.username); // Set the customerName to the logged-in user's username
+    } else {
+      enqueueSnackbar('Error: User not logged in', { variant: 'error' });
+      navigate('/login'); // Redirect to login if no user is found
+    }
+  }, []); // Runs only once when the component is mounted
+  
+
+  useEffect(() => {
     if (markerPosition) {
       const distance = calculateDistance(markerPosition[0], markerPosition[1], SERVICE_CENTER_LOCATION[0], SERVICE_CENTER_LOCATION[1]);
       setTotalDistance(distance.toFixed(2));
