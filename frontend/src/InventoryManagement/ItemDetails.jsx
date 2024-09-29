@@ -118,7 +118,7 @@ const ItemDetailsssss = () => {
                   name="name"
                   value={updatedItem.name || ''}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="w-full px-3 py-2 border rounded text-gray-700"
                 />
               </div>
 
@@ -129,7 +129,7 @@ const ItemDetailsssss = () => {
                   name="price"
                   value={updatedItem.price || ''}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="w-full px-3 py-2 border rounded text-gray-700"
                 />
               </div>
 
@@ -140,7 +140,7 @@ const ItemDetailsssss = () => {
                   name="qty"
                   value={updatedItem.qty || ''}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="w-full px-3 py-2 border rounded text-gray-700"
                 />
               </div>
 
@@ -151,7 +151,7 @@ const ItemDetailsssss = () => {
                   name="description"
                   value={updatedItem.description || ''}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="w-full px-3 py-2 border rounded text-gray-700"
                 />
               </div>
 
@@ -162,7 +162,7 @@ const ItemDetailsssss = () => {
                   name="companyName"
                   value={updatedItem.companyName || ''}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="w-full px-3 py-2 border rounded text-gray-700"
                 />
               </div>
 
@@ -172,7 +172,7 @@ const ItemDetailsssss = () => {
                   name="category"
                   value={updatedItem.category?._id || ''}
                   onChange={handleCategoryChange}
-                  className="w-full px-3 py-2 border rounded"
+                  className="w-full px-3 py-2 border rounded text-gray-700"
                 >
                   <option value="">Select a category</option>
                   {categories.map((category) => (
