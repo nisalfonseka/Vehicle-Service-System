@@ -2,44 +2,85 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import BooksTable from "./BooksTable";
 import CustomerTable from "../CustomerSupport/CustomerTable";
+import BreakdownTable from "../BreakdownService/BreakdownTable";
 
 function BookUserDashboard() {
   const [books, setBooks] = useState([]);
-  const [customer, setCustomer] = useState([]);
+
+  
   const [loading, setLoading] = useState(true); // Start loading as true
-  const [userProfile, setUserProfile] = useState(null); // Store user profile details
+  
+
+  const [breakdownRequests, setBreakdownRequests] = useState([]);
+  const [customer, setCustomer] = useState([]);
+  const [loadingBooks, setLoadingBooks] = useState(true);
+  const [loadingBreakdowns, setLoadingBreakdowns] = useState(true);
+  const [userProfile, setUserProfile] = useState(null);
+
 
   useEffect(() => {
-    // Fetch the logged-in user's information
-    const loggedInUser = JSON.parse(localStorage.getItem('user'));
-    console.log("Logged In User:", loggedInUser); // Verify the structure and field names
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
     if (loggedInUser) {
-      setUserProfile(loggedInUser); // Set user profile with the logged-in user details
+      setUserProfile(loggedInUser);
 
+      // Fetch books and customer data for the logged-in user
       const fetchData = async () => {
+        setLoadingBooks(true);
         try {
-          const bookResponse = await axios.get("http://localhost:5555/books");
-          const customerResponse = await axios.get("http://localhost:5555/customer");
+          const [bookResponse, customerResponse] = await Promise.all([
+            axios.get("http://localhost:5555/books"),
+            axios.get("http://localhost:5555/customer"),
+          ]);
 
-          // Filter bookings and customers based on the logged-in user's username
-          const filteredBooks = bookResponse.data.data.filter(book => book.customerName === loggedInUser.username);
-          const filteredCustomers = customerResponse.data.data.filter(customer => customer.customerName === loggedInUser.username);
+          // Filter books and customers by logged-in user's username
+          const filteredBooks = bookResponse.data.data.filter(
+            (book) => book.customerName === loggedInUser.username
+          );
+          const filteredCustomers = customerResponse.data.data.filter(
+            (customer) => customer.customerName === loggedInUser.username
+          );
 
-          setBooks(filteredBooks);
-          setCustomer(filteredCustomers); // Set customer data
+          setBooks(filteredBooks)
+          setCustomers(filteredCustomers); // Set customer data
+
+          setCustomer(filteredCustomers);
+ 
         } catch (error) {
-          console.error("Error fetching data:", error);
+          console.error("Error fetching book/customer data:", error);
         } finally {
-          setLoading(false); // Set loading to false after all fetches
+          setLoadingBooks(false);
         }
       };
 
-      fetchData(); // Call the async fetch function
-    } else {
-      setLoading(false); // If there's no user logged in, stop loading
+      fetchData();
     }
   }, []);
+
+  useEffect(() => {
+    // Fetch breakdown requests
+    const fetchBreakdownRequests = async () => {
+      setLoadingBreakdowns(true);
+      try {
+        const response = await axios.get("http://localhost:5555/breakdownRequests");
+        
+        // Filter breakdown requests by logged-in user's username
+        const filteredBreakdowns = response.data.data.filter(
+          (breakdownRequest) => breakdownRequest.customerName === userProfile?.username
+        );
+        
+        setBreakdownRequests(filteredBreakdowns);
+      } catch (error) {
+        console.error("Error fetching breakdown requests:", error);
+      } finally {
+        setLoadingBreakdowns(false);
+      }
+    };
+
+    if (userProfile) {
+      fetchBreakdownRequests(); // Only fetch breakdowns when the user profile is available
+    }
+  }, [userProfile]);
 
   return (
     <div className="p-4">
@@ -58,17 +99,20 @@ function BookUserDashboard() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl my-8">Service Appointments</h1>
       </div>
-      <br>
-      </br>
-      <BooksTable books={books} loading={loading} />
+      <br></br>
+      <BooksTable books={books} loading={loadingBooks} />
 
       {/* Customer Details Section */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl my-8">Ticket Details</h1>
-      </div>
-      <br>
-      </br>
-      <CustomerTable customer={customer} loading={loading} />
+      </div><br></br>
+      <CustomerTable customer={customer} loading={loadingBooks} />
+
+      {/* Breakdown Requests Section */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl my-8">Breakdown History</h1>
+      </div><br></br>
+      <BreakdownTable breakdownRequests={breakdownRequests} loading={loadingBreakdowns} />
     </div>
   );
 }

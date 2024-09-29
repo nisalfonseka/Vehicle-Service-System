@@ -76,7 +76,7 @@ function ContactForm() {
     const formattedDate = estimatedDate.toLocaleDateString();
     setEstimatedTime(`Approximately ${days} Days (${formattedDate})`);
   };
-
+             // my validation part
   const validateVehicle = (vehicleNumber) => {
     const VehicleRegex = /^[A-Z]{2,3}-\d{4}$/;
     return VehicleRegex.test(vehicleNumber);
@@ -136,7 +136,7 @@ function ContactForm() {
       subject,
       category,
       priority,
-      estimatedTime, // Add estimated time to the data being sent
+      estimatedTime, 
     };
 
     setLoading(true);
@@ -317,7 +317,7 @@ function ContactForm() {
             }}
           />
         </div>
-        <button onClick={handleSaveCustomer} style={{ padding: "10px", backgroundColor: "#008CBA", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+        <button onClick={handleSaveCustomer} style={{ padding: "10px", backgroundColor: "#DC2626", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
           Create Ticket
         </button>
       </div>

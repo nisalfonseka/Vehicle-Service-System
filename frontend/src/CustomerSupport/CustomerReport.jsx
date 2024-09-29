@@ -11,76 +11,96 @@ import {
 // Create styles
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
-    backgroundColor: "#f2f2f2", // Light gray background for contrast
+    paddingTop: 50, // Adjusted to accommodate header
+    paddingBottom: 70, // Adjusted to accommodate footer
+    paddingHorizontal: 40,
+    backgroundColor: "#fefefe", // Slightly off-white for a softer look
+  },
+  headerFooter: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    height: 50,
+    backgroundColor: "#dc2626", // Red 500
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#ffffff", // White text
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-    borderBottom: "2px solid #333", // Add a border at the bottom
-    paddingBottom: 10,
+    top: 0,
+  },
+  footer: {
+    bottom: 0,
+    height: 70, // Increased height for a more informative footer
+    paddingHorizontal: 20, // Added padding for cleaner layout
+    justifyContent: "space-between", // Align footer items appropriately
+    flexDirection: "column", // Allow multi-line text
+  },
+  headerText: {
+    fontSize: 18, // Large enough to stand out
+    fontWeight: "bold",
+    color: "#ffffff", // White text
+    textTransform: "uppercase",
+  },
+  footerText: {
+    fontSize: 12,
+    color: "#ffffff", // White for footer text
+    textAlign: "center",
   },
   logo: {
-    width: 80,
+    width: 80, // Slightly larger logo for better visibility
     height: 80,
-    marginBottom: 20,
   },
   title: {
-    fontSize: 28,
-    color: "#cc0000", // Bright red for the title to match the automotive theme
+    fontSize: 26, // Slightly larger font for the title
+    color: "#222222", // Slightly softer black
     fontWeight: "bold",
     textAlign: "center",
-    textTransform: "uppercase", // Uppercase text for a bold effect
-    letterSpacing: 2, // Spacing between letters for a modern look
+    textTransform: "uppercase",
+    letterSpacing: 1.2, // Added letter spacing for better readability
   },
   section: {
-    marginVertical: 10,
-    padding: 20,
-    backgroundColor: "#ffffff", // White background for sections
-    borderRadius: 10,
-    borderColor: "#cc0000", // Red border for sections
-    borderWidth: 2,
-    boxShadow: "0 5px 10px rgba(0, 0, 0, 0.2)", // More prominent shadow for depth
+    marginVertical: 12, // Slightly larger margins for better separation
+    padding: 18, // Increased padding for better text spacing
+    backgroundColor: "#fafafa", // Very light gray background for sections
+    borderRadius: 10, // Slightly more rounded corners
+    borderColor: "#cccccc", // Softer gray border
+    borderWidth: 1,
   },
   text: {
-    fontSize: 14,
-    marginBottom: 5,
-    color: "#333", // Darker text for better readability
+    fontSize: 13, // Slightly larger text for better readability
+    marginBottom: 7, // Increased margin for spacing between text
+    color: "#333333", // Softer black for better visual balance
   },
   label: {
-    fontSize: 16,
+    fontSize: 15, // Slightly larger label text
     fontWeight: "bold",
-    color: "#cc0000", // Red for labels
-  },
-  infoBlock: {
-    marginBottom: 10,
+    color: "#111111", // Darker for labels to stand out
   },
   vehicleNumber: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
-    color: "#003366", // Dark blue for emphasis
-    backgroundColor: "#e6e6e6", // Light gray background for the vehicle number
-    padding: 8,
-    borderRadius: 5,
+    color: "#111111",
+    backgroundColor: "#e6e6e6", // Slightly darker gray background
+    padding: 8, // Increased padding for emphasis
+    borderRadius: 6, // More rounded for smoother edges
   },
   contactNumber: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
-    color: "#cc0000", // Red for emphasis
-    padding: 8,
+    color: "#111111",
+    padding: 8, // Consistent padding with vehicle number
   },
   coloredSection: {
-    backgroundColor: "#e1f5fe", // Light blue background for info blocks
-    borderRadius: 8,
-    padding: 10,
-    marginVertical: 5,
+    backgroundColor: "#f2f2f2", // Slightly darker background for better contrast
+    borderRadius: 8, // More rounded corners for a smoother look
+    padding: 12, // Increased padding for a spacious feel
+    marginVertical: 7, // Slightly larger margin for separation
     borderWidth: 1,
-    borderColor: "#0288d1", // Darker blue border for contrast
+    borderColor: "#cccccc", // Softer gray for a cleaner border
   },
   highlightText: {
-    color: "#00796b", // Teal color for highlighted text
+    color: "#111111", // Consistent with other text
     fontWeight: "bold",
   },
 });
@@ -88,12 +108,14 @@ const styles = StyleSheet.create({
 const CustomerReport = ({ customer }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Image style={styles.logo} src={"AaaaAuto (1).png"} />
-        <Text style={styles.title}>Customer Ticket Details</Text>
+      {/* Header */}
+      <View style={[styles.headerFooter, styles.header]}>
+        <Text style={styles.headerText}>Ashan Auto Service</Text>
       </View>
 
       <View style={styles.section}>
+        <Text style={styles.title}>Customer Ticket Details</Text>
+
         <View style={styles.coloredSection}>
           <Text style={styles.label}>Customer Name:</Text>
           <Text style={styles.text}>{customer.customerName}</Text>
@@ -118,10 +140,14 @@ const CustomerReport = ({ customer }) => (
           <Text style={styles.label}>Subject:</Text>
           <Text style={styles.text}>{customer.subject}</Text>
         </View>
-        
       </View>
 
-      {/* You can add images or other elements as needed */}
+      {/* Footer */}
+      <View style={[styles.headerFooter, styles.footer]}>
+        <Text style={styles.footerText}>Ashan Auto Service | Quality Service, Reliable Care</Text>
+        <Text style={styles.footerText}>Phone: 071 3745565 | Email: info@ashanauto.com</Text>
+        <Text style={styles.footerText}>© 2024 Ashan Auto Service. All rights reserved.</Text>
+      </View>
     </Page>
   </Document>
 );

@@ -46,7 +46,7 @@ function DashboardHeader() {
 
           {/* Center: Title */}
           <div className="flex justify-center flex-grow">
-            <h1 className="text-2xl font-bold">Admin Login</h1>
+            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
           </div>
 
           {/* Right side: User greeting and avatar */}

@@ -15,8 +15,8 @@ const CustomerModal = ({ customer, onClose }) => {
     if (!isValidEmail(authorEmail)) {
       setEmailError("Please enter a valid email address.");
     } else {
-      const message = "Your Ticket has Successfully submitted and Under Progress";
-      window.open(`mailto:${authorEmail}?subject=Ticket Received&body=${message}`);
+      const message = "Thank you for reaching out to us. We have received your ticket and we will keep you updated on the progress and notify you as soon as the issue is resolved..";
+      window.open(`mailto:${authorEmail}?subject=Ticket Received – Your Issue is Being Addressed&body=${message}`);
       onClose("Success"); // Pass 'Success' status to parent
     }
   };
@@ -25,8 +25,8 @@ const CustomerModal = ({ customer, onClose }) => {
     if (!isValidEmail(authorEmail)) {
       setEmailError("Please enter a valid email address.");
     } else {
-      const message = "Your Ticket details are unclear, please raise a ticket again with clear details.";
-      window.open(`mailto:${authorEmail}?subject=Ticket Unsuccessful&body=${message}`);
+      const message = "We’ve reviewed your ticket (Ticket ID: [Ticket Number]), but the details provided are unclear. To help us resolve your issue efficiently, could you please resend the ticket with more specific information?";
+      window.open(`mailto:${authorEmail}?subject=Ticket Unsuccess – Further Details Required&body=${message}`);
       onClose("Unsuccess"); // Pass 'Unsuccess' status to parent
     }
   };
