@@ -104,12 +104,12 @@ const InventorySummaryReport = () => {
                     key={index}
                     className={`border-b ${item.qty < 3 ? 'bg-red-100' : ''}`}
                   >
-                    <td className="p-2">{item.name}</td>
-                    <td className="p-2">{item.qty}</td>
-                    <td className="p-2">{item.buyingPrice.toFixed(2)}</td>
-                    <td className="p-2">{item.price.toFixed(2)}</td>
-                    <td className="p-2">{item.total.toFixed(2)}</td>
-                    <td className="p-2">{item.profit.toFixed(2)}</td>
+                    <td className="text-gray-700">{item.name}</td>
+                    <td className="text-gray-700">{item.qty}</td>
+                    <td className="text-gray-700">{item.buyingPrice.toFixed(2)}</td>
+                    <td className="text-gray-700">{item.price.toFixed(2)}</td>
+                    <td className="text-gray-700">{item.total.toFixed(2)}</td>
+                    <td className="text-gray-700">{item.profit.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -127,7 +127,7 @@ const InventorySummaryReport = () => {
             {items
               .filter(item => item.qty < 3)
               .map(item => (
-                <li key={item._id} className="p-2 border-b">
+                <li key={item._id} className="text-gray-700 border-b">
                   {item.name} - Quantity: {item.qty}
                 </li>
               ))}
