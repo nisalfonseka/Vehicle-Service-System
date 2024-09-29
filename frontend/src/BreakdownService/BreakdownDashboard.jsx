@@ -114,7 +114,7 @@ function BreakdownDashboard() {
         <span
           className={`${currentView === "dashboard" ? "text-white" : "text-black"}`}
         >
-          Requests Dashboard
+          Request Details
         </span>
       </a>
     </nav>

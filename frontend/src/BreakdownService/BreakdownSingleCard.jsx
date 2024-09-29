@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { BiUserCircle, BiShow, BiCar, BiPhone } from 'react-icons/bi';
-import { AiOutlineEdit } from 'react-icons/ai';
-import { BsInfoCircle } from 'react-icons/bs';
+import { AiFillInfoCircle, AiOutlineEdit } from 'react-icons/ai';
+import { Bs0Circle, Bs1Circle, BsArrowRightCircle, BsBadge3D, BsBox, BsInfoCircle } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 import BreakdownModal from './BreakdownModal';
@@ -132,7 +132,7 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
     New: 'bg-green-500 text-white',
     Accepted: 'bg-blue-500 text-white',
     Declined: 'bg-red-500 text-white',
-    Completed: 'bg-yellow-500 text-white',
+    Completed: 'bg-yellow-300 text-white',
   };
 
   return (
@@ -159,23 +159,6 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
         <h2 className="my-1">{breakdownRequest.contactNumber}</h2>
       </div>
 
-      <div className="mt-4">
-        <label className="text-lg font-semibold">Assign Driver:</label>
-        <select
-          value={selectedDriver}
-          onChange={handleAssignDriver}
-          className="w-full p-2 mt-2 border border-gray-300 rounded-lg"
-        >
-          <option value="">Select a driver</option>
-          <option value="Not Available" disabled={true}>Not Available</option> {/* Show this if driver is unavailable */}
-          {drivers.map((driver) => (
-            <option key={driver._id} value={driver._id}>
-              {driver.employeeName}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <div className="mt-4 flex justify-between">
         <div
           onClick={handleAccept}
@@ -197,7 +180,7 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
 
         <div
           onClick={handleComplete}
-          className="bg-yellow-500 text-white p-2 rounded-full cursor-pointer hover:bg-yellow-700 transition duration-300 ease-in-out"
+          className="bg-yellow-300 text-white p-2 rounded-full cursor-pointer hover:bg-yellow-700 transition duration-300 ease-in-out"
           style={{ width: '40px', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           title="Complete"
         >
@@ -205,11 +188,27 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
         </div>
       </div>
 
+      <div className="mt-4">
+        <label className="text-lg font-semibold">Assign Driver:</label>
+        <select
+          value={selectedDriver}
+          onChange={handleAssignDriver}
+          className="w-full p-2 mt-2 border border-gray-300 rounded-lg"
+        >
+          <option value="">Select a driver</option>
+          <option value="Not Available" disabled={true}>Not Available</option> {/* Show this if driver is unavailable */}
+          {drivers.map((driver) => (
+            <option key={driver._id} value={driver._id}>
+              {driver.employeeName}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="flex justify-between items-center gap-x-2 mt-4 p-4">
-        <BiShow
-          className="text-3xl text-blue-800 hover:text-black cursor-pointer"
-          onClick={() => setShowModal(true)}
-        />
+        <Link to={`/breakdownRequests/details/${breakdownRequest._id}`}>
+          <AiFillInfoCircle className="text-2xl text-blue-500 hover:text-black" />
+        </Link>
         <Link to={`/breakdownRequests/edit/${breakdownRequest._id}`}>
           <AiOutlineEdit className="text-2xl text-yellow-600 hover:text-black" />
         </Link>
