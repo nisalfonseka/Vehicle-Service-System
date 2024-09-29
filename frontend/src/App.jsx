@@ -103,7 +103,7 @@ function App() {
     <>
       {!isDashboardRoute && <Header />} {/* Render Header if not on dashboard route */}
       {isDashboardRoute && <DashboardHeader />}
-      {isEmployeeDashboardRoute && <DashboardEmp />} {/* Render DashboardEmp only on /dashboard/emp routes */}
+     
       
       <Routes>
         <Route path="/" element={<Home />} />
@@ -164,7 +164,7 @@ function App() {
         <Route path="/dashboard/header" element={<Navbar />} />
           
 
-        
+        <Route path='/dashboard/emp' element={<DashboardEmp /> }>
         <Route path='/dashboard/emp/home' element={<HomeEmp />}></Route>
          <Route path='/dashboard/emp/employee' element={<Employee />}> </Route>
         <Route path='/dashboard/emp/shiftschedular' element={<Shiftschedular  />}></Route>
@@ -173,6 +173,7 @@ function App() {
         <Route path='/dashboard/emp/add_employee' element={<CreateRecords />}></Route>
         <Route path='/dashboard/emp/edit_employee/:id' element={<EditRecord />}></Route>
         <Route path='/dashboard/emp/delete_employee/:id' element={<DeleteRecord />}></Route>
+        </Route>
 
 
         <Route path='/customer/create' element={<CreateCustomer />} />
