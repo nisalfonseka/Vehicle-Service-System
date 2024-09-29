@@ -43,18 +43,6 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
     localStorage.setItem(`selectedDriver_${breakdownRequest._id}`, driverId);
 
     try {
-      // Check if the driver is already assigned to another active request
-      const response = await axios.get(`http://localhost:5555/breakdownRequests/active?driverId=${driverId}`);
-      const activeRequests = response.data;
-
-      if (activeRequests.length > 0) {
-        // If the driver is found to be assigned to an active request, prevent further assignment
-        alert(`Driver ${selectedDriverData.employeeName} is already assigned to another active request.`);
-        setSelectedDriver(''); // Reset selected driver
-        return;
-      }
-
-      // If the driver is not assigned, proceed with assignment
       await axios.put(`http://localhost:5555/breakdownRequests/${breakdownRequest._id}/assign-driver`, {
         assignedDriver: selectedDriverData.employeeName,
       });
