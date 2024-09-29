@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { BsInfoCircle } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import axios from 'axios';
-import CustomerReport from "../CustomerSupport/CustomerReport";
 
 const StarRating = () => {
   const [rating, setRating] = useState(0);
@@ -30,21 +28,16 @@ const StarRating = () => {
 
 const CustomerTable = () => {
   const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(true); // Set initial loading state to true
+  const [loading, setLoading] = useState(true);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
 
   useEffect(() => {
-    // Fetch customer data
     const fetchCustomers = async () => {
       try {
         const response = await axios.get("http://localhost:5555/customer");
         const allCustomers = response.data.data;
-
-        // Get logged-in user's username from local storage
         const loggedInUser = JSON.parse(localStorage.getItem('user'));
         const username = loggedInUser ? loggedInUser.username : null;
-
-        // Filter customers based on logged-in user's username
         const userCustomers = allCustomers.filter(customer => customer.customerName === username);
         setCustomers(allCustomers);
         setFilteredCustomers(userCustomers);
@@ -64,35 +57,31 @@ const CustomerTable = () => {
 
   return (
     <>
-      <table className="w-full table-auto bg-white border-collapse">
-        <thead>
+      <table className="min-w-full bg-white border shadow-md rounded-lg overflow-hidden">
+        <thead className="bg-red-600 text-white">
           <tr>
             {['Customer ID', 'Customer Name', 'Email', 'Mobile Number', 'Vehicle Number', 'Subject', 'Category', 'Priority', 'Estimated Time', 'Ticket Status', 'Operations'].map((header, idx) => (
-              <th key={idx} className="p-2.5 bg-red-600 text-white border border-red-700">{header}</th>
+              <th key={idx} className="p-2 text-left">{header}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {filteredCustomers.map((customer, index) => {
-            const emailStatus = localStorage.getItem(`emailStatus_${customer.customer_id}`) || ""; // Fetch email status from local storage
-
+            const emailStatus = localStorage.getItem(`emailStatus_${customer.customer_id}`) || "";
             return (
-              <tr
-                key={customer._id}
-                className={`${index % 2 === 0 ? 'bg-white' : 'bg-white'} h-[50px] border-b border-red-700`}
-              >
-                <td className="text-center text-black  border border-red-700">{index + 1}</td>
-                <td className="text-center text-black  border border-red-700">{customer.customerName}</td>
-                <td className="text-center text-black  border border-red-700 hidden md:table-cell">{customer.email}</td>
+              <tr key={customer._id} className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'} h-[50px] border-b border-red-700`}>
+                <td className="text-center text-black border border-red-700">{index + 1}</td>
+                <td className="text-center text-black border border-red-700">{customer.customerName}</td>
+                <td className="text-center text-black border border-red-700 hidden md:table-cell">{customer.email}</td>
                 <td className="text-center text-black border border-red-700 hidden md:table-cell">{customer.mobileNumber}</td>
-                <td className="text-center text-black  border border-red-700">{customer.vehicleNumber}</td>
-                <td className="text-center text-black  border border-red-700">{customer.subject}</td>
-                <td className="text-center text-black  border border-red-700">{customer.category}</td>
-                <td className="text-center text-black  border border-red-700">{customer.priority}</td>
+                <td className="text-center text-black border border-red-700">{customer.vehicleNumber}</td>
+                <td className="text-center text-black border border-red-700">{customer.subject}</td>
+                <td className="text-center text-black border border-red-700">{customer.category}</td>
+                <td className="text-center text-black border border-red-700">{customer.priority}</td>
                 <td className="text-center text-black border border-red-700">{customer.estimatedTime}</td>
-                <td className="text-center text-black  border border-red-700">
+                <td className="text-center text-black border border-red-700">
                   {emailStatus ? (
-                    <span className={`text-${emailStatus === 'Success' ? 'green' : 'red'}-500 `}>
+                    <span className={`text-${emailStatus === 'Success' ? 'green' : 'red'}-500`}>
                       {emailStatus}
                     </span>
                   ) : (
@@ -107,7 +96,6 @@ const CustomerTable = () => {
                     <Link to={`/customer/edit/${customer._id}`}>
                       <AiOutlineEdit className="text-[24px] text-yellow-600" />
                     </Link>
-                   
                     <Link to={`/customer/delete/${customer._id}`}>
                       <MdOutlineDelete className="text-[24px] text-red-600" />
                     </Link>

@@ -3,22 +3,20 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineSearch } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import { MdOutlineDelete } from "react-icons/md";
-import { ClipLoader } from "react-spinners"; // You can use any spinner from a library like react-spinners
+import { ClipLoader } from "react-spinners";
 
 const BooksTable = ({ books }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate data loading
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000); // Adjust the delay to simulate the loading time
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Filter books based on the search query
   const filteredBooks = books.filter((book) =>
     book.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     book.vehicleNumber.toLowerCase().includes(searchQuery.toLowerCase())
@@ -43,53 +41,27 @@ const BooksTable = ({ books }) => {
           <ClipLoader color="#E53E3E" loading={loading} size={50} />
         </div>
       ) : (
-        <table className="min-w-full border-collapse bg-white shadow-lg">
-          <thead>
+        <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-red-600 text-white">
             <tr>
-              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600">
-                Booking ID
-              </th>
-              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600">
-                Customer Name
-              </th>
-              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600 max-md:hidden">
-                Vehicle Number
-              </th>
-              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600 max-md:hidden">
-                Date
-              </th>
-              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600 max-md:hidden">
-                Time
-              </th>
-              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600 max-md:hidden">
-                Status
-              </th>
-              <th className="border-b-2 border-red-600 p-4 text-left text-sm font-semibold text-white bg-red-600">
-                Operations
-              </th>
+              <th className="border-b-2 border-red-600 p-4 text-left">Booking ID</th>
+              <th className="border-b-2 border-red-600 p-4 text-left">Customer Name</th>
+              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Vehicle Number</th>
+              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Date</th>
+              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Time</th>
+              <th className="border-b-2 border-red-600 p-4 text-left max-md:hidden">Status</th>
+              <th className="border-b-2 border-red-600 p-4 text-left">Operations</th>
             </tr>
           </thead>
           <tbody>
             {filteredBooks.map((book, index) => (
               <tr key={book._id} className="even:bg-gray-100 odd:bg-white hover:bg-gray-200">
-                <td className="border-b border-gray-300 p-4 text-left">
-                  {index + 1}
-                </td>
-                <td className="border-b border-gray-300 p-4 text-left">
-                  {book.customerName}
-                </td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
-                  {book.vehicleNumber}
-                </td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
-                  {book.selectedDate}
-                </td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
-                  {book.selectedTimeSlot}
-                </td>
-                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">
-                  {book.status === 'New' ? 'Pending' : book.status}
-                </td>
+                <td className="border-b border-gray-300 p-4 text-left">{index + 1}</td>
+                <td className="border-b border-gray-300 p-4 text-left">{book.customerName}</td>
+                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.vehicleNumber}</td>
+                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.selectedDate}</td>
+                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.selectedTimeSlot}</td>
+                <td className="border-b border-gray-300 p-4 text-left max-md:hidden">{book.status === 'New' ? 'Pending' : book.status}</td>
                 <td className="border-b border-gray-300 p-4 text-left">
                   <div className="flex justify-start gap-x-4">
                     <Link to={`/books/details/${book._id}`}>
@@ -101,11 +73,6 @@ const BooksTable = ({ books }) => {
                     <Link to={`/books/delete/${book._id}`}>
                       <MdOutlineDelete className="text-2xl text-red-600" />
                     </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="absolute top-3 right-3 text-white text-xs font-semibold px-3 py-1 rounded-full ">
-                    {book.status}
                   </div>
                 </td>
               </tr>
