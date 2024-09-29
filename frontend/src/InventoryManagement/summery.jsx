@@ -89,7 +89,7 @@ const InventorySummaryReport = () => {
             <h2 className="text-xl font-semibold text-gray-700">{category}</h2>
             <table className="table-auto w-full mt-4 border-collapse">
               <thead>
-                <tr className="bg-gray-200 text-left">
+                <tr className="bg-red-600 text-left">
                   <th className="p-2">Item Name</th>
                   <th className="p-2">Quantity</th>
                   <th className="p-2">Buying Price (LKR)</th>
