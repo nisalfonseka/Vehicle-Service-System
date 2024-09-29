@@ -42,7 +42,7 @@ const AddEmployee = () => {
     axios.post('http://localhost:5555/empmanageRequests', formData)
       .then((response) => {
         (response.data.Status);
-        navigate('/dashboard/employee');
+        navigate('/dashboard/emp/employee');
         {
           alert(response.data.Error || "Record Added Successfully!");
         }

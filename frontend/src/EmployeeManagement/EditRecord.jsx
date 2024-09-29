@@ -38,7 +38,7 @@ const EditEmployee = () => {
             const response = await axios.put(`http://localhost:5555/empmanageRequests/${id}`, employee);
             console.log('Update Response:', response.data);
             alert(response.data.message || "Record Updated Successfully!");
-            navigate('/dashboard/employee');
+            navigate('/dashboard/emp/employee');
         } catch (err) {
             console.error('Error updating employee:', err);
             alert('An error occurred while updating the record.');

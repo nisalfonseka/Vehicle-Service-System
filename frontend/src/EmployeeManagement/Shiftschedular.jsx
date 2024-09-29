@@ -6,25 +6,21 @@ const ShiftScheduler = () => {
     const [nightShiftEmployees, setNightShiftEmployees] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedShift, setSelectedShift] = useState('Day');
-    const [employeeInput, setEmployeeInput] = useState(''); 
+    const [employeeInput, setEmployeeInput] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const fetchEmployees = async () => {
         try {
             const dayRes = await axios.get('http://localhost:5555/Shift/team?shift=Day');
-            console.log("Day Shift Employees:", dayRes.data);
             setDayShiftEmployees(dayRes.data);
         } catch (error) {
-            console.error("Error fetching day shift employees:", error);
             setErrorMessage("Failed to fetch day shift employees.");
         }
 
         try {
             const nightRes = await axios.get('http://localhost:5555/Shift/team?shift=Night');
-            console.log("Night Shift Employees:", nightRes.data);
             setNightShiftEmployees(nightRes.data);
         } catch (error) {
-            console.error("Error fetching night shift employees:", error);
             setErrorMessage("Failed to fetch night shift employees.");
         }
     };
@@ -32,149 +28,244 @@ const ShiftScheduler = () => {
     const handleAddEmployee = async () => {
         try {
             const inputTrimmed = employeeInput.trim();
-
             if (!inputTrimmed) {
                 setErrorMessage("Please enter an Employee ID or Name.");
                 return;
             }
 
-            // Determine if input is ID or Name
             const employeeId = /^\d+$/.test(inputTrimmed) ? inputTrimmed : null;
             const employeeName = !employeeId ? inputTrimmed : null;
 
-            // Prepare data for POST request
             const postData = {
-                employeeId: employeeId, // If it's an ID
-                Team: employeeName,      // If it's a name
+                employeeId: employeeId,
+                Team: employeeName,
                 shift: selectedShift,
             };
 
-            // Send POST request to add employee to the shift
             const response = await axios.post('http://localhost:5555/Shift', postData);
-            console.log("Employee added successfully:", response.data);
             setShowModal(false);
             setEmployeeInput('');
             setErrorMessage('');
-            fetchEmployees(); // Refresh employee list after adding
+            fetchEmployees();
         } catch (error) {
-            console.error("Error adding employee:", error.response ? error.response.data : error);
             setErrorMessage("Failed to add employee. Please check the input.");
         }
     };
 
     useEffect(() => {
-        fetchEmployees(); 
+        fetchEmployees();
     }, []);
 
     const handleDeleteEmployee = async (shiftId) => {
-        console.log("Attempting to delete employee with ID:", shiftId); // Log the employee ID
         try {
             const response = await axios.delete(`http://localhost:5555/Shift/${shiftId}`);
-            console.log("Employee deleted successfully", response.data);
-            fetchEmployees(); // Refresh the list after deletion
+            fetchEmployees();
         } catch (error) {
-            console.error("Error deleting employee:", error);
             setErrorMessage("Error deleting employee.");
         }
     };
-    
 
-    const renderRows = (shiftEmployees) => {
-        console.log("Rendering Rows for Shift Employees:", shiftEmployees);
-        const rows = [];
+const renderRows = (shiftEmployees) => {
+    console.log("Rendering Rows for Shift Employees:", shiftEmployees);
+    const rows = [];
 
-        for (let i = 0; i < 5; i++) {
-            if (i < shiftEmployees.length) {
-                rows.push(
-                    <tr key={`${shiftEmployees[i]._id}-${i}`}>
-                        <td className="font-bold">{shiftEmployees[i].Team} <span className="font-normal">({shiftEmployees[i].role})</span></td>  
-                        <td>
-                            <button
-                               className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition-transform transform hover:scale-105"
-                               onClick={() => handleDeleteEmployee(shiftEmployees[i]._id)}
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                );
-            } else {
-                rows.push(
-                    <tr key={`empty-${i}`}>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                );
-            }
+    for (let i = 0; i < 5; i++) {
+        if (i < shiftEmployees.length) {
+            rows.push(
+                <tr key={`${shiftEmployees[i]._id}-${i}`} style={{ padding: '5px 0' }}>
+                    <td style={{ padding: '10px', fontWeight: 'bold' }}>
+                        {shiftEmployees[i].Team} <span style={{ fontWeight: 'normal' }}>({shiftEmployees[i].role})</span>
+                    </td>
+                    <td>
+                        <button
+                            style={{
+                                backgroundColor: '#e53e3e',
+                                color: '#fff',
+                                padding: '5px 10px',
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                            }}
+                            onClick={() => handleDeleteEmployee(shiftEmployees[i]._id)}
+                        >
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            );
+        } else {
+            rows.push(
+                <tr key={`empty-${i}`}>
+                    <td style={{ padding: '10px' }}></td>
+                    <td></td>
+                </tr>
+            );
         }
-        return rows;
-    };
+    }
+    return rows;
+};
 
     return (
-        <div className="p-5 font-roboto text-lg text-gray-800 bg-gradient-to-r from-gray-200 to-gray-300">
-            <h1 className="text-3xl mb-5 font-bold uppercase border-b-2 border-blue-600 pb-2">Shift Scheduler</h1>
-            {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+        <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', fontSize: '18px', color: '#4a5568', background: 'linear-gradient(to right, #edf2f7, #e2e8f0)' }}>
+            <h1 style={{ fontSize: '32px', marginBottom: '20px', fontWeight: 'bold', textTransform: 'uppercase', borderBottom: '2px solid #3182ce', paddingBottom: '10px' }}>Shift Scheduler</h1>
+            {errorMessage && <p style={{ color: '#e53e3e' }}>{errorMessage}</p>}
 
-            <table className="w-full border-collapse mt-5">
-                <thead>
-                    <tr>
-                        <th className="bg-blue-600 text-white text-lg p-4 border-b-2 border-blue-700">Shift</th>
-                        <th className="bg-blue-600 text-white text-lg p-4 border-b-2 border-blue-700">Employee Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="p-4">Day Shift</td>
-                        <td>
-                            <table>
-                                <tbody>
-                                    {renderRows(dayShiftEmployees)}
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="p-4">Night Shift</td>
-                        <td>
-                            <table>
-                                <tbody>
-                                    {renderRows(nightShiftEmployees)}
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', padding: '20px', backgroundColor: '#fff', border: '1px solid #cbd5e0', marginBottom: '30px' }}>
+                {/* Day Shift Section */}
+                <div style={{ marginBottom: '30px' }}>
+                    <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#3182ce', borderBottom: '4px solid #2b6cb0', marginBottom: '16px', paddingBottom: '8px' }}>Day Shift</h2>
+                    <table style={{ width: '100%', borderSpacing: '0 10px' }}>
+                        <tbody>
+                            {renderRows(dayShiftEmployees)}
+                        </tbody>
+                    </table>
+                </div>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 mt-5 rounded shadow transition-all duration-300" onClick={() => setShowModal(true)}>
+                {/* Advanced separator between shifts */}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '30px' }}>
+                    <hr style={{ border: '2px solid #cbd5e0', width: '100%' }} />
+                    <span style={{ backgroundColor: '#fff', padding: '0 10px', fontWeight: 'bold', color: '#a0aec0' }}>Night Shift</span>
+                    <hr style={{ border: '2px solid #cbd5e0', width: '100%' }} />
+                </div>
+
+                {/* Night Shift Section */}
+                <div>
+                    <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#3182ce', borderBottom: '4px solid #2b6cb0', marginBottom: '16px', paddingBottom: '8px' }}>Night Shift</h2>
+                    <table style={{ width: '100%', borderSpacing: '0 10px' }}>
+                        <tbody>
+                            {renderRows(nightShiftEmployees)}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button
+                style={{
+                    backgroundColor: '#3182ce',
+                    color: '#fff',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    marginTop: '10px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    transform: 'scale(1)',
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                }}
+                onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                onMouseDown={(e) => e.target.style.transform = 'scale(0.95)'}
+                onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
+                onClick={() => setShowModal(true)}
+            >
                 Add Employee
             </button>
 
             {showModal && (
-                <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ${showModal ? 'block' : 'hidden'}`}>
-                    <div className="bg-white p-12 rounded-lg shadow-lg w-96">
-                        <h2 className="text-2xl mb-4">Add Employee to {selectedShift} Shift</h2>
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: '0',
+                        left: '0',
+                        right: '0',
+                        bottom: '0',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <div
+                        style={{
+                            backgroundColor: '#fff',
+                            padding: '30px',
+                            borderRadius: '10px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                            width: '400px',
+                            textAlign: 'center',
+                        }}
+                    >
+                        <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Add Employee to {selectedShift} Shift</h2>
                         <input
                             type="text"
                             placeholder="Enter Employee ID or Name"
                             value={employeeInput}
                             onChange={(e) => setEmployeeInput(e.target.value)}
-                            className="w-full p-3 mb-4 border border-gray-300 rounded focus:border-blue-600 focus:outline-none"
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                marginBottom: '16px',
+                                border: '1px solid #cbd5e0',
+                                borderRadius: '5px',
+                                transition: 'border-color 0.3s ease',
+                                outline: 'none',
+                            }}
                         />
 
-                        {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+                        {errorMessage && <p style={{ color: '#e53e3e' }}>{errorMessage}</p>}
 
-                        <div className="flex justify-between mb-4">
-                            <button className={`py-2 px-4 ${selectedShift === 'Day' ? 'bg-blue-600 text-white' : 'bg-gray-200'} rounded`} onClick={() => setSelectedShift('Day')}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                            <button
+                                style={{
+                                    padding: '10px 20px',
+                                    borderRadius: '5px',
+                                    backgroundColor: selectedShift === 'Day' ? '#3182ce' : '#e2e8f0',
+                                    color: selectedShift === 'Day' ?
+                                    '#fff' : '#4a5568',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onClick={() => setSelectedShift('Day')}
+                            >
                                 Day Shift
                             </button>
-                            <button className={`py-2 px-4 ${selectedShift === 'Night' ? 'bg-blue-600 text-white' : 'bg-gray-200'} rounded`} onClick={() => setSelectedShift('Night')}>
+
+                            <button
+                                style={{
+                                    padding: '10px 20px',
+                                    borderRadius: '5px',
+                                    backgroundColor: selectedShift === 'Night' ? '#3182ce' : '#e2e8f0',
+                                    color: selectedShift === 'Night' ? '#fff' : '#4a5568',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onClick={() => setSelectedShift('Night')}
+                            >
                                 Night Shift
                             </button>
                         </div>
 
-                        <button onClick={handleAddEmployee} className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Add Employee</button>
-                        <button onClick={() => setShowModal(false)} className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded ml-2">Cancel</button>
+                        <button
+                            style={{
+                                backgroundColor: '#3182ce',
+                                color: '#fff',
+                                padding: '10px 20px',
+                                borderRadius: '5px',
+                                marginRight: '10px',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                            }}
+                            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                            onMouseDown={(e) => e.target.style.transform = 'scale(0.95)'}
+                            onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
+                            onClick={handleAddEmployee}
+                        >
+                            Add Employee
+                        </button>
+                        <button
+                            style={{
+                                backgroundColor: '#e53e3e',
+                                color: '#fff',
+                                padding: '10px 20px',
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                            }}
+                            onClick={() => setShowModal(false)}
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             )}
@@ -183,3 +274,4 @@ const ShiftScheduler = () => {
 };
 
 export default ShiftScheduler;
+
