@@ -50,18 +50,19 @@ const Employee = () => {
             </Link>
             <div className="mt-3">
                 <table className="w-full border-collapse border-separate border-spacing-0 shadow-lg bg-white rounded-lg">
-                    <thead>
-                        <tr>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">Employee ID</th>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">Name</th>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">Email</th>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">Contact Number</th>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">Position</th>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">License No</th>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">Salary</th>
-                            <th className="bg-blue-600 text-white font-bold uppercase p-3">Actions</th>
-                        </tr>
-                    </thead>
+                <thead className="bg-red-600 text-white">
+           <tr>
+                <th className="font-bold uppercase p-3">Employee ID</th>
+                <th className="font-bold uppercase p-3">Name</th>
+               <th className="font-bold uppercase p-3">Email</th>
+               <th className="font-bold uppercase p-3">Contact Number</th>
+              <th className="font-bold uppercase p-3">Position</th>
+             <th className="font-bold uppercase p-3">License No</th>
+             <th className="font-bold uppercase p-3">Salary</th>
+             <th className="font-bold uppercase p-3">Actions</th>
+           </tr>
+              </thead>
+
                     <tbody>
                         {empmanageRequests.map((e) => (
                             <tr key={e._id} className="border-b">

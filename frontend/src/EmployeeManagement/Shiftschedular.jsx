@@ -157,7 +157,7 @@ const renderRows = (shiftEmployees) => {
                 onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
                 onClick={() => setShowModal(true)}
             >
-                Add Employee
+                Assign Employee
             </button>
 
             {showModal && (
@@ -184,10 +184,10 @@ const renderRows = (shiftEmployees) => {
                             textAlign: 'center',
                         }}
                     >
-                        <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Add Employee to {selectedShift} Shift</h2>
+                        <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Assign Employee to {selectedShift} Shift</h2>
                         <input
                             type="text"
-                            placeholder="Enter Employee ID or Name"
+                            placeholder="Enter Employee Name"
                             value={employeeInput}
                             onChange={(e) => setEmployeeInput(e.target.value)}
                             style={{
@@ -251,7 +251,7 @@ const renderRows = (shiftEmployees) => {
                             onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
                             onClick={handleAddEmployee}
                         >
-                            Add Employee
+                            Assign Employee
                         </button>
                         <button
                             style={{
