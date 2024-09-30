@@ -61,7 +61,9 @@ function LoginForm() {
           navigate("/dashboard/Customer/dashboard");
         } else if (email === "breakdownAdmin@gmail.com") {
           navigate("/dashboard/breakdown/dashboard");
-        } else {
+        } else if (email === "vehicleAdmin@gmail.com") {
+          navigate("/dashboard/vehicle/dashboard");
+        }else {
           navigate("/");
         }
   

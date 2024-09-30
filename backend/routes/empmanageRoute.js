@@ -224,22 +224,25 @@ router.put("/:id", async (request, response) => {
   }
 });
 
-// Route for Delete an Employee record
+// Route for deleting an employee record
 router.delete("/:id", async (request, response) => {
   try {
     const { id } = request.params;
 
     const result = await empmanageRequest.findByIdAndDelete(id);
 
+    // Check if the employee record was found and deleted
     if (!result) {
-      return response.status(404).json({ message: "employee record not found" });
+      return response.status(404).json({ Status: false, message: "Employee record not found." });
     }
 
-    return response.status(200).send({ message: "employee record deleted successfully" });
+    // Send a success response if deletion was successful
+    return response.status(200).json({ Status: true, message: "Employee record deleted successfully." });
   } catch (error) {
-    console.log(error.message);
-    response.status(500).send({ message: error.message });
+    console.log("Error deleting record:", error.message);
+    return response.status(500).json({ Status: false, message: error.message });
   }
 });
+
 
 export default router;

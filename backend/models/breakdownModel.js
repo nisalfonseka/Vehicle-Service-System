@@ -28,7 +28,7 @@ const breakdownRequestSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['New', 'Accepted', 'Declined'],
+      enum: ['New', 'Accepted', 'Declined', 'Completed'],
       default: 'New', // Default status is "New"
     },
   },
