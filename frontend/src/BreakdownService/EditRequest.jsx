@@ -47,7 +47,7 @@ const EditRequest = () => {
       .then(() => {
         setLoading(false);
         enqueueSnackbar('breakdown request Edited successfully', { variant: 'success' });
-        navigate('/');
+        navigate(-1);
       })
       .catch((error) => {
         setLoading(false);

@@ -18,7 +18,7 @@ const DeleteRequest = () => {
       .then(() => {
         setLoading(false);
         enqueueSnackbar('Breakdown request Deleted successfully', { variant: 'success' });
-        navigate('/');
+        navigate(-1);
       })
       .catch((error) => {
         setLoading(false);
