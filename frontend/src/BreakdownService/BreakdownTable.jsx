@@ -9,26 +9,38 @@ const BreakdownTable = ({ breakdownRequests, loading }) => {
   }
 
   return (
-    <table
-      className='w-full border-separate border-spacing-2'
-      style={{ borderCollapse: 'separate', borderSpacing: '8px', backgroundColor: '#E53935' }}
-    >
-      <thead>
+    <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+
+      <thead className="bg-red-600 text-white">
+            <tr>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">No</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Customer Name</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Contact Number</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Vehicle Number</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Location</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Issue Type</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Assigned Driver</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Status</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Operations</th>
+
+            </tr>
+          </thead>
+      {/* <thead className="bg-red-600">
         <tr>
-        <th style={{ color: 'white' }}>No</th>
-          <th style={{ color: 'white' }}>Customer Name</th>
-          <th style={{ color: 'white' }}>Contact Number</th>
-          <th style={{ color: 'white' }}>Vehicle Number</th>
-          <th style={{ color: 'white' }}>Location</th>
-          <th style={{ color: 'white' }}>Issue Type</th>
-          <th style={{ color: 'white' }}>Assigned Driver</th>
-          <th style={{ color: 'white' }}>Status</th>
-          <th style={{ color: 'white' }}>Operations</th>
+          <th className="text-white">No</th>
+          <th className="text-white">Customer Name</th>
+          <th className="text-white">Contact Number</th>
+          <th className="text-white">Vehicle Number</th>
+          <th className="text-white">Location</th>
+          <th className="text-white">Issue Type</th>
+          <th className="text-white">Assigned Driver</th>
+          <th className="text-white">Status</th>
+          <th className="text-white">Operations</th>
         </tr>
-      </thead>
+      </thead> */}
       <tbody>
         {breakdownRequests.map((request, index) => (
-          <tr key={request._id}>
+          <tr className="even:bg-gray-100 odd:bg-white transition duration-200 hover:bg-gray-200" key={request._id}>
             <td>{index + 1}</td>
             <td>{request.customerName}</td>
             <td>{request.contactNumber}</td>
@@ -38,12 +50,12 @@ const BreakdownTable = ({ breakdownRequests, loading }) => {
             <td>{request.assignedDriver || 'Not Assigned'}</td>
             <td>{request.status || 'Pending'}</td>
             <td className="border-b border-gray-300 p-4 text-left">
-                  <div className="flex justify-start gap-x-4">
+              <div className="flex justify-start gap-x-4">
                 <Link to={`/breakdownRequests/details/${request._id}`}>
-                <BsInfoCircle className="text-2xl text-green-800" />
+                  <BsInfoCircle className="text-2xl text-green-800" />
                 </Link>
                 <Link to={`/breakdownRequests/edit/${request._id}`}>
-                <AiOutlineEdit className="text-2xl text-yellow-600" />
+                  <AiOutlineEdit className="text-2xl text-yellow-600" />
                 </Link>
                 <Link to={`/breakdownRequests/delete/${request._id}`}>
                   <AiOutlineDelete className="text-2xl text-red-600"/>
