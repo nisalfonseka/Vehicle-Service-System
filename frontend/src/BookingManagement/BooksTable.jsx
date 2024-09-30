@@ -45,13 +45,13 @@ const BooksTable = ({ books }) => {
             ) : (
               filteredBooks.map((book, index) => (
                 <tr key={book._id} className="even:bg-gray-100 odd:bg-white transition duration-200 hover:bg-gray-200">
-                  <td className="border-b border-gray-300 p-3 text-left text-sm">{index + 1}</td>
-                  <td className="border-b border-gray-300 p-3 text-left text-sm">{book.customerName}</td>
-                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.vehicleNumber}</td>
-                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.selectedDate}</td>
-                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.selectedTimeSlot}</td>
-                  <td className="border-b border-gray-300 p-3 text-left text-sm max-md:hidden">{book.status === 'New' ? 'Pending' : book.status}</td>
-                  <td className="border-b border-gray-300 p-3 text-left text-sm">
+                  <td className="border-b border-gray-300 p-3 text-left text-l">{index + 1}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-l">{book.customerName}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-l max-md:hidden">{book.vehicleNumber}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-l max-md:hidden">{book.selectedDate}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-l max-md:hidden">{book.selectedTimeSlot}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-l max-md:hidden">{book.status === 'New' ? 'Pending' : book.status}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-l">
                     <div className="flex justify-start gap-x-2">
                       <Link to={`/books/details/${book._id}`} title="View Details">
                         <BsInfoCircle className="text-xl text-green-800 transition duration-200 hover:scale-110" />
