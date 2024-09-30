@@ -90,6 +90,14 @@ import BreakdownCard from './BreakdownService/BreakdownCard';
 import BreakdownView from "./BreakdownService/BreakdownView";
 import BreakdownDashboard from "./BreakdownService/BreakdownDashboard.jsx"
 
+//vehicle
+import CreateVehicle from './VehicleManagement/CreateVehicles';
+import ShowVehicle from './VehicleManagement/ShowVehicle';
+import EditVehicle from './VehicleManagement/EditVehicle';
+import DeleteVehicle from './VehicleManagement/DeleteVehicle';
+import VehicleDashboard from "./VehicleManagement/VehicleDashboard.jsx";
+import VehiclesCard from "./VehicleManagement/VehiclesCard.jsx";
+
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -200,6 +208,18 @@ function App() {
         <Route path="/dashboard/BreakdownView" element={<BreakdownView/>}/>
         <Route path="/dashboard/breakdownAdmin" element={<BreakdownCard/>}/>
         <Route path="/dashboard/breakdown/dashboard" element={<BreakdownDashboard/>}/>
+
+
+        <Route path='/vehicles/create' element={<CreateVehicle />} />
+      <Route path='/vehicles/details/:id' element={<ShowVehicle />} />
+      <Route path='/vehicles/edit/:id' element={<EditVehicle />} />
+      <Route path='/vehicles/delete/:id' element={<DeleteVehicle />} />
+      <Route path='/dashboard/vehicle/dashboard' element={<VehicleDashboard />} />
+      <Route path='/vehicle/card' element={<VehiclesCard />} />
+      
+
+
+
 
 
       </Routes>
