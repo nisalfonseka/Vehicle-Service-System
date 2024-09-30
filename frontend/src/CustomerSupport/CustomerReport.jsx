@@ -146,7 +146,7 @@ const CustomerReport = ({ customer }) => (
       <View style={[styles.headerFooter, styles.footer]}>
         <Text style={styles.footerText}>Ashan Auto Service | Quality Service, Reliable Care</Text>
         <Text style={styles.footerText}>Phone: 071 3745565 | Email: info@ashanauto.com</Text>
-        <Text style={styles.footerText}>© 2024 Ashan Auto Service. All rights reserved.</Text>
+        <Text style={styles.footerText}>© 2002 Ashan Auto Service. All rights reserved.</Text>
       </View>
     </Page>
   </Document>
