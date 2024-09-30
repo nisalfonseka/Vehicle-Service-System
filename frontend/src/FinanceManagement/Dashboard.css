@@ -20,11 +20,6 @@ body {
   text-align: center;
 }
 
-h2, h3 {
-  color: #000000; /* Main heading color */
-  font-weight: 700;
-}
-
 h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
@@ -33,8 +28,8 @@ h1 {
 
 h2.dashboard-title {
   font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #dde1e5; /* Custom color for sub-headings */
+  margin-bottom: 30px;
+  color: #111d62; /* Custom color for sub-headings */
 }
 
 .cards-container {
@@ -46,13 +41,38 @@ h2.dashboard-title {
 }
 
 .card {
-  background-color: #737791; /* Dark blue background for cards */
-  color: white;
   border-radius: 10px;
   padding: 20px;
   width: 220px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Slightly raise card on hover */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+/* Individual card colors */
+.card.profits {
+  background-color: #4caf50; /* Green for profits */
+  color: white;
+}
+
+.card.total-invoices {
+  background-color: #2196f3; /* Blue for total invoices */
+  color: white;
+}
+
+.card.total-incomes {
+  background-color: #ff9800; /* Orange for total incomes */
+  color: white;
+}
+
+.card.total-expenses {
+  background-color: #f44336; /* Red for total expenses */
+  color: white;
 }
 
 .card h3 {
@@ -63,6 +83,7 @@ h2.dashboard-title {
 .card p {
   font-size: 1rem;
   font-weight: 600;
+  color: #0c0f12;
 }
 
 .chart-container {
@@ -95,6 +116,85 @@ button {
 button:hover {
   background-color: #1a1c1a;
 }
-.text-4xl.my-8{
+
+.text-4xl.my-8 {
   margin-top: 20px;
 }
+
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for contrast */
+}
+
+.line-chart-container {
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding inside the chart container */
+  width: 100%; /* Full width for the chart container */
+  max-width: 800px; /* Set maximum width for the chart */
+  height: 500px; /* Set a fixed height for the chart */
+  margin-left: -100px;
+}
+
+.chart-container {
+  height: 400px; /* Change this value to adjust height */
+  width: 100%; /* Use full width of the container */
+  max-width: 800px; /* Limit max width if needed */
+}
+
+/* Ensure the chart itself takes full height and width of its container */
+.chartjs-render-monitor {
+  height: 100% !important; /* Ensure the chart fills the container */
+  width: 100% !important; /* Ensure the chart fills the container */
+}
+
+.pie-chart-container {
+  float: right;
+  margin-right: -250px;
+  margin-top: -480px;
+  width: 100%; /* Full width for the chart */
+  max-width: 500px; /* Limit max width for the chart */
+  height: 400px; /* Set a fixed height for the chart */
+}
+
+
+
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(20px); /* Start slightly below */
+    opacity: 0; /* Start invisible */
+  }
+  50% {
+    transform: translateY(-10px); /* Move up slightly */
+    opacity: 0.5; /* Fade in */
+  }
+  100% {
+    transform: translateY(0); /* Final position */
+    opacity: 1; /* Fully visible */
+  }
+}
+
+
+
+.card {
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0; /* Start invisible */
+}
+
+/* Add a delay for cards so they appear sequentially */
+.card:nth-child(1) {
+  animation-delay: 0.5s; /* Start appearing after 0.5s */
+}
+.card:nth-child(2) {
+  animation-delay: 0.7s; /* 0.7s delay */
+}
+.card:nth-child(3) {
+  animation-delay: 0.9s; /* 0.9s delay */
+}
+.card:nth-child(4) {
+  animation-delay: 1.1s; /* 1.1s delay */
+}
+

@@ -1,10 +1,42 @@
 import express from "express";
 import { invoiceRequest } from "../models/invoice.js";
 
+
 const router = express.Router();
 
 // Route for Save a new request
 // Route for Save a new request
+
+
+router.get('/totalInvoices', async (req, res) => {
+  try {
+    const totalInvoices = await invoiceRequest.countDocuments(); // Use the correct model here
+    res.json({ totalInvoices }); // Respond with the total invoices count
+  } catch (error) {
+    console.error('Error fetching total invoices:', error);
+    res.status(500).json({ error: 'Error fetching total invoices' });
+  }
+});
+
+
+
+// Backend route (Express.js)
+router.get('/totalIncome', async (req, res) => {
+  try {
+    const invoices = await invoiceRequest.find(); // Use the correct model name
+    const totalIncome = invoices.reduce((total, invoice) => {
+      const finalAmount = (invoice.amount || 0) + (invoice.taxAmount || 0) - (invoice.discountAmount || 0);
+      return total + finalAmount;
+    }, 0);
+    
+    res.json({ totalIncome });
+  } catch (error) {
+    console.error('Error fetching total income:', error);
+    res.status(500).json({ error: 'Failed to fetch total income' });
+  }
+});
+
+
 router.post("/", async (request, response) => {
   try {
     const {
