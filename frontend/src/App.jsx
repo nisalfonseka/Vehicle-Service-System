@@ -131,6 +131,7 @@ function App() {
         <Route path="/dashboard/Bookadmin" element={<Bookadmin/>}/>
         <Route path="/dashboard/header" element={<dashboardHeader/>}/>
         <Route path="/dashboard/books/overview" element={<BookOverview/>}/>
+        <Route path="/dashboard/books/create" element={<CreateBook />} />
 
           <Route path="/items" element={<ItemList />} />
           <Route path="/salesmanager" element={<AdminHome/>} />
