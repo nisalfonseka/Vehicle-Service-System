@@ -6,8 +6,8 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     invoiceName: '',
-    serviceType: '', // Pre-populate with an empty value or a default service
-    invoiceDate: '', // Should be in "YYYY-MM-DD" format
+    serviceType: '',
+    invoiceDate: '',
     customerName: '',
     billingAddress: '',
     amount: '',
@@ -17,6 +17,7 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
     paymentMethod: '',
   });
   const [error, setError] = useState(null);
+  const [nameError, setNameError] = useState(null);
 
   const serviceOptions = [
     { value: '', label: 'Select Service Type' },
@@ -26,7 +27,7 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
     { value: 'Windscreen Treatments', label: 'Windscreen Treatments' },
     { value: 'Exterior & Interior Detailing', label: 'Exterior & Interior Detailing' },
     { value: 'Inspection Reports', label: 'Inspection Reports' },
-    { value: 'Insuarance Claims', label: 'Insuarance Claims' },
+    { value: 'Insurance Claims', label: 'Insurance Claims' },
     { value: 'Hybrid Services', label: 'Hybrid Services' },
     { value: 'Battery Services', label: 'Battery Services' },
     { value: 'Nano Treatments', label: 'Nano Treatments' },
@@ -34,12 +35,36 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
     { value: 'Wheel Alignment', label: 'Wheel Alignment' },
   ];
 
+  // Payment method options
+  const paymentMethods = [
+    { value: '', label: 'Select Payment Method' },
+    { value: 'Credit Card', label: 'Credit Card' },
+    { value: 'Cash', label: 'Cash' },
+    { value: 'Bank Transfer', label: 'Bank Transfer' },
+    { value: 'PayPal', label: 'PayPal' },
+  ];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    // Validate invoiceName and customerName to allow only letters and spaces
+    if (name === 'invoiceName' || name === 'customerName') {
+      const filteredValue = value.replace(/[^A-Za-z\s]/g, '');
+      setFormData({
+        ...formData,
+        [name]: filteredValue,
+      });
+      setNameError(filteredValue === '' ? 'Only letters and spaces are allowed.' : null);
+    } else {
+      // Validate numeric fields for negative values
+      if (['amount', 'taxAmount', 'discountAmount'].includes(name) && value < 0) {
+        return; // Ignore negative values
+      }
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -49,6 +74,9 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
 
   const handleSubmitPart1 = (e) => {
     e.preventDefault();
+    if (nameError) {
+      return;
+    }
     setStep(2);
   };
 
@@ -69,6 +97,8 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
     }
   };
 
+  const today = new Date().toISOString().split('T')[0];
+
   return (
     <div className="add-invoice-form">
       <h2 className="form-title">Add New Invoice</h2>
@@ -86,6 +116,7 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
                 onChange={handleChange}
                 required
               />
+              {nameError && <p className="error">{nameError}</p>}
             </div>
             <div className="form-group">
               <label htmlFor="serviceType">Service Type:</label>
@@ -104,14 +135,15 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
               </select>
             </div>
             <div className="form-group">
-              <label htmlFor="invoiceDate">Invoice Date (DD/MM/YYYY):</label>
+              <label htmlFor="invoiceDate">Invoice Date:</label>
               <input
-                type="text"
+                type="date"
                 id="invoiceDate"
                 name="invoiceDate"
                 value={formData.invoiceDate}
                 onChange={handleChange}
                 required
+                max={today}
               />
             </div>
             <div className="form-group">
@@ -124,6 +156,7 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
                 onChange={handleChange}
                 required
               />
+              {nameError && <p className="error">{nameError}</p>}
             </div>
             <div className="form-group">
               <label htmlFor="billingAddress">Billing Address:</label>
@@ -193,14 +226,19 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
             </div>
             <div className="form-group">
               <label htmlFor="paymentMethod">Payment Method:</label>
-              <input
-                type="text"
+              <select
                 id="paymentMethod"
                 name="paymentMethod"
                 value={formData.paymentMethod}
                 onChange={handleChange}
                 required
-              />
+              >
+                {paymentMethods.map((method) => (
+                  <option key={method.value} value={method.value}>
+                    {method.label}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-actions">
               <button type="button" className="cancel-button" onClick={() => setStep(1)}>Back</button>

@@ -13,11 +13,6 @@ const invoiceSchema = new mongoose.Schema(
     invoiceDate: {
       type: Date,
       required: true,
-      set: (dateString) => {
-        // Assuming dateString is in "DD/MM/YYYY" format
-        const [day, month, year] = dateString.split("/");
-        return new Date(`${year}-${month}-${day}`);
-      },
     },
     customerName: {
       type: String,

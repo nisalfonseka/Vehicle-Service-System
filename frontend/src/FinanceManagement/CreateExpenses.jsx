@@ -6,40 +6,65 @@ const CreateExpense = ({ onClose, refreshData, initialData }) => {
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
-    date: '',
-    type: '',
+    date: new Date().toISOString().split('T')[0], // Set default to today
     description: '',
-    paymentMethod: '',
+    paymentMethod: 'Cash', // Default payment method
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [dateError, setDateError] = useState(null); // State for date validation
 
   useEffect(() => {
     if (initialData) {
       setFormData({
         title: initialData.title || '',
         amount: initialData.amount || '',
-        date: initialData.date || '',
-        type: initialData.type || '',
+        date: initialData.date || new Date().toISOString().split('T')[0], // Set to today if initialData doesn't have date
         description: initialData.description || '',
-        paymentMethod: initialData.paymentMethod || '',
+        paymentMethod: initialData.paymentMethod || 'Cash', // Default to Cash if not provided
       });
     }
   }, [initialData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    // If the input is for the title, restrict it to letters and spaces only
+    if (name === 'title') {
+      const filteredValue = value.replace(/[^A-Za-z\s]/g, ''); // Allow only letters and spaces
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: filteredValue,
+      }));
+    } else if (name === 'date') {
+      // Validate date to ensure it is not in the future
+      const selectedDate = new Date(value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to the start of the day for accurate comparison
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    // Prevent submission if there is a date error
+    if (dateError) {
+      setLoading(false);
+      return;
+    }
 
     try {
       if (initialData) {
@@ -102,21 +127,10 @@ const CreateExpense = ({ onClose, refreshData, initialData }) => {
               value={formData.date}
               onChange={handleInputChange}
               required
+              max={new Date().toISOString().split('T')[0]} // Limit to today
             />
+            {dateError && <p className="error-text">{dateError}</p>} {/* Display date error */}
           </div>
-        </div>
-
-        <div className="form-row">
-          <label className="form-label" htmlFor="type">Type</label>
-          <input
-            type="text"
-            id="type"
-            name="type"
-            className="form-input"
-            value={formData.type}
-            onChange={handleInputChange}
-            required
-          />
         </div>
 
         <div className="form-row">
@@ -134,15 +148,21 @@ const CreateExpense = ({ onClose, refreshData, initialData }) => {
 
         <div className="form-row">
           <label className="form-label" htmlFor="paymentMethod">Payment Method</label>
-          <input
-            type="text"
+          <select
             id="paymentMethod"
             name="paymentMethod"
             className="form-input"
             value={formData.paymentMethod}
             onChange={handleInputChange}
             required
-          />
+          >
+            <option value="Cash">Cash</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            {/* Add more payment options as needed */}
+          </select>
         </div>
 
         {error && <p className="error-text">{error}</p>}

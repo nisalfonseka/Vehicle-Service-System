@@ -52,7 +52,7 @@ const EditInvoiceForm = ({ invoice, onUpdateInvoice, onClose }) => {
       onClose(); // Close the modal after successful update
     } catch (err) {
       console.error("Error updating invoice:", err.response?.data);
-      setError(err.response?.data?.message || "Error occurred during update");
+      
     }
   };
 
