@@ -6,8 +6,6 @@ import Spinner from "../BookingManagement/Spinner";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Bookreport from "../BookingManagement/Bookreport";
 
-
-
 function ShowBook() {
   const [book, setBook] = useState({});
   const [loading, setLoading] = useState(false);
@@ -36,7 +34,7 @@ function ShowBook() {
           <Spinner />
         ) : (
           <div className="w-full max-w-4xl">
-            <div className="overflow-x-auto  rounded-lg">
+            <div className="overflow-x-auto rounded-lg">
               <table className="min-w-full bg-white rounded-lg border border-gray-300">
                 <thead>
                   <tr className="bg-red-600 text-white text-left">
@@ -65,26 +63,27 @@ function ShowBook() {
                 </tbody>
               </table>
             </div>
-          ))}
 
-          <div className="flex justify-center mt-4">
-          <PDFDownloadLink 
-           document={<Bookreport book={book} />} 
-           fileName={`${book.vehicleNumber}.pdf`}>
-            {({ loading }) =>
-                loading ? (
-            <button className="text-sm text-gray-500">Loading...</button>
-             ) : (
-                  <button className="items-center allign-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700">
-                Download Report
+            <div className="flex justify-center mt-4">
+              <PDFDownloadLink 
+                document={<Bookreport book={book} />} 
+                fileName={`${book.vehicleNumber}.pdf`}
+              >
+                {({ loading }) =>
+                  loading ? (
+                    <button className="text-sm text-gray-500">Loading...</button>
+                  ) : (
+                    <button className="px-4 py-3 ml-10 text-base font-semibold text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:bg-red-700">
+                      Download Report
                     </button>
-                )
-           }
-        </PDFDownloadLink></div>
-        </div>
-      )}
+                  )
+                }
+              </PDFDownloadLink>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
   );
 }
 
