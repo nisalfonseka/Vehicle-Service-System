@@ -24,18 +24,6 @@ const BooksTable = ({ books }) => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex items-center mb-4">
-        <div className="relative w-full max-w-xs">
-          <input
-            type="text"
-            placeholder="Search by customer name or vehicle number"
-            className="w-full p-2 pl-10 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <AiOutlineSearch className="absolute left-2 top-2 text-gray-400" />
-        </div>
-      </div>
 
         <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-red-600 text-white">
