@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { IoAddCircle } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import BooksCard from "../BookingManagement/BooksCard";
 import Spinner from "../BookingManagement/Spinner";
 import BookOverview from "../AdminDashboard/BookOverview"; // Assuming you have a BookOverview component
@@ -116,6 +118,14 @@ function Bookadmin() {
           Dashboard
         </span>
       </a>
+    </nav>
+
+    <nav>
+            <Link to={"/dashboard/books/create"} className="flex items-center flex-1 space-y-7">
+               
+                <IoAddCircle className=" w-5 h-5 mr-4" /> {/* Change 'text-2xl' for size adjustment */}
+                Add Booking 
+            </Link>
     </nav>
   </div>
 </div>

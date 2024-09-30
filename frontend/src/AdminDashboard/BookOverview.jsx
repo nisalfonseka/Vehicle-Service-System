@@ -74,17 +74,20 @@ const BookOverview = ({ onStatusUpdate }) => {
           }
         `}
       </style>
-        <div
-          className="border border-red-500 rounded-xl p-6 m-2 relative bg-red-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center alert-effect"
-          style={{ width: "350px", height: "180px" }}
-        >
-          <h2 className="text-6xl font-semibold text-white text-center">
-            {newBooksCount}
-          </h2>
-          <h1 className="text-lg font-medium text-white text-center mt-2">
-            Pending / New Bookings
-          </h1>
-        </div>
+      <div
+  className={`border border-red-500 rounded-xl p-6 m-2 relative bg-red-500 shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl flex flex-col justify-center items-center ${
+    newBooksCount > 0 ? "alert-effect" : ""
+  }`}
+  style={{ width: "350px", height: "180px" }}
+>
+  <h2 className="text-6xl font-semibold text-white text-center">
+    {newBooksCount}
+  </h2>
+  <h1 className="text-lg font-medium text-white text-center mt-2">
+    Pending / New Bookings
+  </h1>
+</div>
+
 
         {/* Bookings for Today's Date Card */}
         <div

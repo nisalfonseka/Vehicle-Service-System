@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit, AiOutlineSearch } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import { MdOutlineDelete } from "react-icons/md";
+
 import { ClipLoader } from "react-spinners";
 
 const BooksTable = ({ books }) => {

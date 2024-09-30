@@ -15,101 +15,115 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF", // Plain white background
   },
   header: {
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: "#FF3333", // Red line under the header
+    paddingBottom: 10,
   },
   logo: {
-    width: 70,
-    height: 70,
-    marginBottom: 10,
+    width: 110,
+    height: 60,
+  },
+  companyInfo: {
+    textAlign: "right",
   },
   companyName: {
-    fontSize: 20,
+    fontSize: 22,
     color: "#333", // Dark color for company name
     fontWeight: "bold",
-    textAlign: "center",
   },
   companyAddress: {
     fontSize: 10,
     color: "#666", // Gray color for address
-    textAlign: "center",
-  },
-  separatorLine: {
-    marginVertical: 20,
-    height: 2,
-    backgroundColor: "#FF3333", // Red line to separate header
-    width: "100%",
+    marginTop: 5,
   },
   title: {
-    fontSize: 18,
-    color: "#000000", // Red color for the title
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 15,
+    color: "#000000",
   },
   table: {
     display: "table",
     width: "100%",
     marginTop: 20,
-    borderCollapse: "collapse",
+    borderWidth: 0, // Remove all borders for a clean look
   },
   tableRow: {
     flexDirection: "row",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1, // Subtle bottom border for each row
+    borderBottomColor: "#E0E0E0", // Light gray line for row dividers
+    backgroundColor: "#FAFAFA", // Light background for each row
+  },
+  tableRowAlternate: {
+    flexDirection: "row",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
+    backgroundColor: "#FFFFFF", // Alternating background color for rows
   },
   tableColHeader: {
-    width: "50%",
-    borderBottomWidth: 2,
-    borderBottomColor: "#dddddd", // Red color for bottom borders
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    width: "40%",
     fontWeight: "bold",
-    backgroundColor: "#F2F2F2", // Light gray background for headers
+    fontSize: 12,
+    color: "#000000", // Dark gray for headers
+    backgroundColor: "#F7F7F7", // Slightly lighter gray background for header
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
   tableCol: {
-    width: "50%",
-    borderBottomWidth: 1,
-    borderBottomColor: "#DDDDDD", // Light gray for table borders
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-  },
-  tableCellHeader: {
+    width: "60%",
     fontSize: 12,
-    color: "#333", // Darker text for better readability
-  },
-  tableCell: {
-    fontSize: 12,
-    color: "#666", // Gray color for cell content
+    color: "#333", // Darker color for content for better readability
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
   footer: {
     position: "absolute",
     bottom: 30,
-    left: 0,
-    right: 0,
-    borderTopWidth: 2,
-    borderTopColor: "#FF3333", // Red line to end the page
+    left: 40,
+    right: 40,
+    borderTopWidth: 1,
+    borderTopColor: "#FF3333", // Red line at the top of footer
     paddingTop: 10,
-    textAlign: "center",
     fontSize: 10,
     color: "#666", // Gray color for footer text
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  footerText: {
+    fontSize: 10,
+    color: "#666",
+  },
+  footerContact: {
+    fontSize: 10,
+    color: "#666",
   },
 });
 
-const Bookreport = ({ book }) => (
+const Bookreport = ({ companyInfo, book }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
       <View style={styles.header}>
-        <Image style={styles.logo} src={"frontend/images/AaaaAuto (1).png"} />
-        <Text style={styles.companyName}>Ashan Auto Services Pvt Ltd</Text>
-        <Text style={styles.companyAddress}>
-          No 32, Hanwella Rd, Hanwella. 0717564778
-        </Text>
-        <View style={styles.separatorLine} />
+      <Image style={styles.logo} src="https://i.imgur.com/Y06SdPV.png" />
+      <View style={styles.companyInfo}>
+          <Text style={styles.companyName}>{"Ashan Auto Services"}</Text>
+          <Text style={styles.companyAddress}>{"No 34,Colombo Road,Hanwella"}</Text>
+          <Text style={styles.companyAddress}>{"+94-75675759"}</Text>
+        </View>
       </View>
 
       {/* Title */}
-      <Text style={styles.title}>Vehicle Service Report</Text>
+      <Text style={styles.title}>{"Vehicle Service Report"}</Text>
 
       {/* Table with Booking Details */}
       <View style={styles.table}>
@@ -117,18 +131,26 @@ const Bookreport = ({ book }) => (
           { label: "Name", value: book.customerName },
           { label: "Vehicle Type", value: book.vehicleType },
           { label: "Vehicle Number", value: book.vehicleNumber },
-          { label: "Selected Services", value: Array.isArray(book.selectedServices) ? book.selectedServices.join(', ') : '' },
+          {
+            label: "Selected Services",
+            value: Array.isArray(book.selectedServices)
+              ? book.selectedServices.join(", ")
+              : "",
+          },
           { label: "Date", value: book.selectedDate },
           { label: "Time", value: book.selectedTimeSlot },
           { label: "Estimated Time", value: book.totalTime },
           { label: "Estimated Cost", value: `LKR: ${book.totalCost}` },
         ].map((item, index) => (
-          <View style={styles.tableRow} key={index}>
+          <View
+            style={index % 2 === 0 ? styles.tableRow : styles.tableRowAlternate}
+            key={index}
+          >
             <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>{item.label}</Text>
+              <Text>{item.label}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.value}</Text>
+              <Text>{item.value || "N/A"}</Text>
             </View>
           </View>
         ))}
@@ -136,7 +158,8 @@ const Bookreport = ({ book }) => (
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text>Thank you for choosing Ashan Auto Services Pvt Ltd.</Text>
+        <Text style={styles.footerText}>{"Thank you for choosing our services!"}</Text>
+        <Text style={styles.footerContact}>{"Contact us: +94-75675759"}</Text>
       </View>
     </Page>
   </Document>

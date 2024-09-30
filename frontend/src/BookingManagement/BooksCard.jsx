@@ -14,7 +14,8 @@ const BooksCard = () => {
       try {
         const response = await axios.get("http://localhost:5555/books");
         setBooks(response.data.data);
-        setFilteredBooks(response.data.data); // Display all books initially
+        // Display only "New" books by default
+        setFilteredBooks(response.data.data.filter(book => book.status === "New"));
       } catch (error) {
         console.error("Error fetching books:", error);
       }
