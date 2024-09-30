@@ -45,44 +45,36 @@ const InvoiceList = () => {
   const fetchInvoices = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5555/invoiceRequests');
-      const updatedInvoices = response.data.data.map((invoice) => ({
-        ...invoice,
-        calculatedTotalAmount: (invoice.amount ?? 0) + (invoice.taxAmount ?? 0) - (invoice.discountAmount ?? 0),
-      }));
-      setInvoices(updatedInvoices);
+        const response = await axios.get('http://localhost:5555/invoiceRequests');
+        const updatedInvoices = response.data.data.map((invoice) => ({
+            ...invoice,
+            calculatedTotalAmount: (invoice.amount ?? 0) + (invoice.taxAmount ?? 0) - (invoice.discountAmount ?? 0),
+        }));
+        setInvoices(updatedInvoices);
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAddInvoice = async (newInvoice) => {
-    try {
-        const response = await axios.post('http://localhost:5555/invoiceRequests', newInvoice);
-        console.log("Response from server:", response.data);
-        if (response.status === 201) {
-            const createdInvoice = {
-                ...newInvoice,
-                _id: response.data._id,
-                calculatedTotalAmount: (newInvoice.amount ?? 0) + (newInvoice.taxAmount ?? 0) - (newInvoice.discountAmount ?? 0),
-            };
-            console.log("Invoice added:", createdInvoice);
-            console.log("Invoices before update:", invoices); // Log current state
-            setInvoices((prevInvoices) => [...prevInvoices, createdInvoice]);
-            console.log("Invoices after update:", [...invoices, createdInvoice]); // Log new state
-            setModalIsOpen(false);
-            fetchInvoices();
-        }
-    } catch (err) {
-        console.error("Error adding invoice:", err.message);
         setError(err.message);
+    } finally {
+        setLoading(false);
     }
 };
 
-  
-  
+// Function to open the modal for adding an invoice
+const openAddInvoiceModal = () => {
+  setModalIsOpen(true);
+};
+
+// Function to handle the actual adding of the invoice (called from AddInvoiceForm)
+const handleAddInvoice = (newInvoice) => {
+  const createdInvoice = {
+    ...newInvoice,
+    calculatedTotalAmount: (newInvoice.amount ?? 0) + (newInvoice.taxAmount ?? 0) - (newInvoice.discountAmount ?? 0),
+  };
+
+  setInvoices((prevInvoices) => [...prevInvoices, createdInvoice]);
+  setModalIsOpen(false); // Close modal after adding
+};
+
+
 
   const handleUpdateInvoice = async (updatedInvoice) => {
     try {
@@ -216,16 +208,17 @@ const generatePDF = async (invoice) => {
         <FaSearch className="search-icon" />
       </div>
 
-      <Modal
-        isOpen={modalIsOpen} // Check if the modal state is updating correctly
-        onRequestClose={() => setModalIsOpen(false)} // Close the modal on request
+{/* Modal for adding an invoice */}
+<Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
         contentLabel="Add Invoice"
         style={{
-            overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' }, // You can use default overlay styles
-            content: { top: '50%', left: '50%', right: 'auto', bottom: 'auto', transform: 'translate(-50%, -50%)' }, // Default center alignment
+          overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+          content: { top: '50%', left: '50%', right: 'auto', bottom: 'auto', transform: 'translate(-50%, -50%)' },
         }}
       >
-      <AddInvoiceForm onAddInvoice={handleAddInvoice} onClose={() => setModalIsOpen(false)} />
+        <AddInvoiceForm onAddInvoice={handleAddInvoice} onClose={() => setModalIsOpen(false)} />
       </Modal>
 
 

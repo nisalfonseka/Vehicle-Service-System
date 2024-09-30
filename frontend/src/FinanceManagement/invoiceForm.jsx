@@ -48,7 +48,7 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
     const { name, value } = e.target;
 
     // Validate invoiceName and customerName to allow only letters and spaces
-    if (name === 'invoiceName' || name === 'customerName') {
+    if (name === 'customerName') {
       const filteredValue = value.replace(/[^A-Za-z\s]/g, '');
       setFormData({
         ...formData,
