@@ -6,17 +6,11 @@ import BreakdownTable from "../BreakdownService/BreakdownTable";
 
 function BookUserDashboard() {
   const [books, setBooks] = useState([]);
-
-  
-  const [loading, setLoading] = useState(true); // Start loading as true
-  
-
+  const [loadingBooks, setLoadingBooks] = useState(true);
   const [breakdownRequests, setBreakdownRequests] = useState([]);
   const [customer, setCustomer] = useState([]);
-  const [loadingBooks, setLoadingBooks] = useState(true);
   const [loadingBreakdowns, setLoadingBreakdowns] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
-
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -41,11 +35,8 @@ function BookUserDashboard() {
             (customer) => customer.customerName === loggedInUser.username
           );
 
-          setBooks(filteredBooks)
-          setCustomers(filteredCustomers); // Set customer data
-
+          setBooks(filteredBooks);
           setCustomer(filteredCustomers);
- 
         } catch (error) {
           console.error("Error fetching book/customer data:", error);
         } finally {
@@ -63,12 +54,12 @@ function BookUserDashboard() {
       setLoadingBreakdowns(true);
       try {
         const response = await axios.get("http://localhost:5555/breakdownRequests");
-        
+
         // Filter breakdown requests by logged-in user's username
         const filteredBreakdowns = response.data.data.filter(
           (breakdownRequest) => breakdownRequest.customerName === userProfile?.username
         );
-        
+
         setBreakdownRequests(filteredBreakdowns);
       } catch (error) {
         console.error("Error fetching breakdown requests:", error);
@@ -99,19 +90,21 @@ function BookUserDashboard() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl my-8">Service Appointments</h1>
       </div>
-      <br></br>
+      <br />
       <BooksTable books={books} loading={loadingBooks} />
 
       {/* Customer Details Section */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl my-8">Ticket Details</h1>
-      </div><br></br>
+      </div>
+      <br />
       <CustomerTable customer={customer} loading={loadingBooks} />
 
       {/* Breakdown Requests Section */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl my-8">Breakdown History</h1>
-      </div><br></br>
+      </div>
+      <br />
       <BreakdownTable breakdownRequests={breakdownRequests} loading={loadingBreakdowns} />
     </div>
   );

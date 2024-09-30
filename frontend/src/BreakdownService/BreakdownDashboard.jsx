@@ -40,7 +40,7 @@ function BreakdownDashboard() {
             <div className="flex items-center flex-shrink-0 px-4">
               <img
                 className="w-auto h-12"
-                src="../images/AaaaAuto (1).png"
+                src="../../../images/AaaaAuto (1).png"
                 alt="Logo"
               />
             </div>
@@ -80,7 +80,7 @@ function BreakdownDashboard() {
         <span
           className={`${currentView === "overview" ? "text-white" : "text-black"}`}
         >
-          Overview
+          Requests Overview
         </span>
       </a>
     </nav>
@@ -114,7 +114,7 @@ function BreakdownDashboard() {
         <span
           className={`${currentView === "dashboard" ? "text-white" : "text-black"}`}
         >
-          Dashboard
+          Request Details
         </span>
       </a>
     </nav>

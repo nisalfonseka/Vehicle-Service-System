@@ -1,27 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { BsInfoCircle } from 'react-icons/bs';
-import axios from 'axios';
 
-const BreakdownTable = () => {
-  const [breakdownRequests, setBreakdownRequests] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get('http://localhost:5555/breakdownRequests')
-      .then((response) => {
-        setBreakdownRequests(response.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-  }, []);
-
+const BreakdownTable = ({ breakdownRequests, loading }) => {
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -33,195 +15,38 @@ const BreakdownTable = () => {
     >
       <thead>
         <tr>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            No
-          </th>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Customer Name
-          </th>
-          <th
-            className='border border-slate-600 rounded-md max-md:hidden'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Contact Number
-          </th>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Vehicle Number
-          </th>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Location
-          </th>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Issue Type
-          </th>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Assigned Driver
-          </th>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Status
-          </th>
-          <th
-            className='border border-slate-600 rounded-md'
-            style={{
-              padding: '12px',
-              backgroundColor: '#ff0038',
-              color: '#fff',
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            Operations
-          </th>
+          <th>No</th>
+          <th>Customer Name</th>
+          <th>Contact Number</th>
+          <th>Vehicle Number</th>
+          <th>Location</th>
+          <th>Issue Type</th>
+          <th>Assigned Driver</th>
+          <th>Status</th>
+          <th>Operations</th>
         </tr>
       </thead>
       <tbody>
-        {breakdownRequests.map((breakdownRequest, index) => (
-          <tr
-            key={breakdownRequest._id}
-            className='h-8'
-            style={{
-              backgroundColor: index % 2 === 0 ? '#e9ecef' : '#f8f9fa',
-            }}
-          >
-            <td
-              className='border border-slate-700 rounded-md text-center'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {index + 1}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {breakdownRequest.customerName}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center max-md:hidden'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {breakdownRequest.contactNumber}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center max-md:hidden'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {breakdownRequest.vehicleNumber}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center max-md:hidden'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {breakdownRequest.location}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center max-md:hidden'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {breakdownRequest.issueType}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center max-md:hidden'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {breakdownRequest.assignedDriver || 'Not Assigned'}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center max-md:hidden'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              {breakdownRequest.status || 'Pending'} {/* Added Status Column */}
-            </td>
-            <td
-              className='border border-slate-700 rounded-md text-center max-md:hidden'
-              style={{ padding: '10px', color: '#495057' }}
-            >
-              <div className='flex justify-center gap-x-4'>
-                <Link to={`/breakdownRequests/details/${breakdownRequest._id}`}>
-                  <BsInfoCircle
-                    className='text-2xl text-green-800'
-                    style={{ cursor: 'pointer', transition: 'color 0.3s' }}
-                  />
+        {breakdownRequests.map((request, index) => (
+          <tr key={request._id}>
+            <td>{index + 1}</td>
+            <td>{request.customerName}</td>
+            <td>{request.contactNumber}</td>
+            <td>{request.vehicleNumber}</td>
+            <td>{request.location}</td>
+            <td>{request.issueType}</td>
+            <td>{request.assignedDriver || 'Not Assigned'}</td>
+            <td>{request.status || 'Pending'}</td>
+            <td className="border-b border-gray-300 p-4 text-left">
+                  <div className="flex justify-start gap-x-4">
+                <Link to={`/breakdownRequests/details/${request._id}`}>
+                <BsInfoCircle className="text-2xl text-green-800" />
                 </Link>
-                <Link to={`/breakdownRequests/edit/${breakdownRequest._id}`}>
-                  <AiOutlineEdit
-                    className='text-2xl text-yellow-600'
-                    style={{ cursor: 'pointer', transition: 'color 0.3s' }}
-                  />
+                <Link to={`/breakdownRequests/edit/${request._id}`}>
+                <AiOutlineEdit className="text-2xl text-yellow-600" />
                 </Link>
-                <Link to={`/breakdownRequests/delete/${breakdownRequest._id}`}>
-                  <AiOutlineDelete
-                    className='text-2xl text-red-600'
-                    style={{ cursor: 'pointer', transition: 'color 0.3s' }}
-                  />
+                <Link to={`/breakdownRequests/delete/${request._id}`}>
+                  <AiOutlineDelete className="text-2xl text-red-600"/>
                 </Link>
               </div>
             </td>

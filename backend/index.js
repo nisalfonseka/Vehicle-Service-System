@@ -34,6 +34,10 @@ import ShiftRoute from "./routes/ShiftRoute.js";
 import profileRoute from "./routes/profileRoute.js";
 import employee from "./routes/breakdownEmpRoute.js"
 
+//vehicle
+import vehiclesRoute from './routes/vehiclesRoute.js';
+
+
 
 
 
@@ -178,6 +182,10 @@ app.use("/Profile",profileRoute);
 //breakdown route
 app.use("/breakdownRequests", breakdownRoute);
 app.use(employee);
+
+//vehicle
+app.use('/vehicles', vehiclesRoute);
+
 
 
 

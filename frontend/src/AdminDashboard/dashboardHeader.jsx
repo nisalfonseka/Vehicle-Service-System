@@ -40,7 +40,7 @@ function DashboardHeader() {
           {/* Left side: Logo */}
           <div className="flex items-start">
             <Link to="/">
-              <img className="w-auto h-9 lg:h-11" src="../images/web.png" alt="HomePage" />
+              <img className="w-auto h-9 lg:h-11" src="../../../images/web.png" alt="HomePage" />
             </Link>
           </div>
 
@@ -57,7 +57,7 @@ function DashboardHeader() {
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar bg-white-600">
                 <div className="w-10 rounded-full">
-                  <img alt="User Avatar" src="../images/user.png" />
+                  <img alt="User Avatar" src="../../../images/user.png" />
                 </div>
               </div>
               <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">

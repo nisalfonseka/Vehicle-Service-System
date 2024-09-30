@@ -52,7 +52,7 @@ function LoginForm() {
         } else if (email === "salesmanager@gmail.com") {
           navigate("/salesmanager");
         } else if (email === "senura123@gmail.com") {
-          navigate("/senura");
+          navigate("/dashboard/senura");
         } else if (email === "financeManager@gmail.com") {
           navigate("/dashboard/finance/dashboard");
         } else if (email === "hrManager@gmail.com") {
@@ -61,7 +61,9 @@ function LoginForm() {
           navigate("/dashboard/Customer/dashboard");
         } else if (email === "breakdownAdmin@gmail.com") {
           navigate("/dashboard/breakdown/dashboard");
-        } else {
+        } else if (email === "vehicleAdmin@gmail.com") {
+          navigate("/dashboard/vehicle/dashboard");
+        }else {
           navigate("/");
         }
   

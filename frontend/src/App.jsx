@@ -90,6 +90,14 @@ import BreakdownCard from './BreakdownService/BreakdownCard';
 import BreakdownView from "./BreakdownService/BreakdownView";
 import BreakdownDashboard from "./BreakdownService/BreakdownDashboard.jsx"
 
+//vehicle
+import CreateVehicle from './VehicleManagement/CreateVehicles';
+import ShowVehicle from './VehicleManagement/ShowVehicle';
+import EditVehicle from './VehicleManagement/EditVehicle';
+import DeleteVehicle from './VehicleManagement/DeleteVehicle';
+import VehicleDashboard from "./VehicleManagement/VehicleDashboard.jsx";
+import VehiclesCard from "./VehicleManagement/VehiclesCard.jsx";
+
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -103,7 +111,7 @@ function App() {
     <>
       {!isDashboardRoute && <Header />} {/* Render Header if not on dashboard route */}
       {isDashboardRoute && <DashboardHeader />}
-      {isEmployeeDashboardRoute && <DashboardEmp />} {/* Render DashboardEmp only on /dashboard/emp routes */}
+     
       
       <Routes>
         <Route path="/" element={<Home />} />
@@ -164,7 +172,7 @@ function App() {
         <Route path="/dashboard/header" element={<Navbar />} />
           
 
-        
+        <Route path='/dashboard/emp' element={<DashboardEmp /> }>
         <Route path='/dashboard/emp/home' element={<HomeEmp />}></Route>
          <Route path='/dashboard/emp/employee' element={<Employee />}> </Route>
         <Route path='/dashboard/emp/shiftschedular' element={<Shiftschedular  />}></Route>
@@ -173,6 +181,7 @@ function App() {
         <Route path='/dashboard/emp/add_employee' element={<CreateRecords />}></Route>
         <Route path='/dashboard/emp/edit_employee/:id' element={<EditRecord />}></Route>
         <Route path='/dashboard/emp/delete_employee/:id' element={<DeleteRecord />}></Route>
+        </Route>
 
 
         <Route path='/customer/create' element={<CreateCustomer />} />
@@ -199,6 +208,18 @@ function App() {
         <Route path="/dashboard/BreakdownView" element={<BreakdownView/>}/>
         <Route path="/dashboard/breakdownAdmin" element={<BreakdownCard/>}/>
         <Route path="/dashboard/breakdown/dashboard" element={<BreakdownDashboard/>}/>
+
+
+        <Route path='/vehicles/create' element={<CreateVehicle />} />
+      <Route path='/vehicles/details/:id' element={<ShowVehicle />} />
+      <Route path='/vehicles/edit/:id' element={<EditVehicle />} />
+      <Route path='/vehicles/delete/:id' element={<DeleteVehicle />} />
+      <Route path='/dashboard/vehicle/dashboard' element={<VehicleDashboard />} />
+      <Route path='/vehicle/card' element={<VehiclesCard />} />
+      
+
+
+
 
 
       </Routes>

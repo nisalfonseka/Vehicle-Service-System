@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 
 const ItemDetailsssss = () => {
   const { id } = useParams(); // Get item ID from URL
@@ -66,123 +64,142 @@ const ItemDetailsssss = () => {
   if (!item) return <div>Loading...</div>;
 
   return (
-    <div className="container">
-      <h1>Item Details</h1>
-      <div className="card mb-4">
+    <div className="container mx-auto mt-10">
+      <h1 className="text-3xl font-bold mb-4">Item Details</h1>
+      <div className="bg-white shadow-md rounded-lg overflow-hidden mb-4">
         {item.photo && (
           <img
             src={`data:image/jpeg;base64,${item.photo}`}
-            className="card-img-top"
+            className="w-full h-64 object-cover"
             alt={item.name}
-            style={{ height: '300px', objectFit: 'cover' }}
           />
         )}
-        <div className="card-body">
-          <h5 className="card-title">{item.name}</h5>
-          <p className="card-text">Price: LKR:{item.price.toFixed(2)}</p>
-          <p className="card-text">Quantity: {item.qty}</p>
-          <p className="card-text">Description: {item.description}</p>
-          <p className="card-text">Company: {item.companyName}</p>
-          <p className="card-text">Category: {item.category?.name || 'N/A'}</p>
+        <div className="p-6">
+          <h5 className="text-2xl font-semibold mb-2">{item.name}</h5>
+          <p className="text-gray-700 mb-1">Price: LKR {item.price.toFixed(2)}</p>
+          <p className="text-gray-700 mb-1">Quantity: {item.qty}</p>
+          <p className="text-gray-700 mb-1">Description: {item.description}</p>
+          <p className="text-gray-700 mb-1">Company: {item.companyName}</p>
+          <p className="text-gray-700 mb-1">Category: {item.category?.name || 'N/A'}</p>
         </div>
       </div>
 
-      <div className="d-flex justify-content-between">
-        <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+      <div className="flex space-x-4">
+        <button
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          onClick={() => navigate(-1)}
+        >
           Back
         </button>
-        <button className="btn btn-warning" onClick={() => setShowModal(true)}>
+        <button
+          className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          onClick={() => setShowModal(true)}
+        >
           Update
         </button>
-        <button className="btn btn-danger" onClick={handleDelete}>
+        <button
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          onClick={handleDelete}
+        >
           Delete
         </button>
       </div>
 
       {/* Modal for updating the item */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update Item</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={updatedItem.name || ''}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded shadow-md w-full max-w-lg">
+            <h2 className="text-xl font-bold mb-4">Update Item</h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={updatedItem.name || ''}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded text-gray-700"
+                />
+              </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                name="price"
-                value={updatedItem.price || ''}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Price</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={updatedItem.price || ''}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded text-gray-700"
+                />
+              </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control
-                type="number"
-                name="qty"
-                value={updatedItem.qty || ''}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Quantity</label>
+                <input
+                  type="number"
+                  name="qty"
+                  value={updatedItem.qty || ''}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded text-gray-700"
+                />
+              </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                name="description"
-                value={updatedItem.description || ''}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Description</label>
+                <input
+                  type="text"
+                  name="description"
+                  value={updatedItem.description || ''}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded text-gray-700"
+                />
+              </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Company</Form.Label>
-              <Form.Control
-                type="text"
-                name="companyName"
-                value={updatedItem.companyName || ''}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Company</label>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={updatedItem.companyName || ''}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded text-gray-700"
+                />
+              </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                as="select"
-                name="category"
-                value={updatedItem.category?._id || ''}
-                onChange={handleCategoryChange}
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-1">Category</label>
+                <select
+                  name="category"
+                  value={updatedItem.category?._id || ''}
+                  onChange={handleCategoryChange}
+                  className="w-full px-3 py-2 border rounded text-gray-700"
+                >
+                  <option value="">Select a category</option>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </form>
+            <div className="flex justify-end space-x-4">
+              <button
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                onClick={() => setShowModal(false)}
               >
-                <option value="">Select a category</option>
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleUpdate}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+                Close
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={handleUpdate}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
