@@ -6,15 +6,12 @@ import 'jspdf-autotable';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import Spinner from '../BookingManagement/Spinner';
-import CreateExpense from './CreateExpenses';
+import CreateExpense from '../FinanceManagement/CreateExpenses'; // Ensure this path is correct
 import NavBar from './Navbar';
-import Modal from 'react-modal';
-import './expenses.css';
+import './expenses.css'; // Import the same CSS file used for the income table
 import logo from '../FinanceManagement/AaaaAuto (1).png';
 
-
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-Modal.setAppElement('#root'); // Set the root element for accessibility
 
 // Function to convert an image URL to Base64
 const toBase64 = (url) => {
@@ -37,8 +34,8 @@ const toBase64 = (url) => {
 const ExpenseRequestsTable = () => {
   const [expenseRequests, setExpenseRequests] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Modal visibility state
-  const [selectedRequest, setSelectedRequest] = useState(null); // Holds selected request for editing
+  const [showForm, setShowForm] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchExpenseRequests = async () => {
@@ -57,31 +54,30 @@ const ExpenseRequestsTable = () => {
     fetchExpenseRequests();
   }, []);
 
-  const handleEdit = (request) => {
-    setSelectedRequest(request);
-    setModalIsOpen(true); // Open the modal for editing
-  };
-
-  const handleAddExpense = () => {
-    setSelectedRequest(null); // Clear selected request to make it a new entry
-    setModalIsOpen(true); // Open modal for adding
-  };
-
   const handleFormClose = () => {
-    setModalIsOpen(false);
+    setShowForm(false);
     setSelectedRequest(null);
-    fetchExpenseRequests(); // Refresh data after closing
+    fetchExpenseRequests();
   };
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5555/expenseRequests/${id}`);
-      fetchExpenseRequests(); // Refresh data after deletion
+      fetchExpenseRequests();
     } catch (error) {
       console.log('Error deleting expense request:', error);
     }
   };
 
+  const handleEdit = (request) => {
+    setSelectedRequest(request);
+    setShowForm(true);
+  };
+
+  const handleAddExpense = () => {
+    setSelectedRequest(null);
+    setShowForm(true);
+  };
 
   const filteredExpenses = expenseRequests.filter((request) => {
     return (
@@ -90,11 +86,14 @@ const ExpenseRequestsTable = () => {
     );
   });
 
+  // Function to calculate the total amount of expenses
   const calculateTotalAmount = () =>
     filteredExpenses.reduce((total, req) => total + req.amount, 0);
 
+  // Function to generate PDF report
   const generateInvoiceStatementPDF = async () => {
-    const logoBase64 = await toBase64(logo);
+    const logoBase64 = await toBase64(logo); // Convert logo to Base64
+
     const tableBody = [
       [
         { text: 'Title', style: 'tableHeader' },
@@ -112,6 +111,7 @@ const ExpenseRequestsTable = () => {
       ]),
     ];
 
+    // Add total amount row
     tableBody.push([
       { text: 'Total Amount', colSpan: 4, alignment: 'right', style: 'tableTotal' }, {}, {}, {},
       { text: `Rs.${calculateTotalAmount().toFixed(2)}`, style: 'tableTotal' },
@@ -127,15 +127,15 @@ const ExpenseRequestsTable = () => {
         {
           text: 'Ashan Auto Service',
           style: 'header',
-          margin: [0, 20, 0, 10],
-          fontSize: 30,
-          bold: true,
-          color: '#851f14',
+          margin: [0, 20, 0, 10], // Added margin-top of 20
+          fontSize: 30, // Set font size
+          bold: true, // Set font to bold (you can use italics or normal as well)
+          color: '#851f14', // Set text color
         },
         {
           text: 'Expense Statement',
           style: 'header',
-          margin: [0, 20, 0, 10],
+          margin: [0, 20, 0, 10], // Added margin-top of 20
         },
         {
           table: {
@@ -150,7 +150,7 @@ const ExpenseRequestsTable = () => {
           fontSize: 18,
           bold: true,
           alignment: 'center',
-          margin: [0, 20, 0, 10],
+          margin: [0, 20, 0, 10], // Updated margin with top = 20
         },
         tableHeader: {
           bold: true,
@@ -177,6 +177,7 @@ const ExpenseRequestsTable = () => {
         fontSize: 10,
       },
     };
+    
 
     pdfMake.createPdf(docDefinition).download('Expense_Statement.pdf');
   };
@@ -185,9 +186,10 @@ const ExpenseRequestsTable = () => {
     <div className="container">
       <NavBar />
       <div className="expense-list-container">
-        <h1 className="text-4xl my-8"><b>Ashan Auto Service</b></h1>
-        <h3 className="text-2xl my-8" >Expenses List</h3>
+        <h1 className="text-4xl my-8">Ashan Auto Service</h1>
+        <h3 className="text-2xl my-8">Expenses List</h3>
 
+        {/* Search bar */}
         <div className="search-bar-container">
           <input
             type="text"
@@ -200,19 +202,17 @@ const ExpenseRequestsTable = () => {
         </div>
 
         {/* Modal for CreateExpense */}
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={handleFormClose}
-          contentLabel="Expense Form"
-          className="modal-backdrop"
-        >
-          <h2>{selectedRequest ? 'Edit Expense' : 'Add New Expense'}</h2>
-          <CreateExpense
-            onClose={handleFormClose}
-            refreshData={fetchExpenseRequests}
-            initialData={selectedRequest} // Pass selected request for editing
-          />
-        </Modal>
+        {showForm && (
+          <div className="modal-backdrop">
+            <div className="modal-content">
+              <CreateExpense
+                onClose={handleFormClose}
+                refreshData={fetchExpenseRequests}
+                initialData={selectedRequest}
+              />
+            </div>
+          </div>
+        )}
 
         {loading ? (
           <Spinner />
@@ -266,7 +266,7 @@ const ExpenseRequestsTable = () => {
             </tfoot>
           </table>
         )}
-        <div class="btn-container">
+
         <button onClick={handleAddExpense} className="add-expense-btn">
           Add Expenses
         </button>
@@ -274,7 +274,6 @@ const ExpenseRequestsTable = () => {
         <button onClick={generateInvoiceStatementPDF} className="generate-report-btn">
           <MdDownload className="icon" /> Download Expenses Report
         </button>
-        </div>
       </div>
     </div>
   );

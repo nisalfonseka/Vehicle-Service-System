@@ -1,66 +1,49 @@
 import express from "express";
 import { expenseRequest } from "../models/expenseModel.js";
-
 const expenseRouter = express.Router();
 
-// Route for getting the total expenses
-expenseRouter.get("/totalExpenses", async (request, response) => {
-  try {
-    const totalExpenses = await expenseRequest.aggregate([
-      {
-        $group: {
-          _id: null,
-          totalAmount: { $sum: "$amount" },
-        },
-      },
-    ]);
-
-    const total = totalExpenses[0]?.totalAmount || 0;
-
-    return response.status(200).json({ totalExpenses: total });
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).send({ message: error.message });
-  }
-});
-
-// Route for saving a new expense request
+// Route for Save a new request
 expenseRouter.post("/", async (request, response) => {
   try {
-    const { title, amount, date, description, paymentMethod } = request.body;
-
-    // Check if all required fields are provided
-    if (!title || !amount || !date || !description || !paymentMethod) {
+    if (
+      !request.body.title||
+      !request.body.amount ||
+      !request.body.date||
+      !request.body.type||
+      !request.body.description 
+      
+    ) {
       return response.status(400).send({
-        message: "Send all required fields: title, amount, date, description, paymentMethod",
+        message:
+          "Send all required fields: title, amount ,date,type,description",
       });
     }
 
-    const newExpenseRequest = {
-      title,
-      amount,
-      date,
-      description,
-      paymentMethod, // Ensure this is included as per your model
+    const newexpenseRequest = {
+      title: request.body.title,
+      amount: request.body.amount,
+      date: request.body.date,
+      type: request.body.type,
+      description: request.body.description ,
     };
 
-    const createdExpenseRequest = await expenseRequest.create(newExpenseRequest);
+    const createdexpenseRequest = await expenseRequest.create(newexpenseRequest);
 
-    return response.status(201).send(createdExpenseRequest);
+    return response.status(201).send(createdexpenseRequest);
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
   }
 });
-
-// Route for getting all expense requests from the database
+ 
+// Route for Get All requests from database
 expenseRouter.get("/", async (request, response) => {
   try {
-    const allExpenseRequests = await expenseRequest.find(); // Remove `{ expenseRequest }`
+    const allexpenseRequest = await expenseRequest.find({ expenseRequest });
 
     return response.status(200).json({
-      count: allExpenseRequests.length,
-      data: allExpenseRequests,
+      count: allexpenseRequest.length,
+      data: allexpenseRequest,
     });
   } catch (error) {
     console.log(error.message);
@@ -68,52 +51,54 @@ expenseRouter.get("/", async (request, response) => {
   }
 });
 
-// Route for getting one expense request by ID
+// Route for Get One request from database by id
 expenseRouter.get("/:id", async (request, response) => {
   try {
     const { id } = request.params;
 
-    const expense = await expenseRequest.findById(id);
-    
-    if (!expense) {
-      return response.status(404).json({ message: "Expense Request not found" });
-    }
+    const expenseRequest = await expenseRequest.findById(id);
 
-    return response.status(200).json(expense);
+    return response.status(200).json(expenseRequest);
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
   }
 });
 
-// Route for updating an expense request
+// Route for Update a request
 expenseRouter.put("/:id", async (request, response) => {
   try {
-    const { title, amount, date, description, paymentMethod } = request.body;
-
-    // Check if all required fields are provided
-    if (!title || !amount || !date || !description || !paymentMethod) {
+    if (
+        !request.body.title||
+        !request.body.amount ||
+        !request.body.date||
+        !request.body.type||
+        !request.body.description
+    ) {
       return response.status(400).send({
-        message: "Send all required fields: title, amount, date, description, paymentMethod",
+        message:
+         "Send all required fields: title, amount ,date,type,description",
       });
     }
 
     const { id } = request.params;
 
-    const updatedExpenseRequest = await expenseRequest.findByIdAndUpdate(id, request.body, { new: true });
+    const result = await expenseRequest.findByIdAndUpdate(id, request.body);
 
-    if (!updatedExpenseRequest) {
+    if (!result) {
       return response.status(404).json({ message: "Expense Request not found" });
     }
 
-    return response.status(200).send({ message: "Expense Request updated successfully", data: updatedExpenseRequest });
+    return response
+      .status(200)
+      .send({ message: "Expense Request updated successfully" });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
   }
 });
 
-// Route for deleting an expense request
+// Route for Delete a book
 expenseRouter.delete("/:id", async (request, response) => {
   try {
     const { id } = request.params;
@@ -124,7 +109,9 @@ expenseRouter.delete("/:id", async (request, response) => {
       return response.status(404).json({ message: "Expense Request not found" });
     }
 
-    return response.status(200).send({ message: "Expense Request deleted successfully" });
+    return response
+      .status(200)
+      .send({ message: "Expense Request deleted successfully" });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });

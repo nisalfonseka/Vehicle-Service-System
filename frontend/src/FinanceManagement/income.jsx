@@ -3,13 +3,16 @@ import axios from 'axios';
 import Spinner from './Spinner';
 import NavBar from './Navbar';
 import './Income.css';
-import { MdSearch } from 'react-icons/md';
+import { MdSearch } from 'react-icons/md'; // Import the MdSearch icon
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import logo from '../FinanceManagement/AaaaAuto (1).png';
+import logo from '../FinanceManagement/AaaaAuto (1).png'; // Adjust the path as needed
+ // Import your invoice form
 
+// Set pdfmake fonts
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+// Utility function to convert image to Base64
 const toBase64 = (url) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -36,6 +39,7 @@ const IncomeRequestsTable = () => {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [logoBase64, setLogoBase64] = useState('');
 
+  // Fetch invoices from the backend
   const fetchInvoices = async () => {
     setLoading(true);
     try {
@@ -46,7 +50,7 @@ const IncomeRequestsTable = () => {
         finalAmount: (invoice.amount || 0) + (invoice.taxAmount || 0) - (invoice.discountAmount || 0),
       }));
       setInvoices(updatedInvoices);
-      setFilteredInvoices(updatedInvoices);
+      setFilteredInvoices(updatedInvoices); // Update filtered invoices as well
     } catch (error) {
       console.log('Error fetching invoices:', error);
     } finally {
@@ -60,8 +64,7 @@ const IncomeRequestsTable = () => {
 
   useEffect(() => {
     const filtered = invoices.filter((invoice) =>
-      invoice.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      invoice.serviceType.toLowerCase().includes(searchQuery.toLowerCase())
+      invoice.customerName.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredInvoices(filtered);
   }, [searchQuery, invoices]);
@@ -86,6 +89,7 @@ const IncomeRequestsTable = () => {
       ])
     ];
 
+    // Add the total row at the bottom of the table
     tableBody.push([
       { text: 'Total Amount', colSpan: 4, alignment: 'right', style: 'tableTotal' }, {}, {}, {},
       { text: `Rs.${calculateTotalAmount().toFixed(2)}`, style: 'tableTotal' }
@@ -102,15 +106,16 @@ const IncomeRequestsTable = () => {
         {
           text: 'Ashan Auto Service',
           style: 'header',
-          margin: [0, 20, 0, 10],
-          fontSize: 30,
-          bold: true,
-          color: '#851f14',
+          margin: [0, 20, 0, 10], // Added margin-top of 20
+          fontSize: 30, // Set font size
+          bold: true, // Set font to bold (you can use italics or normal as well)
+          color: '#851f14', // Set text color
         },
+        
         {
           text: 'Income Statement',
           style: 'header',
-          margin: [0, 20, 0, 10],
+          margin: [0, 20, 0, 10], // Added margin-top of 20
         },
         {
           table: {
@@ -125,7 +130,7 @@ const IncomeRequestsTable = () => {
           fontSize: 18,
           bold: true,
           margin: [0, 0, 0, 10],
-          alignment: 'center',
+          alignment: 'center'
         },
         tableHeader: {
           bold: true,
@@ -133,12 +138,12 @@ const IncomeRequestsTable = () => {
           color: 'white',
           fillColor: '#131769',
           alignment: 'center',
-          margin: [0, 5, 0, 5],
+          margin: [0, 5, 0, 5]
         },
         tableData: {
           fontSize: 10,
           alignment: 'center',
-          margin: [0, 5, 0, 5],
+          margin: [0, 5, 0, 5]
         },
         tableTotal: {
           bold: true,
@@ -146,11 +151,11 @@ const IncomeRequestsTable = () => {
           alignment: 'right',
           margin: [0, 5, 0, 5],
           fillColor: '#8c1111',
-        },
+        }
       },
       defaultStyle: {
         fontSize: 10,
-      },
+      }
     };
 
     try {
@@ -178,19 +183,20 @@ const IncomeRequestsTable = () => {
   return (
     <div className="container">
       <NavBar />
-      <div className="income-list-container">
-        <h1 className="text-4xl my-0"><b>Ashan Auto Service</b></h1>
-        <h3 className="text-2xl my-0">Income List</h3>
+      <div className='income-list-container'>
+        <h1 className='text-4xl my-0'>Ashan Auto Service</h1>
+        <h3 className='text-2xl my-0'>Income List</h3>
 
-        <div className="search-bar-container">
+        {/* Search bar with icon */}
+        <div className='search-bar-container'>
           <input
-            type="text"
-            placeholder="Search Incomes..."
-            className="search-bar"
+            type='text'
+            placeholder='Search Invoices...'
+            className='search-bar'
             value={searchQuery}
             onChange={handleSearchChange}
           />
-          <MdSearch className="search-icon" />
+          <MdSearch className="search-icon" /> {/* Added search icon */}
         </div>
 
         {loading ? (
@@ -200,7 +206,7 @@ const IncomeRequestsTable = () => {
             {filteredInvoices.length === 0 ? (
               <p>No invoices found.</p>
             ) : (
-              <table className="income-table">
+              <table className='income-table'>
                 <thead>
                   <tr>
                     <th>Service Type</th>
@@ -223,25 +229,29 @@ const IncomeRequestsTable = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="4" className="text-right font-bold">
+                    <td colSpan='4' className='text-right font-bold'>
                       Total Amount:
                     </td>
-                    <td className="font-bold">Rs.{calculateTotalAmount().toFixed(2)}</td>
+                    <td className='font-bold'>Rs.{calculateTotalAmount().toFixed(2)}</td>
                   </tr>
                 </tfoot>
               </table>
             )}
-
-            <button onClick={generateInvoiceStatementPDF} className="add-income-btn">
+            \n
+            <button
+            
+              onClick={generateInvoiceStatementPDF}
+              className='add-income-btn'
+            >
               Download Income Statement
             </button>
           </>
         )}
 
         {showForm && (
-          <div className="modal-backdrop" onClick={handleFormClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <button onClick={handleFormClose} className="close-button">
+          <div className='modal-backdrop' onClick={handleFormClose}>
+            <div className='modal-content' onClick={(e) => e.stopPropagation()}>
+              <button onClick={handleFormClose} className='close-button'>
                 &times;
               </button>
 
@@ -253,7 +263,6 @@ const IncomeRequestsTable = () => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

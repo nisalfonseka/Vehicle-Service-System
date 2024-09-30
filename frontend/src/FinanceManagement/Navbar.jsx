@@ -22,7 +22,7 @@ const Navbar = () => {
             <Link to="/">
               <img src={logo} alt="Ashan Auto Service Logo" className="nav-logo" />
             </Link>
-            <h1 className="project-name"><b>Finance Management</b></h1>
+            <h1 className="project-name">Finance Management</h1>
           </>
         )}
       </div>

@@ -1,135 +1,113 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import Navbar from '../FinanceManagement/Navbar';
-import { Pie } from 'react-chartjs-2';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js';
-
-// Register the necessary components for the charts
-ChartJS.register(ArcElement, Tooltip, Legend, LineElement, PointElement, LinearScale, Title, CategoryScale);
+import Chart from 'react-apexcharts';
 
 const Dashboard = () => {
-  const [totalInvoices, setTotalInvoices] = useState(0);
-  const [totalProfits, setTotalProfits] = useState(0);
-  const [totalIncomes, setTotalIncomes] = useState(0);
-  const [totalExpenses, setTotalExpenses] = useState(0);
-  
-  // New state to hold profit data for the line graph
-  const [profitData, setProfitData] = useState([]);
+  const [totalInvoices, setTotalInvoices] = useState(12); // Updated value
+  const [totalProfits, setTotalProfits] = useState(20); // Updated value
+  const [totalIncomes, setTotalIncomes] = useState(25); // Updated value
+  const [totalExpenses, setTotalExpenses] = useState(8); // Updated value
 
-  // Fetch total expenses from the server
+  // Animation effect on counts
   useEffect(() => {
-    const fetchTotalExpenses = async () => {
-      try {
-        const response = await fetch('http://localhost:5555/expenseRequests/totalExpenses');
-        const data = await response.json();
-        setTotalExpenses(data.totalExpenses);
-      } catch (error) {
-        console.error('Error fetching total expenses:', error);
-      }
-    };
+    const interval = setInterval(() => {
+      setTotalProfits(prev => Math.floor(Math.random() * 30));
+      setTotalInvoices(prev => Math.floor(Math.random() * 20));
+      setTotalIncomes(prev => Math.floor(Math.random() * 30));
+      setTotalExpenses(prev => Math.floor(Math.random() * 15));
+    }, 3000); // Change values every 3 seconds
 
-    fetchTotalExpenses();
+    return () => clearInterval(interval);
   }, []);
 
-  // Fetch total income from the server
-  useEffect(() => {
-    const fetchTotalIncome = async () => {
-      try {
-        const response = await fetch('http://localhost:5555/invoiceRequests/totalIncome');
-        const data = await response.json();
-        setTotalIncomes(data.totalIncome);
-      } catch (error) {
-        console.error('Error fetching total income:', error);
-      }
-    };
+  const chartData = {
+    series: [{
+      name: 'Counts',
+      data: [totalProfits, totalInvoices, totalIncomes, totalExpenses],
+    }],
+  };
 
-    fetchTotalIncome();
-  }, []);
-
-  // Fetch total invoices
-  useEffect(() => {
-    const fetchTotalInvoices = async () => {
-      try {
-        const response = await fetch('http://localhost:5555/invoiceRequests/totalInvoices');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setTotalInvoices(data.totalInvoices);
-      } catch (error) {
-        console.error('Error fetching total invoices:', error);
-      }
-    };
-
-    fetchTotalInvoices();
-  }, []);
-
-  // Calculate total profits when totalIncomes or totalExpenses change
-  useEffect(() => {
-    const currentProfit = totalIncomes - totalExpenses;
-    setTotalProfits(currentProfit);
-    // Update profit data for line graph (you can modify this logic to add data points over time)
-    setProfitData(prev => [...prev, currentProfit]);
-  }, [totalIncomes, totalExpenses]);
-
-  const pieChartData = {
-    labels: ['Total Income', 'Total Expenses'],
-    datasets: [
-        {
-            label: 'Financial Overview',
-            data: [totalIncomes, totalExpenses],
-            backgroundColor: [
-                '#ff9800', // Green
-                '#f44336', // Orange
-                '#2196F3', // Blue
-                '#9C27B0', // Purple
-                '#F44336', // Red
-                '#FFC107', // Amber
-            ],
-            borderColor: ['rgba(255, 255, 255, 1)'], // White border for better contrast
-            borderWidth: 2,
+  const options = {
+    chart: {
+      type: 'bar',
+      height: 350,
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+          enabled: true,
+          delay: 150,
         },
-    ],
-};
-
-
-  const pieChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Income vs Expenses',
+        dynamicAnimation: {
+          enabled: true,
+          speed: 350,
+        },
       },
     },
-  };
-
-  // Prepare data for the line chart
-  const lineChartData = {
-    labels: profitData.map((_, index) => `Month ${index + 1}`), // Assuming monthly data points
-    datasets: [
-      {
-        label: 'Profit Over Time',
-        data: profitData,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
+    title: {
+      text: 'Ashan Auto Service Analysis',
+      align: 'center',
+      style: {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        fontFamily: 'Poppins',
+        color: '#1a1818',
       },
-    ],
-  };
-
-  const lineChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
+    },
+    xaxis: {
+      categories: ['Profits', 'Total Invoices', 'Total Incomes', 'Total Expenses'],
+      labels: {
+        style: {
+          fontFamily: 'Poppins',
+          fontWeight: 'bold',
+        },
       },
+    },
+    yaxis: {
       title: {
-        display: true,
-        text: 'Profit Trend',
+        text: 'Count',
+      },
+      labels: {
+        style: {
+          fontFamily: 'Poppins',
+          fontWeight: 'bold',
+        },
+      },
+    },
+    tooltip: {
+      theme: 'dark',
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        endingShape: 'rounded',
+        columnWidth: '50%',
+        colors: {
+          ranges: [
+            {
+              from: 0,
+              to: 1,
+              color: '#ff4560', // Color for Profits
+            },
+            {
+              from: 1,
+              to: 2,
+              color: '#00e396', // Color for Total Invoices
+            },
+            {
+              from: 2,
+              to: 3,
+              color: '#775dd0', // Color for Total Incomes
+            },
+            {
+              from: 3,
+              to: 4,
+              color: '#ff9800', // Color for Total Expenses
+            },
+          ],
+        },
       },
     },
   };
@@ -139,9 +117,8 @@ const Dashboard = () => {
       <Navbar />
       <div className="dashboard-container">
         <div className="content">
-          <h1 className="text-4xl my-5"><b>Ashan Auto Service</b></h1>
+          <h1 className="text-4xl my-5">Ashan Auto Service</h1>
           <h2 className="dashboard-title">DASHBOARD</h2>
-
           <div className="cards-container">
             <div className="card profits">
               <h3>Profits</h3>
@@ -160,12 +137,9 @@ const Dashboard = () => {
               <p>Total - {totalExpenses}</p>
             </div>
           </div>
-          <div className="line-chart-container">
-            <Line data={lineChartData} options={lineChartOptions} />
-          </div>
-          <div className="pie-chart-container">
-            <Pie data={pieChartData} options={pieChartOptions} />
-          </div>
+        </div>
+        <div className="chart-container">
+          <Chart options={options} series={chartData.series} type="bar" height={350} />
         </div>
       </div>
     </div>

@@ -46,7 +46,7 @@ function DashboardHeader() {
 
           {/* Center: Title */}
           <div className="flex justify-center flex-grow">
-            <h1 className="text-2xl font-bold">Finance Login</h1>
+            <h1 className="text-2xl font-bold">Admin Login</h1>
           </div>
 
           {/* Right side: User greeting and avatar */}
@@ -57,7 +57,7 @@ function DashboardHeader() {
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar bg-white-600">
                 <div className="w-10 rounded-full">
-                  <img alt="User Avatar" src="../FinanceManagement/rusiru.jpg" />
+                  <img alt="User Avatar" src="../images/user.png" />
                 </div>
               </div>
               <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
