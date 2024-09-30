@@ -105,7 +105,7 @@ const CreateRequests = () => {
   const handleSaveRequest = () => {
 
     // Validation rules
-    const namePattern = /^[A-Za-z\s.'-]+$/;
+    const namePattern = /^[A-Za-z\s.'-_]+$/;
     const contactPattern = /^\d{10}$/;
     const vehiclePattern = /^[A-Z]{2,3}-\d{4}$/;
 
