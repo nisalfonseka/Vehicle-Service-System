@@ -66,6 +66,7 @@ const CustomerTable = () => {
           </tr>
         </thead>
         <tbody>
+          
           {filteredCustomers.map((customer, index) => {
             const emailStatus = localStorage.getItem(`emailStatus_${customer.customer_id}`) || "";
             return (
