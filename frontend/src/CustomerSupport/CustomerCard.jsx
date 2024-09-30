@@ -117,7 +117,7 @@ const CustomerCard = () => {
           </button>
           <button
             style={{
-              backgroundColor: ticketFilter === "Pending " ? "#facc15" : "#ccc",
+              backgroundColor: ticketFilter === "Pending" ? "#eab308" : "#ccc",
               color: "#fff",
               padding: "10px 15px",
               marginRight: "10px",
