@@ -1,207 +1,308 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import ManagerHeader from '../InventoryManagement/managerHeader';
 
-const ItemDetailsssss = () => {
-  const { id } = useParams(); // Get item ID from URL
-  const navigate = useNavigate();
-  const [item, setItem] = useState(null);
+const AddItemForm = () => {
+  const [categories, setCategories] = useState([]);
+  const [item, setItem] = useState({
+    name: '',
+    code: '',
+    companyName: '',
+    description: '',
+    qty: '',
+    buyingPrice: '',
+    price: '',
+    category: '',
+    photo: null, // Set initial value to null for file
+  });
+  const [errors, setErrors] = useState({});
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false); // Modal state
-  const [updatedItem, setUpdatedItem] = useState({}); // For handling updates
-  const [categories, setCategories] = useState([]); // To store available categories
+  const navigate = useNavigate();
 
-  // Fetch item details and available categories
   useEffect(() => {
-    const fetchItemDetails = async () => {
+    const fetchCategories = async () => {
       try {
-        const itemResponse = await axios.get(`http://localhost:5555/inventory-items/${id}`);
-        setItem(itemResponse.data);
-        setUpdatedItem(itemResponse.data); // Initialize with fetched data
-
-        const categoriesResponse = await axios.get('http://localhost:5555/categories');
-        setCategories(categoriesResponse.data); // Set available categories
+        const response = await axios.get('http://localhost:5555/categories');
+        setCategories(response.data);
       } catch (error) {
-        setError('Error fetching item or category details');
+        setError('Failed to fetch categories.');
+        console.error('Error fetching categories:', error);
       }
     };
 
-    fetchItemDetails();
-  }, [id]);
+    fetchCategories();
+  }, []);
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:5555/inventory-items/${id}`);
-      alert('Item deleted successfully');
-      navigate('/'); // Redirect back to the inventory list
-    } catch (error) {
-      alert('Error deleting item');
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await axios.put(`http://localhost:5555/inventory-items/${id}`, updatedItem);
-      alert('Item updated successfully');
-      setShowModal(false); // Close the modal after successful update
-      navigate(`/items/${id}`); // Refresh item details page after update
-    } catch (error) {
-      alert('Error updating item');
-    }
-  };
-
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedItem({ ...updatedItem, [name]: value });
+    setItem((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setErrors((prev) => ({ ...prev, [name]: '' })); // Clear specific error
   };
 
-  const handleCategoryChange = (e) => {
-    const selectedCategory = categories.find((cat) => cat._id === e.target.value);
-    setUpdatedItem({ ...updatedItem, category: selectedCategory });
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setItem((prev) => ({
+        ...prev,
+        photo: file, // Store the file object directly
+      }));
+      setErrors((prev) => ({ ...prev, photo: '' })); // Clear specific error
+    }
   };
 
-  if (error) return <div>{error}</div>;
-  if (!item) return <div>Loading...</div>;
+  // Number Validation Function (to ensure only positive integers or decimals are entered)
+  const isPositiveNumber = (value) => {
+    const numberRegex = /^[0-9]+(\.[0-9]+)?$/; // This regex allows only positive numbers (including decimals)
+    return numberRegex.test(value);
+  };
+
+  // Validation Function
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!item.name.trim()) newErrors.name = 'Name is required';
+    if (!item.code.trim()) newErrors.code = 'Code is required';
+    if (!item.companyName.trim()) newErrors.companyName = 'Company name is required';
+    if (!item.description.trim()) newErrors.description = 'Description is required';
+
+    // Quantity validation
+    if (!isPositiveNumber(item.qty)) {
+      newErrors.qty = 'Quantity must be a positive number and cannot be zero';
+    } else if (item.qty <= 0) {
+      newErrors.qty = 'Quantity must be greater than 0';
+    }
+
+    // Buying Price validation
+    if (!isPositiveNumber(item.buyingPrice)) {
+      newErrors.buyingPrice = 'Buying Price must be a positive number';
+    } else if (item.buyingPrice <= 0) {
+      newErrors.buyingPrice = 'Buying Price must be greater than 0';
+    }
+
+    // Selling Price validation
+    if (!isPositiveNumber(item.price)) {
+      newErrors.price = 'Price must be a positive number';
+    } else if (item.price <= 0) {
+      newErrors.price = 'Price must be greater than 0';
+    } 
+
+    if (!item.category) newErrors.category = 'Please select a category';
+
+    if (!item.photo) {
+      newErrors.photo = 'Photo is required';
+    } else if (item.photo.size > 1048576) {
+      newErrors.photo = 'Photo size should not exceed 1MB';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Returns true if no errors
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Run validation
+    if (!validateForm()) return;
+
+    // Create a FormData object
+    const formData = new FormData();
+
+    // Append fields to FormData
+    for (const key in item) {
+      if (item.hasOwnProperty(key)) {
+        formData.append(key, item[key]);
+      }
+    }
+
+    try {
+      await axios.post('http://localhost:5555/inventory', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important for file uploads
+        },
+      });
+      alert('Item added successfully!');
+      navigate('/dashboard/senura'); // Redirect to items list after successful addition
+    } catch (error) {
+      setError('Failed to add item.');
+      console.error('Error adding item:', error);
+    }
+  };
 
   return (
-    <div className="container mx-auto mt-10">
-      <h1 className="text-3xl font-bold mb-4">Item Details</h1>
-      <div className="bg-white shadow-md rounded-lg overflow-hidden mb-4">
-        {item.photo && (
-          <img
-            src={`data:image/jpeg;base64,${item.photo}`}
-            className="w-full h-64 object-cover"
-            alt={item.name}
-          />
-        )}
-        <div className="p-6">
-          <h5 className="text-2xl font-semibold mb-2">{item.name}</h5>
-          <p className="text-gray-700 mb-1">Price: LKR {item.price.toFixed(2)}</p>
-          <p className="text-gray-700 mb-1">Quantity: {item.qty}</p>
-          <p className="text-gray-700 mb-1">Description: {item.description}</p>
-          <p className="text-gray-700 mb-1">Company: {item.companyName}</p>
-          <p className="text-gray-700 mb-1">Category: {item.category?.name || 'N/A'}</p>
-        </div>
-      </div>
+    <div className="flex">
+      <ManagerHeader />
+      <div className="p-6 bg-gray-100 min-h-screen">
+        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Add New Item</h1>
 
-      <div className="flex space-x-4">
-        <button
-          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-          onClick={() => navigate(-1)}
-        >
-          Back
-        </button>
-        <button
-          className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-          onClick={() => setShowModal(true)}
-        >
-          Update
-        </button>
-        <button
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          onClick={handleDelete}
-        >
-          Delete
-        </button>
-      </div>
+        {error && <p className="text-red-600 text-center">{error}</p>}
 
-      {/* Modal for updating the item */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded shadow-md w-full max-w-lg">
-            <h2 className="text-xl font-bold mb-4">Update Item</h2>
-            <form>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={updatedItem.name || ''}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded text-gray-700"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Price</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={updatedItem.price || ''}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded text-gray-700"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Quantity</label>
-                <input
-                  type="number"
-                  name="qty"
-                  value={updatedItem.qty || ''}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded text-gray-700"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Description</label>
-                <input
-                  type="text"
-                  name="description"
-                  value={updatedItem.description || ''}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded text-gray-700"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Company</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={updatedItem.companyName || ''}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded text-gray-700"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-1">Category</label>
-                <select
-                  name="category"
-                  value={updatedItem.category?._id || ''}
-                  onChange={handleCategoryChange}
-                  className="w-full px-3 py-2 border rounded text-gray-700"
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((category) => (
-                    <option key={category._id} value={category._id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </form>
-            <div className="flex justify-end space-x-4">
-              <button
-                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-                onClick={() => setShowModal(false)}
-              >
-                Close
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                onClick={handleUpdate}
-              >
-                Save Changes
-              </button>
+        <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="name">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={item.name}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.name && 'border-red-600'}`}
+                required
+              />
+              {errors.name && <p className="text-red-600">{errors.name}</p>}
             </div>
-          </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="code">
+                Code
+              </label>
+              <input
+                type="text"
+                id="code"
+                name="code"
+                value={item.code}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.code && 'border-red-600'}`}
+                required
+              />
+              {errors.code && <p className="text-red-600">{errors.code}</p>}
+            </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="companyName">
+                Company Name
+              </label>
+              <input
+                type="text"
+                id="companyName"
+                name="companyName"
+                value={item.companyName}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.companyName && 'border-red-600'}`}
+                required
+              />
+              {errors.companyName && <p className="text-red-600">{errors.companyName}</p>}
+            </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="description">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={item.description}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.description && 'border-red-600'}`}
+                rows="4"
+                required
+              ></textarea>
+              {errors.description && <p className="text-red-600">{errors.description}</p>}
+            </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="qty">
+                Quantity
+              </label>
+              <input
+                type="number"
+                id="qty"
+                name="qty"
+                value={item.qty}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.qty && 'border-red-600'}`}
+                required
+              />
+              {errors.qty && <p className="text-red-600">{errors.qty}</p>}
+            </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="buyingPrice">
+                Buying Price
+              </label>
+              <input
+                type="number"
+                id="buyingPrice"
+                name="buyingPrice"
+                value={item.buyingPrice}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.buyingPrice && 'border-red-600'}`}
+                required
+              />
+              {errors.buyingPrice && <p className="text-red-600">{errors.buyingPrice}</p>}
+            </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="price">
+                Selling Price
+              </label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                value={item.price}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.price && 'border-red-600'}`}
+                required
+              />
+              {errors.price && <p className="text-red-600">{errors.price}</p>}
+            </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="category">
+                Category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={item.category}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.category && 'border-red-600'}`}
+                required
+              >
+                <option value="">Select Category</option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              {errors.category && <p className="text-red-600">{errors.category}</p>}
+            </div>
+
+            <div>
+              <label className="block text-gray-800 font-semibold mb-2" htmlFor="photo">
+                Photo
+              </label>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                onChange={handleFileChange}
+                className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.photo && 'border-red-600'}`}
+                accept="image/*"
+                required
+              />
+              {errors.photo && <p className="text-red-600">{errors.photo}</p>}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+            >
+              Add Item
+            </button>
+          </form>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default ItemDetailsssss;
+export default AddItemForm;
