@@ -56,6 +56,19 @@ function CreateCustomer() {
     "05:00 PM - 06:00 PM",
   ];
 
+  const vehicleTypes = [
+    
+  "Car",
+  "SUV",
+  "Vans",
+  "Trucks",
+  "Motorcycles",
+  "Electric Vehicles (EVs)",
+  "Hybrid Vehicles",
+  "Buses",
+  "Recreational Vehicles (RVs)",
+  ];
+
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
   
@@ -68,34 +81,35 @@ function CreateCustomer() {
   
     // Set the customerName from the logged-in user's username
     setCustomerName(loggedInUser.username);
+    
   
-    // Fetch bookings based on the selected date
-    const fetchBookings = async () => {
-      try {
-        const formattedDate = selectedDate.toISOString().split("T")[0]; // Format date correctly
+   // Fetch bookings based on the selected date
+   const fetchBookings = async () => {
+    try {
+      const formattedDate = selectedDate.toISOString().split("T")[0]; // Format date correctly
       const response = await axios.get(`http://localhost:5555/books?date=${formattedDate}`);
       const bookings = response.data;
-  
-        const availability = timeSlots.reduce((acc, slot) => {
-          acc[slot] = 0;
-          return acc;
-        }, {});
-  
-        bookings.forEach((booking) => {
-          if (availability[booking.selectedTimeSlot] !== undefined) {
-            availability[booking.selectedTimeSlot]++;
-          }
-        });
-  
-        setTimeSlotsAvailability(availability);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
-  
-    fetchBookings();
-  }, [selectedDate, enqueueSnackbar, navigate]);
-  
+
+      const availability = timeSlots.reduce((acc, slot) => {
+        acc[slot] = 0; // Initialize each time slot to zero bookings
+        return acc;
+      }, {});
+
+      bookings.forEach((booking) => {
+        if (availability[booking.selectedTimeSlot] !== undefined) {
+          availability[booking.selectedTimeSlot]++;
+        }
+      });
+
+      setTimeSlotsAvailability(availability);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+  };
+
+  fetchBookings();
+}, [selectedDate, enqueueSnackbar, navigate]);
+
   
 
   const handleCheckboxChange = (service) => {
@@ -111,6 +125,15 @@ function CreateCustomer() {
     setTotalCost((prevCost) => prevCost + (isSelected ? service.cost : -service.cost));
     setTotalTime((prevTime) => prevTime + (isSelected ? service.time : -service.time));
   };
+
+  const handleTimeSlotChange = (slot) => {
+    setSelectedTimeSlot(slot);
+    const currentBookingCount = timeSlotsAvailability[slot] || 0;
+    if (currentBookingCount >= 3) {
+      enqueueSnackbar("This time slot is fully booked. Please select another time slot.", { variant: "error" });
+    }
+  };
+
 
   const handleSaveCustomer = () => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -150,6 +173,13 @@ function CreateCustomer() {
       return;
     }
 
+    const currentBookingCount = timeSlotsAvailability[selectedTimeSlot] || 0;
+
+    if (currentBookingCount >= 3) {
+      enqueueSnackbar("This time slot is fully booked. Please select another time slot.", { variant: "error" });
+      return;
+    }
+
     const data = {
       customerName,
       contactNumber,
@@ -168,20 +198,27 @@ function CreateCustomer() {
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Booking Created Successfully", { variant: "success" });
-        navigate("/");
+        navigate(-1);
       })
       .catch((error) => {
         setLoading(false);
-        enqueueSnackbar("Error occurred while creating the booking", { variant: "error" });
+        if (error.response && error.response.status === 400 && error.response.data.message) {
+          enqueueSnackbar(error.response.data.message, { variant: "error" });
+        } else {
+          enqueueSnackbar("Error occurred while creating the booking", { variant: "error" });
+        }
         console.error(error);
       });
   };
 
   const formatTime = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours}h ${remainingMinutes}m`;
+    const days = Math.floor(minutes / 1440); // 1 day = 1440 minutes
+    const hours = Math.floor((minutes % 1440) / 60); // Remaining hours
+    const remainingMinutes = minutes % 60; // Remaining minutes
+  
+    return `${days}d ${hours}h ${remainingMinutes}m`;
   };
+  
 
   return (
     <div className="p-4">
@@ -190,51 +227,94 @@ function CreateCustomer() {
       {loading && <Spinner />}
       <div className="flex flex-col rounded-xl w-[1000px] p-4 mx-auto">
         <div className="flex justify-between my-4">
-          <div className="w-1/2 pr-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Customer Name</label>
-            <input
-              type="text"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              className="border-2 rem border-gray-500 px-4 py-2 w-full"
-            />
-          </div>
-          <div className="w-1/2 pl-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Contact Number</label>
-            <input
-              type="text"
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
-              className="border-2 rem border-gray-500 px-4 py-2 w-full"
-            />
-          </div>
+        <div className="w-1/2 pr-2">
+  <label className="text-xl text-lg font-semibold mr-4 text-black-500">Customer Name</label>
+  <input
+    type="text"
+    value={customerName}
+    onChange={(e) => setCustomerName(e.target.value)} // You can keep this if needed for other operations
+    className="border-2 border-gray-500 px-4 py-2 w-full"
+    readOnly // This makes the input field read-only
+  />
+</div>
+<div className="w-1/2 pl-2">
+  <label className="text-xl text-lg font-semibold mr-4 text-black-500">
+    Contact Number
+  </label>
+  <div className="flex">
+    <span className="border-2 border-gray-500 px-4 py-2 bg-gray-100 text-gray-500">+94</span>
+    <input
+      type="text"
+      value={contactNumber}
+      onChange={(e) => {
+        // Prevent user from entering leading zero and update state
+        const newValue = e.target.value.replace(/^0+/, ''); // Remove leading zeros
+        if (newValue.length <= 9 && /^\d*$/.test(newValue)) { // Limit to 9 digits and numeric only
+          setContactNumber(newValue);
+        }
+      }}
+      className="border-2 border-gray-500 px-4 py-2 w-full ml-1"
+      placeholder="Enter contact number"
+    />
+  </div>
+</div>
+
         </div>
 
         <div className="flex justify-between my-4">
-          <div className="w-1/2 pr-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Type</label>
-            <input
-              type="text"
-              value={vehicleType}
-              onChange={(e) => setVehicleType(e.target.value)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
-            />
-          </div>
-          <div className="w-1/2 pl-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Number</label>
-            <input
-              type="text"
-              value={vehicleNumber}
-              onChange={(e) => setVehicleNumber(e.target.value)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
-            />
-          </div>
+        <div className="w-1/2 pr-2">
+    <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Type</label>
+    <select
+      value={vehicleType}
+      onChange={(e) => setVehicleType(e.target.value)}
+      className="border-2 border-gray-500 px-4 py-2 w-full"
+    >
+      <option value="">Select vehicle type</option>
+      {[
+        "Car",
+        "SUV",
+        "Vans",
+        "Trucks",
+        "Motorcycles",
+        "Electric Vehicles (EVs)",
+        "Hybrid Vehicles",
+        "Buses",
+        "Recreational Vehicles (RVs)",
+      ].map((type, index) => (
+        <option key={index} value={type}>
+          {type}
+        </option>
+      ))}
+    </select>
+  </div>
+          
+  <div className="w-1/2 pl-2">
+  <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Number</label>
+  <input
+    type="text"
+    value={vehicleNumber}
+    onChange={(e) => {
+      const inputValue = e.target.value.toUpperCase(); // Convert input to uppercase
+      const regex = /^[A-Z]{0,3}\d{0,4}$/; // Regex to allow 0-3 letters followed by 0-4 digits
+      
+      // If the input matches the regex and the total length is valid, update the state
+      if (regex.test(inputValue) && inputValue.length <= 7) {
+        setVehicleNumber(inputValue); // Set the vehicle number
+      }
+    }}
+    className="border-2 border-gray-500 px-4 py-2 w-full"
+    placeholder="Enter vehicle number "
+  />
+</div>
+
+
+
         </div>
 
         {/* Service Selection */}
         <div className="my-4">
-          <h4 className="text-xl text-lg font-semibold text-black-500">Select Services</h4>
-          <div className="service-grid grid grid-cols-2 gap-4">
+          <h4 className="text-xl text-lg font-semibold text-black-500">Select Services</h4><br></br>
+          <div className="service-grid grid grid-cols-3 gap-4">
             {services.map((service) => (
               <div key={service.name} className="flex items-center">
                 <input
@@ -250,25 +330,33 @@ function CreateCustomer() {
         </div>
 
         {/* Date and Time Selection */}
+        <div className="flex justify-between my-3">
         <div className="my-4">
-          <label className="text-lg font-semibold">Select Date</label>
-          <DatePicker selected={selectedDate} onChange={(date) => setSelectedDate(date)} className="px-4 py-2 border" />
-        </div>
+  <label className="text-lg font-semibold">Select Date </label>
+  <DatePicker
+    selected={selectedDate}
+    onChange={(date) => setSelectedDate(date)}
+    className="px-4 py-2 border"
+    filterDate={(date) => date > new Date()} // Allow only future dates
+    minDate={new Date()} // Optionally, set the minimum selectable date to today
+  />
+</div>
 
         <div className="my-4">
-          <label className="text-lg font-semibold">Select Time Slot</label>
+          <label className="text-lg font-semibold">Select Time Slot </label>
           <select
             value={selectedTimeSlot}
-            onChange={(e) => setSelectedTimeSlot(e.target.value)}
+            onChange={(e) => handleTimeSlotChange(e.target.value)}
             className="px-4 py-2 border"
           >
             <option value="">Select Time Slot</option>
             {timeSlots.map((slot) => (
               <option key={slot} value={slot}>
-                {slot} ({timeSlotsAvailability[slot]} )
+                {slot} 
               </option>
             ))}
           </select>
+        </div>
         </div>
 
         {/* Estimation Summary */}

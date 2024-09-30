@@ -3,6 +3,8 @@ import { Book } from "../models/bookModel.js";
 
 const router = express.Router();
 
+
+
 // Route for Save a new Book for database
 router.post("/", async (request, response) => {
   try {
@@ -18,6 +20,7 @@ router.post("/", async (request, response) => {
       selectedTimeSlot
     } = request.body;
 
+    
     // Check for required fields
     if (
       !customerName ||
@@ -33,6 +36,15 @@ router.post("/", async (request, response) => {
       return response.status(400).send({
         message: "Send all required fields",
       });
+    }
+
+    const existingBookings = await Book.countDocuments({
+      selectedDate: selectedDate,
+      selectedTimeSlot: selectedTimeSlot,
+    });
+
+    if (existingBookings >= 3) {
+      return response.status(400).json({ message: "This time slot is fully booked. Please select another time slot." });
     }
 
     // Create a new booking
