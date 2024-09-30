@@ -57,21 +57,33 @@ const AddItemForm = () => {
   // Validation Function
   const validateForm = () => {
     const newErrors = {};
-    
+  
+    // Check if fields are filled out
     if (!item.name.trim()) newErrors.name = 'Name is required';
+    if (item.name.length < 3) newErrors.name = 'Name must be at least 3 characters long';
+    
     if (!item.code.trim()) newErrors.code = 'Code is required';
+    if (item.code.length < 3) newErrors.code = 'Code must be at least 3 characters long';
+    
     if (!item.companyName.trim()) newErrors.companyName = 'Company name is required';
+    
     if (!item.description.trim()) newErrors.description = 'Description is required';
+    
     if (item.qty <= 0) newErrors.qty = 'Quantity must be greater than 0';
+    
     if (item.buyingPrice <= 0) newErrors.buyingPrice = 'Buying Price must be greater than 0';
+    
     if (item.price <= 0) newErrors.price = 'Price must be greater than 0';
-    if (item.price <= item.buyingPrice) newErrors.price = 'Price must be higher than Buying Price';
+    //if (item.price <= item.buyingPrice) newErrors.price = 'Price must be higher than Buying Price';
+    
     if (!item.category) newErrors.category = 'Please select a category';
     
     if (!item.photo) {
       newErrors.photo = 'Photo is required';
     } else if (item.photo.size > 1048576) {
       newErrors.photo = 'Photo size should not exceed 1MB';
+    } else if (!/\.(jpg|jpeg|png)$/i.test(item.photo.name)) { // Validate file format
+      newErrors.photo = 'Photo must be in JPG, JPEG, or PNG format';
     }
   
     setErrors(newErrors);
@@ -102,7 +114,7 @@ const AddItemForm = () => {
         },
       });
       alert('Item added successfully!');
-      navigate('/items'); // Redirect to items list after successful addition
+      navigate('/dashboard/senura'); // Redirect to items list after successful addition
     } catch (error) {
       setError('Failed to add item.');
       console.error('Error adding item:', error);
