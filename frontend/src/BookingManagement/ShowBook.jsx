@@ -44,7 +44,6 @@ function ShowBook() {
                 </thead>
                 <tbody className="divide-y divide-gray-300">
                   {[
-                    { label: "Id", value: book._id },
                     { label: "Customer Name", value: book.customerName },
                     { label: "Vehicle Type", value: book.vehicleType },
                     { label: "Vehicle Number", value: book.vehicleNumber },
