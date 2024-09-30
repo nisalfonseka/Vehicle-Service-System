@@ -11,7 +11,7 @@ const VehicleSingleCard = ({ vehicle }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className='border-2 border-gray-500 rounded-lg px-4 py-2 m-4 relative hover:shadow-xl'>
+    <div className='border-2 border-gray-500 rounded-lg p-4 m-4 relative hover:shadow-xl w-full md:w-80 min-h-64'>
       <h2 className='absolute top-1 right-2 px-4 py-1 bg-red-300 rounded-lg'>
         {vehicle.year}
       </h2>
@@ -24,7 +24,7 @@ const VehicleSingleCard = ({ vehicle }) => {
         <BiUserCircle className='text-red-300 text-2xl' />
         <h2 className='my-1'>{vehicle.chassisNo}</h2>
       </div>
-      <div className='flex justify-between items-center gap-x-2 mt-4 p-4'>
+      <div className='flex justify-between items-center gap-x-2 mt-4'>
         <BiShow
           className='text-3xl text-blue-800 hover:text-black cursor-pointer'
           onClick={() => setShowModal(true)}
