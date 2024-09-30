@@ -58,13 +58,28 @@ const CustomerTable = () => {
   return (
     <>
       <table className="min-w-full bg-white border shadow-md rounded-lg overflow-hidden">
-        <thead className="bg-red-600 text-white">
+      <thead className="bg-red-600 text-white">
+            <tr>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Customer ID</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Customer Name</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Email</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Mobile Number</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Vehicle Number</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Subject</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Category</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Priority</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Estimated Time</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Ticket Status</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Operations</th>
+            </tr>
+          </thead>
+        {/* <thead className="bg-red-600 text-white">
           <tr>
             {['Customer ID', 'Customer Name', 'Email', 'Mobile Number', 'Vehicle Number', 'Subject', 'Category', 'Priority', 'Estimated Time', 'Ticket Status', 'Operations'].map((header, idx) => (
               <th key={idx} className="p-2 text-left">{header}</th>
             ))}
           </tr>
-        </thead>
+        </thead> */}
         <tbody>
           {filteredCustomers.map((customer, index) => {
             const emailStatus = localStorage.getItem(`emailStatus_${customer.customer_id}`) || "";
