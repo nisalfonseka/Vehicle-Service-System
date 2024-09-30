@@ -48,11 +48,13 @@ const EditInvoiceForm = ({ invoice, onUpdateInvoice, onClose }) => {
     try {
       // Send the PUT request to update the invoice
       const response = await axios.put(`http://localhost:5555/invoiceRequests/${invoice._id}`, formData);
+     
       onUpdateInvoice(response.data); // Pass updated invoice data to parent component
-      onClose(); // Close the modal after successful update
+      location.reload();
+      // onClose(); // Close the modal after successful update
     } catch (err) {
       console.error("Error updating invoice:", err.response?.data);
-      setError(err.response?.data?.message || "Error occurred during update");
+      
     }
   };
 
