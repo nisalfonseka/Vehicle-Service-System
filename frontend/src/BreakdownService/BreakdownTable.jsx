@@ -11,19 +11,19 @@ const BreakdownTable = ({ breakdownRequests, loading }) => {
   return (
     <table
       className='w-full border-separate border-spacing-2'
-      style={{ borderCollapse: 'separate', borderSpacing: '8px', backgroundColor: '#f8f9fa' }}
+      style={{ borderCollapse: 'separate', borderSpacing: '8px', backgroundColor: '#E53935' }}
     >
       <thead>
         <tr>
-          <th>No</th>
-          <th>Customer Name</th>
-          <th>Contact Number</th>
-          <th>Vehicle Number</th>
-          <th>Location</th>
-          <th>Issue Type</th>
-          <th>Assigned Driver</th>
-          <th>Status</th>
-          <th>Operations</th>
+        <th style={{ color: 'white' }}>No</th>
+          <th style={{ color: 'white' }}>Customer Name</th>
+          <th style={{ color: 'white' }}>Contact Number</th>
+          <th style={{ color: 'white' }}>Vehicle Number</th>
+          <th style={{ color: 'white' }}>Location</th>
+          <th style={{ color: 'white' }}>Issue Type</th>
+          <th style={{ color: 'white' }}>Assigned Driver</th>
+          <th style={{ color: 'white' }}>Status</th>
+          <th style={{ color: 'white' }}>Operations</th>
         </tr>
       </thead>
       <tbody>
