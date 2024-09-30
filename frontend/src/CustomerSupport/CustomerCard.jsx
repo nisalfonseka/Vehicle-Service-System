@@ -139,7 +139,7 @@ const CustomerCard = () => {
             }}
             onClick={() => handleTicketFilterChange("Success")}
           >
-            Success Tickets
+            Accepted Tickets
           </button>
           <button
             style={{
@@ -151,7 +151,7 @@ const CustomerCard = () => {
             }}
             onClick={() => handleTicketFilterChange("Unsuccess")}
           >
-            Unsuccess Tickets
+            Failed Tickets
           </button>
         </div>
 
