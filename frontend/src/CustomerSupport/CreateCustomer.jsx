@@ -32,7 +32,7 @@ function ContactForm() {
   
     // If no user is logged in, show a message and navigate to login
     if (!loggedInUser || !loggedInUser.username) {
-      enqueueSnackbar("Please log in to make a booking", { variant: "error" });
+      enqueueSnackbar("Please log in to make a Ticket", { variant: "error" });
       navigate("/login"); // Redirect to login page
       return;
     }
@@ -77,6 +77,7 @@ function ContactForm() {
     setEstimatedTime(`Approximately ${days} Days (${formattedDate})`);
   };
              // my validation part
+             
   const validateVehicle = (vehicleNumber) => {
     const VehicleRegex = /^[A-Z]{2,3}-\d{4}$/;
     return VehicleRegex.test(vehicleNumber);
