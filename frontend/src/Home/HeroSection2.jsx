@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 function HeroSection2() {
   return (
-    <div className="hero bg-white min-h-800">
+    <div className="hero bg-white-600 min-h-screen">
   <div className="hero-content flex-col lg:flex-row-reverse">
     <motion.img
       src="/images/CarService1-1.jpg"

@@ -89,7 +89,7 @@ const InventorySummaryReport = () => {
             <h2 className="text-xl font-semibold text-gray-700">{category}</h2>
             <table className="table-auto w-full mt-4 border-collapse">
               <thead>
-                <tr className="bg-red-600 text-left">
+                <tr className="bg-gray-200 text-left">
                   <th className="p-2">Item Name</th>
                   <th className="p-2">Quantity</th>
                   <th className="p-2">Buying Price (LKR)</th>
@@ -104,12 +104,12 @@ const InventorySummaryReport = () => {
                     key={index}
                     className={`border-b ${item.qty < 3 ? 'bg-red-100' : ''}`}
                   >
-                    <td className="text-gray-700">{item.name}</td>
-                    <td className="text-gray-700">{item.qty}</td>
-                    <td className="text-gray-700">{item.buyingPrice.toFixed(2)}</td>
-                    <td className="text-gray-700">{item.price.toFixed(2)}</td>
-                    <td className="text-gray-700">{item.total.toFixed(2)}</td>
-                    <td className="text-gray-700">{item.profit.toFixed(2)}</td>
+                    <td className="p-2">{item.name}</td>
+                    <td className="p-2">{item.qty}</td>
+                    <td className="p-2">{item.buyingPrice.toFixed(2)}</td>
+                    <td className="p-2">{item.price.toFixed(2)}</td>
+                    <td className="p-2">{item.total.toFixed(2)}</td>
+                    <td className="p-2">{item.profit.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -127,7 +127,7 @@ const InventorySummaryReport = () => {
             {items
               .filter(item => item.qty < 3)
               .map(item => (
-                <li key={item._id} className="text-gray-700 border-b">
+                <li key={item._id} className="p-2 border-b">
                   {item.name} - Quantity: {item.qty}
                 </li>
               ))}

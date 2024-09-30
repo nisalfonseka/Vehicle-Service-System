@@ -1,0 +1,18 @@
+.header-buttons {
+    display: flex;
+    gap: 40px;
+    margin-left: 350px;
+    
+  }
+
+  button{
+    font-size: large;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .manager-header{
+    justify-content: center;
+    user-select: none;
+  }
+  
+
+  

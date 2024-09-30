@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Notification from '../../components/Notification'; // Import the Notification component
+import '../../mycss/Store.css';
 
 function Store({ cart, setCart }) {
   const [items, setItems] = useState([]);
@@ -98,7 +99,7 @@ function Store({ cart, setCart }) {
               <img src={`data:image/jpeg;base64,${item.photo}`} alt={item.name} className="w-full h-48 object-cover" />
             </Link>
             <div className="p-4">
-              <h5 className="text-lg font-semibold text-gray-500">{item.name}</h5>
+              <h5 className="text-lg font-semibold">{item.name}</h5>
               <p className="text-gray-500"><strong>RS: {item.price.toFixed(2)}</strong></p>
               <p className="text-gray-600">Available: {item.qty}</p>
               <button

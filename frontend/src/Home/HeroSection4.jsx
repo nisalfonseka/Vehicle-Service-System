@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 function HeroSection4() {
   return (
-    <div className="hero bg-white min-h-screen">
+    <div className="hero bg-white-600 min-h-screen">
   <div className="hero-content flex-col lg:flex-row-reverse">
     <motion.img
       src="/images/roadside.jpg"
@@ -27,7 +27,7 @@ function HeroSection4() {
   </p>
 </div>
 
-<div><Link to={"/breakdownRequests/create"}>
+<div><Link to={"/books/create"}>
           <a href=""
             title=""
             className="items-center justify-center hidden px-4 py-3 ml-30 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700"

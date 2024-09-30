@@ -16,7 +16,6 @@ const AddItemForm = () => {
     category: '',
     photo: null, // Set initial value to null for file
   });
-  const [errors, setErrors] = useState({});
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -40,7 +39,6 @@ const AddItemForm = () => {
       ...prev,
       [name]: value,
     }));
-    setErrors((prev) => ({ ...prev, [name]: '' })); // Clear specific error
   };
 
   const handleFileChange = (e) => {
@@ -50,40 +48,11 @@ const AddItemForm = () => {
         ...prev,
         photo: file, // Store the file object directly
       }));
-      setErrors((prev) => ({ ...prev, photo: '' })); // Clear specific error
     }
   };
-
-  // Validation Function
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!item.name.trim()) newErrors.name = 'Name is required';
-    if (!item.code.trim()) newErrors.code = 'Code is required';
-    if (!item.companyName.trim()) newErrors.companyName = 'Company name is required';
-    if (!item.description.trim()) newErrors.description = 'Description is required';
-    if (item.qty <= 0) newErrors.qty = 'Quantity must be greater than 0';
-    if (item.buyingPrice <= 0) newErrors.buyingPrice = 'Buying Price must be greater than 0';
-    if (item.price <= 0) newErrors.price = 'Price must be greater than 0';
-    if (item.price <= item.buyingPrice) newErrors.price = 'Price must be higher than Buying Price';
-    if (!item.category) newErrors.category = 'Please select a category';
-    
-    if (!item.photo) {
-      newErrors.photo = 'Photo is required';
-    } else if (item.photo.size > 1048576) {
-      newErrors.photo = 'Photo size should not exceed 1MB';
-    }
-  
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Returns true if no errors
-  };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Run validation
-    if (!validateForm()) return;
 
     // Create a FormData object
     const formData = new FormData();
@@ -129,10 +98,9 @@ const AddItemForm = () => {
               name="name"
               value={item.name}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.name && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
-            {errors.name && <p className="text-red-600">{errors.name}</p>}
           </div>
 
           <div>
@@ -145,10 +113,9 @@ const AddItemForm = () => {
               name="code"
               value={item.code}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.code && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
-            {errors.code && <p className="text-red-600">{errors.code}</p>}
           </div>
 
           <div>
@@ -161,10 +128,9 @@ const AddItemForm = () => {
               name="companyName"
               value={item.companyName}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.companyName && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
-            {errors.companyName && <p className="text-red-600">{errors.companyName}</p>}
           </div>
 
           <div>
@@ -176,11 +142,10 @@ const AddItemForm = () => {
               name="description"
               value={item.description}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.description && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               rows="4"
               required
             ></textarea>
-            {errors.description && <p className="text-red-600">{errors.description}</p>}
           </div>
 
           <div>
@@ -193,10 +158,9 @@ const AddItemForm = () => {
               name="qty"
               value={item.qty}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.qty && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
-            {errors.qty && <p className="text-red-600">{errors.qty}</p>}
           </div>
 
           <div>
@@ -209,10 +173,9 @@ const AddItemForm = () => {
               name="buyingPrice"
               value={item.buyingPrice}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.buyingPrice && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
-            {errors.buyingPrice && <p className="text-red-600">{errors.buyingPrice}</p>}
           </div>
 
           <div>
@@ -225,10 +188,9 @@ const AddItemForm = () => {
               name="price"
               value={item.price}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.price && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
-            {errors.price && <p className="text-red-600">{errors.price}</p>}
           </div>
 
           <div>
@@ -240,17 +202,16 @@ const AddItemForm = () => {
               name="category"
               value={item.category}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.category && 'border-red-600'}`}
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             >
-              <option value="">Select Category</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
+              <option value="">Select a category</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
                 </option>
               ))}
             </select>
-            {errors.category && <p className="text-red-600">{errors.category}</p>}
           </div>
 
           <div>
@@ -261,18 +222,15 @@ const AddItemForm = () => {
               type="file"
               id="photo"
               name="photo"
-              accept="image/*"
               onChange={handleFileChange}
-              className={`w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 ${errors.photo && 'border-red-600'}`}
-              required
+              className="w-full px-4 py-2 border rounded-md bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-600"
             />
-            {errors.photo && <p className="text-red-600">{errors.photo}</p>}
           </div>
 
-          <div className="text-center">
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+              className="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600"
             >
               Add Item
             </button>

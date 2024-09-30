@@ -1,111 +1,56 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BooksTable from "./BooksTable";
-import CustomerTable from "../CustomerSupport/CustomerTable";
-import BreakdownTable from "../BreakdownService/BreakdownTable";
 
 function BookUserDashboard() {
   const [books, setBooks] = useState([]);
-  const [loadingBooks, setLoadingBooks] = useState(true);
-  const [breakdownRequests, setBreakdownRequests] = useState([]);
-  const [customer, setCustomer] = useState([]);
-  const [loadingBreakdowns, setLoadingBreakdowns] = useState(true);
-  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [userProfile, setUserProfile] = useState(null); // Store user profile details
 
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    // Fetch the logged-in user's information
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    console.log("Logged In User:", loggedInUser); // Verify the structure and field names
 
     if (loggedInUser) {
-      setUserProfile(loggedInUser);
+      setUserProfile(loggedInUser); // Set user profile with the logged-in user details
 
-      // Fetch books and customer data for the logged-in user
-      const fetchData = async () => {
-        setLoadingBooks(true);
-        try {
-          const [bookResponse, customerResponse] = await Promise.all([
-            axios.get("http://localhost:5555/books"),
-            axios.get("http://localhost:5555/customer"),
-          ]);
-
-          // Filter books and customers by logged-in user's username
-          const filteredBooks = bookResponse.data.data.filter(
-            (book) => book.customerName === loggedInUser.username
-          );
-          const filteredCustomers = customerResponse.data.data.filter(
-            (customer) => customer.customerName === loggedInUser.username
-          );
-
+      setLoading(true);
+      axios
+        .get("http://localhost:5555/books")
+        .then((response) => {
+          // Filter bookings based on the logged-in user's username
+          const filteredBooks = response.data.data.filter(book => book.customerName === loggedInUser.username);
           setBooks(filteredBooks);
-          setCustomer(filteredCustomers);
-        } catch (error) {
-          console.error("Error fetching book/customer data:", error);
-        } finally {
-          setLoadingBooks(false);
-        }
-      };
-
-      fetchData();
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+        });
     }
   }, []);
-
-  useEffect(() => {
-    // Fetch breakdown requests
-    const fetchBreakdownRequests = async () => {
-      setLoadingBreakdowns(true);
-      try {
-        const response = await axios.get("http://localhost:5555/breakdownRequests");
-
-        // Filter breakdown requests by logged-in user's username
-        const filteredBreakdowns = response.data.data.filter(
-          (breakdownRequest) => breakdownRequest.customerName === userProfile?.username
-        );
-
-        setBreakdownRequests(filteredBreakdowns);
-      } catch (error) {
-        console.error("Error fetching breakdown requests:", error);
-      } finally {
-        setLoadingBreakdowns(false);
-      }
-    };
-
-    if (userProfile) {
-      fetchBreakdownRequests(); // Only fetch breakdowns when the user profile is available
-    }
-  }, [userProfile]);
 
   return (
     <div className="p-4">
       {/* User Profile Section */}
       {userProfile && (
         <div className="bg-white shadow-md rounded p-4 mb-8">
+          
           <div className="flex items-center gap-4">
+            
             <div>
-              <p><strong>Hi {userProfile.username}</strong></p>
-            </div>
+              <p> <strong>Hi {userProfile.username}</strong></p>
+              </div>
           </div>
         </div>
       )}
 
       {/* Bookings Section */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl my-8">Service Appointments</h1>
+        <h1 className="text-2xl my-8">My Bookings</h1>
       </div>
-      <br />
-      <BooksTable books={books} loading={loadingBooks} />
-
-      {/* Customer Details Section */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl my-8">Ticket Details</h1>
-      </div>
-      <br />
-      <CustomerTable customer={customer} loading={loadingBooks} />
-
-      {/* Breakdown Requests Section */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl my-8">Breakdown History</h1>
-      </div>
-      <br />
-      <BreakdownTable breakdownRequests={breakdownRequests} loading={loadingBreakdowns} />
+      <BooksTable books={books} loading={loading} />
     </div>
   );
 }

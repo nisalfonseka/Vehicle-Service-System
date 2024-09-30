@@ -1,4 +1,8 @@
-/* Global Styles for Centering Content */
+.body {
+  background-image: url("../FinanceManagement/background\ \(2\).jpg"); /* Replace with your image path */
+  
+}
+Global Styles for Centering Content */
 .container {
   display: flex;
   flex-direction: column;
@@ -8,7 +12,7 @@
   padding: 20px; /* Add padding around the container */
   background: url('your-background-image-url.jpg') no-repeat center center fixed;
   background-size: cover; /* Cover the entire viewport */
-  color: #fff; /* Set text color to white for better contrast */
+  color: #fffdfd; /* Set text color to white for better contrast */
 }
 
 /* Expense List Table Container */
@@ -25,6 +29,8 @@
   flex-direction: column;
   align-items: center;
   flex: 1; /* Allow the container to expand and push content to the bottom */
+  margin-left: 150px;
+
 }
 
 /* Add Expense Button */
@@ -104,61 +110,7 @@
   background-color: #b33535; /* Slightly different color for footer row */
 }
 
-/* Modal Backdrop */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Dark backdrop */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
-  animation: fadeIn 0.3s;
-}
 
-/* Modal Content */
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  width: 100%;
-  position: relative;
-}
-
-/* Close Button in Modal */
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: #333;
-  cursor: pointer;
-}
-
-/* Error Message Styling */
-.error-message {
-  color: #dc3545;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .expense-table th, .expense-table td {
-    padding: 12px 15px; /* Adjust padding for smaller screens */
-  }
-
-  .add-expense-btn {
-    padding: 10px 20px; /* Adjust button size for mobile */
-  }
-}
 
 /* Action Buttons - Edit and Delete */
 .actions button {
@@ -386,21 +338,108 @@
   margin-bottom: -10px;
 }
 .text-2xl.my-8{
-  margin-bottom: -10px;
-  color: #5e5959;
+  margin-bottom: 30px;
+  color: #202774;
 
 }
+
+.tr.font-bold{
+  margin-left: -20px;
+}
+
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  margin: 30px ;
+  justify-content: center;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  background-color: transparent;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Styling for the search icon */
+.search-icon {
+  font-size: 24px;
+  color: #b31919;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+  color: #f61414;
+}
+
+/* Styling for the generate report button */
+.generate-report-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  background-color: #0073e6;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the icon inside the button */
+.generate-report-btn .icon {
+  font-size: 20px;
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.generate-report-btn:hover .icon {
+  transform: translateY(-2px);
+}
+
 .generate-report-btn{
   background-color: #007bff; /* Green color for generate report button */
   color: white;
   padding: 10px 20px;
   border-radius: 6px;
   margin-right: -500px;
-  margin-top: -62px;
+  margin-top: -72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .generate-report-btn:hover {
   background-color: #f44a4a; /* Darker green on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
-.tr.font-bold{
-  margin-left: -20px;
+
+
+.btn-container{
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 190px;
+}
+
+
+.form-actions {
+  margin-top: 20px;
 }

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 function HeroSection1() {
   return (
-    <div className="hero bg-white min-h-screen rounded-lg shadow-0xl">
+    <div className="hero bg-white-200 min-h-screen rounded-lg shadow-0xl">
       <div className="hero-content flex-col lg:flex-row">
         <motion.img
           src="/images/Untitled design.png"

@@ -7,9 +7,6 @@ import multer from 'multer';
 import path from 'path';
 import bodyParser from 'body-parser';
 import { Book } from "./models/bookModel.js";
-import customerRoute from "./routes/customerRoute.js"
-import breakdownRoute from "./routes/breakdownRoute.js"
-
 //online store routes
 import storeItemRoutes from "./routes/storeItemRoutes.js";
 import orderRoutes from "./routes/Orders.js";
@@ -27,17 +24,6 @@ import invoiceRoute from "./routes/invoiceRoute.js";
 import incomeRoute from "./routes/incomeRoute.js";
 import expenseRoute from "./routes/expenseRoute.js";
 import userRoute from "./routes/userRoute.js"; // Added user route
-
-//emplyee routes
-import empmanageRoute from "./routes/empmanageRoute.js";
-import ShiftRoute from "./routes/ShiftRoute.js";
-import profileRoute from "./routes/profileRoute.js";
-import employee from "./routes/breakdownEmpRoute.js"
-
-//vehicle
-import vehiclesRoute from './routes/vehiclesRoute.js';
-
-
 
 
 
@@ -132,8 +118,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 // Serve static files (e.g., uploaded images)
 app.use('/uploads', express.static('uploads'));
-// Serve static files from the 'uploads' directory
-//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Option 2: Allow Custom Origins
 /*
 app.use(
@@ -152,7 +136,6 @@ app.get("/", (request, response) => {
 
 app.use("/books", bookRoute);
 app.use("/api/user", loginRoute);
-app.use("/customer", customerRoute);
 
 //online store Routes
 app.use('/store-items', storeItemRoutes);
@@ -169,23 +152,6 @@ app.use("/invoiceRequests", invoiceRoute);
 app.use("/incomeRequests", incomeRoute);
 app.use("/expenseRequests", expenseRoute);
 app.use("/userRequests", userRoute); // Added user route
-
-// Employee Record Management Routes
-app.use("/empmanageRequests", empmanageRoute);
-
-// Shift Routes
-app.use("/Shift",ShiftRoute );
-
-// Profile Routes
-app.use("/Profile",profileRoute);
-
-//breakdown route
-app.use("/breakdownRequests", breakdownRoute);
-app.use(employee);
-
-//vehicle
-app.use('/vehicles', vehiclesRoute);
-
 
 
 

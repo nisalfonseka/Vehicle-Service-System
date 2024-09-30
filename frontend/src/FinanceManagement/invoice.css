@@ -33,6 +33,13 @@
   animation: slideInFromLeft 0.6s ease forwards; /* Animation on load */
   animation-delay: calc(0.2s * var(--i)); /* Use CSS variable --i for delay */
   text-align: center; /* Center-align text */
+
+}
+
+.invoice-card p {
+  font-size: 14px;
+  color: #000000; /* Change this color for the paragraph text */
+  margin-bottom: 10px;
 }
 
   
@@ -51,7 +58,7 @@
   /* Card Header */
   .invoice-card-header {
     background: #1c4979; /* Main color for header */
-    color: #fff;
+    color: #ffffff;
     padding: 16px;
     text-align: center;
   }
@@ -59,14 +66,14 @@
   /* Card Content */
   .invoice-card-content {
     padding: 16px;
-    color: #333;
+    color: #eaeaea;
   }
   
   /* Title Style */
   .invoice-title {
     font-size: 1.5rem;
     margin-bottom: 12px;
-    color: #ffffff;
+    color: #0c1b51;
   }
   
   /* Text Styles */
@@ -77,7 +84,7 @@
   }
   
   .invoice-card-content strong {
-    color: #392c2c;
+    color: #f2f2f2;
   }
   
   /* Card Actions */
@@ -164,18 +171,20 @@
     background-color: #0056b3; /* Darker button color on hover */
   }
   .search-bar {
-    margin: 20px 0;
+    margin: 20px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 100%;
     max-width: 400px;
+    margin-top: -30px;
   }
   .search-bar-container {
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    margin: -30px ;
+    margin-bottom: 20px;
   }
   
   .search-bar {
@@ -189,7 +198,8 @@
   }
   
   .search-icon {
-    margin-left: -30px; /* Adjust based on your layout */
+    margin-top: -50px; /* Adjust based on your layout */
+    margin-left: -50px;
     font-size: 20px;
     color: #b31919;
   }
@@ -213,20 +223,8 @@
   .add-income-button:hover {
     background-color: #218838; /* Darker button color on hover */
   }
-  .search-bar-container {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .search-bar {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    max-width: 400px;
-  }
+
+
   .add-invoice-form {
     background-color: #fefefe; /* Light background for the form */
     border-radius: 10px; /* Rounded corners */
@@ -251,7 +249,7 @@
     display: block; /* Labels on new lines */
     margin-bottom: 5px; /* Space below labels */
     font-weight: bold; /* Bold labels */
-    color: #333; /* Label color */
+    color: #100d0d; /* Label color */
 }
 
 .form-group input,
@@ -400,5 +398,5 @@
 }
 
 .text-2xl.my-9{
-  color:#fff7f7;
+  color:#201567;
 }

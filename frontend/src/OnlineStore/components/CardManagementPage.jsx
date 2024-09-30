@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../mycss/CardManagementPage.css';
 
 const CardManagementPage = () => {
   const [cards, setCards] = useState([]);
@@ -92,35 +93,20 @@ const CardManagementPage = () => {
         <h2 className="text-lg font-semibold mb-4">Saved Cards</h2>
         {loading ? <p>Loading...</p> : cards.length === 0 ? <p>No cards saved.</p> : (
           <div className="space-y-4">
-          {cards.map((card) => (
-            <div key={card._id} className="flex justify-between items-center p-4 border-b">
-              <div>
-                {/* Card Number */}
-                <p className="text-xl text-gray-800">
-                  {card.cardNumber.replace(/.(?=.{4})/g, '*')}
-                </p>
-                {/* Cardholder Name */}
-                <p className="text-gray-600">{card.name}</p>
-                {/* Expiration Date */}
-                <p className="text-gray-500">{card.expirationDate}</p>
+            {cards.map(card => (
+              <div key={card._id} className="flex justify-between items-center p-4 border-b">
+                <div>
+                  <p className="text-xl">{card.cardNumber.replace(/.(?=.{4})/g, '*')}</p>
+                  <p className="text-gray-600">{card.name}</p>
+                  <p className="text-gray-500">{card.expirationDate}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button onClick={() => handleUpdate(card)} className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Update</button>
+                  <button onClick={() => handleDelete(card._id)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                </div>
               </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => handleUpdate(card)}
-                  className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                >
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDelete(card._id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         )}
       </div>
 

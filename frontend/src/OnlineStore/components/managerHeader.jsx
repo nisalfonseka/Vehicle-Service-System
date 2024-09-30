@@ -42,8 +42,20 @@ function ManagerHeader() {
         {/* Search Bar */}
         <form className="mt-8" onSubmit={handleSearch}>
           <div className="flex">
-            
-            
+            <input
+              className="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300 w-full"
+              type="search"
+              placeholder="Search items..."
+              aria-label="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button
+              className="bg-blue-600 text-white rounded-r-lg px-4 py-2 hover:bg-blue-700 transition duration-200 flex items-center"
+              type="submit"
+            >
+              <FaSearch />
+            </button>
           </div>
         </form>
       </nav>
