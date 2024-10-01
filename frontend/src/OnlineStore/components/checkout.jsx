@@ -165,28 +165,40 @@ function Checkout({ cart, setCart }) {
   const handleExpirationDateChange = (e) => {
     let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
     if (value.length >= 2) {
-      value = value.slice(0, 2) + '/' + value.slice(2); // Insert '/' after MM
+        value = value.slice(0, 2) + '/' + value.slice(2); // Insert '/' after MM
     }
-    
-    if (value.length === 5) {
-      const month = parseInt(value.slice(0, 2));
-      const year = parseInt('20' + value.slice(3, 5));
-  
-      if (month < 1 || month > 12) {
-        setError('Invalid month. Please enter a valid expiration date.');
-        return;
-      }
-      if (year < 2024 || year > 2028) {
-        setError('Invalid year. Please enter a year between 2024 and 2028.');
-        return;
-      }
-      
-      setError(''); // Clear any previous error if the date is valid
-    }
-    
-    setPaymentInfo({ ...paymentInfo, expirationDate: value });
-  };
 
+    if (value.length === 5) {
+        const month = parseInt(value.slice(0, 2));
+        const year = parseInt('20' + value.slice(3, 5));
+
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; // Months are zero-indexed
+
+        // Check for invalid month
+        if (month < 1 || month > 12) {
+            setError('Invalid month. Please enter a valid expiration date.');
+            return;
+        }
+        
+        // Check for invalid year
+        if (year < currentYear || year > currentYear + 4) {
+            setError('Invalid year. Please enter a year between ' + currentYear + ' and ' + (currentYear + 4) + '.');
+            return;
+        }
+
+        // Check for expiration based on current month
+        if (year === currentYear && month < currentMonth) {
+            setError('Expired date. Please enter a valid expiration date.');
+            return;
+        }
+
+        setError(''); // Clear any previous error if the date is valid
+    }
+
+    setPaymentInfo({ ...paymentInfo, expirationDate: value });
+};
   // Clear payment information fields
   const handleClear = () => {
     setPaymentInfo({

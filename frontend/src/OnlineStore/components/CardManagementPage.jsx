@@ -55,18 +55,48 @@ const CardManagementPage = () => {
         }
         break;
 
-      case 'expirationDate':
-        // Remove non-digit characters
-        let expValue = value.replace(/\D/g, '');
-        if (expValue.length > 4) expValue = expValue.slice(0, 4);
-
-        // Insert '/' after the first two digits
-        if (expValue.length > 2) {
-          expValue = expValue.slice(0, 2) + '/' + expValue.slice(2);
-        }
-
-        setCardDetails({ ...cardDetails, [name]: expValue });
-        break;
+        case 'expirationDate':
+          // Remove non-digit characters
+          let expValue = value.replace(/\D/g, '');
+          if (expValue.length > 4) expValue = expValue.slice(0, 4);
+      
+          // Insert '/' after the first two digits
+          if (expValue.length > 2) {
+              expValue = expValue.slice(0, 2) + '/' + expValue.slice(2);
+          }
+      
+          // Check for valid expiration date
+          if (expValue.length === 5) {
+              const month = parseInt(expValue.slice(0, 2));
+              const year = parseInt('20' + expValue.slice(3, 5));
+      
+              const currentDate = new Date();
+              const currentYear = currentDate.getFullYear();
+              const currentMonth = currentDate.getMonth() + 1; // Months are zero-indexed
+      
+              // Check for invalid month
+              if (month < 1 || month > 12) {
+                  setError('Invalid month. Please enter a valid expiration date.');
+                  return;
+              }
+      
+              // Check for invalid year
+              if (year < currentYear || year > currentYear + 4) {
+                  setError('Invalid year. Please enter a year between ' + currentYear + ' and ' + (currentYear + 4) + '.');
+                  return;
+              }
+      
+              // Check for expiration based on current month
+              if (year === currentYear && month < currentMonth) {
+                  setError('Expired date. Please enter a valid expiration date.');
+                  return;
+              }
+      
+              setError(''); // Clear any previous error if the date is valid
+          }
+      
+          setCardDetails({ ...cardDetails, [name]: expValue });
+          break;
 
       case 'cvv':
         // Allow only numbers and limit to 3 digits
