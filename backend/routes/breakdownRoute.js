@@ -10,10 +10,12 @@ router.post('/', async (request, response) => {
       !request.body.contactNumber ||
       !request.body.vehicleNumber ||
       !request.body.location ||
-      !request.body.issueType
+      !request.body.issueType ||
+      !request.body.totalDistance ||
+      !request.body.totalCharge
     ) {
       return response.status(400).send({
-        message: 'Send all required Send all required fields: customerName, contactNumber, vehicleNumber, location, issueType',
+        message: 'Send all required Send all required fields: customerName, contactNumber, vehicleNumber, location, issueType, totalDistance, totalCharge',
       });
     }
     const newBreakdownRequest = {
@@ -22,6 +24,8 @@ router.post('/', async (request, response) => {
       vehicleNumber: request.body.vehicleNumber,
       location: request.body.location,
       issueType: request.body.issueType,
+      totalDistance: request.body.totalDistance,
+      totalCharge: request.body.totalCharge,
     };
 
     const breakdownRequest = await BreakdownRequest.create(newBreakdownRequest);
@@ -71,6 +75,8 @@ router.put('/:id', async (request, response) => {
       !request.body.vehicleNumber ||
       !request.body.location ||
       !request.body.issueType
+      //!request.body.totalDistance ||
+      //!request.body.totalCharge
       //!request.body.assignedDriver ||
       //!request.body.status
     ) {

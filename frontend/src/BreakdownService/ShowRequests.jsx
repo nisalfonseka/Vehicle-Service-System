@@ -56,6 +56,18 @@ const ShowRequests = () => {
             <span>{breakdownRequest.issueType}</span>
           </div>
           <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Driver Assigned</span>
+            <span>{breakdownRequest.assignedDriver}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Total Distance</span>
+            <span>{breakdownRequest.totalDistance}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Total Charge</span>
+            <span>{breakdownRequest.totalCharge}</span>
+          </div>
+          <div className='my-4'>
             <span className='text-xl mr-4 text-gray-500'>Create Time</span>
             <span>{new Date(breakdownRequest.createdAt).toString()}</span>
           </div>

@@ -179,8 +179,8 @@ const IncomeRequestsTable = () => {
     <div className="container">
       <NavBar />
       <div className="income-list-container">
-        <h1 className="text-4xl my-0"><b>Ashan Auto Service</b></h1>
-        <h3 className="text-2xl my-0">Income List</h3>
+        <h1 className="text-4xl my-0"><b>Ashan Auto Service</b></h1><br></br>
+        <h3 className="text-2xl my-0">Income List</h3><br></br>
 
         <div className="search-bar-container">
           <input

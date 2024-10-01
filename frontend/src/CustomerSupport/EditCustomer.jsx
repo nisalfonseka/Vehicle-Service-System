@@ -14,8 +14,12 @@ const EditCustomer = () => {
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("");
   const [estimatedTime, setEstimatedTime] = useState("");
-  
+
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [mobileError, setMobileError] = useState("");
+  const [vehicleError, setVehicleError] = useState("");
+
   const navigate = useNavigate();
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -41,7 +45,40 @@ const EditCustomer = () => {
       });
   }, [id, enqueueSnackbar]);
 
+  // Real-time validation handlers
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email format");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const validateMobileNumber = (mobileNumber) => {
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!mobileRegex.test(mobileNumber)) {
+      setMobileError("Mobile number must be 10 digits");
+    } else {
+      setMobileError("");
+    }
+  };
+
+  const validateVehicleNumber = (vehicleNumber) => {
+    const VehicleRegex = /^[A-Z]{2,3}-\d{4}$/;
+    if (!vehicleRegex.test(vehicleNumber)) {
+      setVehicleError("Invalid vehicle number format (ABC-1234)");
+    } else {
+      setVehicleError("");
+    }
+  };
+
   const handleEditCustomer = () => {
+    if (emailError || mobileError || vehicleError) {
+      enqueueSnackbar('Please fix the errors in the form', { variant: 'error' });
+      return;
+    }
+
     const data = {
       customerName,
       email,
@@ -87,27 +124,39 @@ const EditCustomer = () => {
           <input
             type='email'
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              validateEmail(e.target.value);
+            }}
             className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
+          {emailError && <p className="text-red-600">{emailError}</p>}
         </div>
         <div className="mb-4">
           <label className="text-lg mr-4 text-black">Mobile :</label>
           <input
             type='text'
             value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
+            onChange={(e) => {
+              setMobileNumber(e.target.value);
+              validateMobileNumber(e.target.value);
+            }}
             className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
+          {mobileError && <p className="text-red-600">{mobileError}</p>}
         </div>
         <div className="mb-4">
           <label className="text-lg mr-4 text-black">Vehicle Registration :</label>
           <input
             type='text'
             value={vehicleNumber}
-            onChange={(e) => setVehicleNumber(e.target.value)}
+            onChange={(e) => {
+              setVehicleNumber(e.target.value);
+              validateVehicleNumber(e.target.value);
+            }}
             className="border-2 border-black rounded-lg p-2 w-full text-black bg-red-100"
           />
+          {vehicleError && <p className="text-red-600">{vehicleError}</p>}
         </div>
         <div className="mb-4">
           <label className="text-lg mr-4 text-black">Subject :</label>

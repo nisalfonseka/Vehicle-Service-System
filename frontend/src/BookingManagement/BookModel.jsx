@@ -4,6 +4,7 @@ import { BiUserCircle } from "react-icons/bi";
 
 const BookModel = ({ book, onClose, onStatusUpdate }) => {
   const [declineReason, setDeclineReason] = useState("");
+  const [showDeclineReason, setShowDeclineReason] = useState(false); // New state to show/hide textarea
 
   const createWhatsAppLink = (message) => {
     const encodedMessage = encodeURIComponent(message);
@@ -12,48 +13,52 @@ const BookModel = ({ book, onClose, onStatusUpdate }) => {
 
   const handleConfirmBooking = async () => {
     try {
-        const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle: ${book.vehicleNumber}\n  Date: ${book.selectedDate}\n  Time: ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
-        const whatsappLink = createWhatsAppLink(confirmMessage);
-        window.open(whatsappLink, "_blank");
+      const confirmMessage = `Your booking has been confirmed on Ashan Auto Services.\n  Vehicle: ${book.vehicleNumber}\n  Date: ${book.selectedDate}\n  Time: ${book.selectedTimeSlot}\nThank you, ${book.customerName}!`;
+      const whatsappLink = createWhatsAppLink(confirmMessage);
+      window.open(whatsappLink, "_blank");
 
-        // Update booking status to Confirmed
-        await fetch(`http://localhost:5555/books/${book._id.trim()}/status`, {  // Use template literals
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status: 'Confirmed' })  // Ensure the status is valid
-        });
+      // Update booking status to Confirmed
+      await fetch(`http://localhost:5555/books/${book._id.trim()}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'Confirmed' })
+      });
 
-        onStatusUpdate(book._id, 'Confirmed');
-        onClose();
+      onStatusUpdate(book._id, 'Confirmed');
+      onClose();
     } catch (error) {
-        console.error('Error updating booking status:', error);
+      console.error('Error updating booking status:', error);
     }
-};
+  };
 
-const handleDeclineBooking = async () => {
+  const handleDeclineBooking = async () => {
+    if (!declineReason) {
+      alert("Please provide a reason for declining the booking.");
+      return;
+    }
+
     try {
-        const declineMessage = `Sorry! Your booking has been declined for vehicle ${book.vehicleNumber}. Reason: ${declineReason}`;
-        const whatsappLink = createWhatsAppLink(declineMessage);
-        window.open(whatsappLink, "_blank");
+      const declineMessage = `Sorry! Your booking has been declined for vehicle ${book.vehicleNumber}. Reason: ${declineReason}`;
+      const whatsappLink = createWhatsAppLink(declineMessage);
+      window.open(whatsappLink, "_blank");
 
-        // Update booking status to Declined
-        await fetch(`http://localhost:5555/books/${book._id.trim()}/status`, {  // Use template literals
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status: 'Declined' })  // Ensure the status is valid
-        });
+      // Update booking status to Declined
+      await fetch(`http://localhost:5555/books/${book._id.trim()}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'Declined' })
+      });
 
-        onStatusUpdate(book._id, 'Declined');
-        onClose();
+      onStatusUpdate(book._id, 'Declined');
+      onClose();
     } catch (error) {
-        console.error('Error updating booking status:', error);
+      console.error('Error updating booking status:', error);
     }
-};
-
+  };
 
   return (
     <div
@@ -85,18 +90,27 @@ const handleDeclineBooking = async () => {
           </button>
           <button
             className="bg-red-500 text-white py-2 px-4 rounded"
-            onClick={handleDeclineBooking}
+            onClick={() => setShowDeclineReason(true)} // Show the decline reason textarea
           >
             Decline
           </button>
         </div>
-        {book.status === "Declined" && (
-          <textarea
-            className="mt-4 w-full p-2 border border-gray-300 rounded"
-            placeholder="Reason for declining"
-            value={declineReason}
-            onChange={(e) => setDeclineReason(e.target.value)}
-          />
+
+        {showDeclineReason && (
+          <>
+            <textarea
+              className="mt-4 w-full p-2 border border-gray-300 rounded"
+              placeholder="Reason for declining"
+              value={declineReason}
+              onChange={(e) => setDeclineReason(e.target.value)}
+            />
+            <button
+              className="mt-2 bg-red-500 text-white py-2 px-4 rounded"
+              onClick={handleDeclineBooking} // Call the decline handler
+            >
+              Submit Decline
+            </button>
+          </>
         )}
       </div>
     </div>

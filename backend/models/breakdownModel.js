@@ -31,6 +31,14 @@ const breakdownRequestSchema = mongoose.Schema(
       enum: ['New', 'Accepted', 'Declined', 'Completed'],
       default: 'New', // Default status is "New"
     },
+    totalDistance: {
+      type: Number,
+      required: true, // Optional based on your requirements
+    },
+    totalCharge: {
+      type: Number,
+      required: true, // Optional based on your requirements
+    },
   },
   {
     timestamps: true,
