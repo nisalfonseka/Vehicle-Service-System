@@ -8,7 +8,7 @@ import { useSnackbar } from 'notistack';
 const CreateVehicle = () => {
   const [vehicleNo, setVehicleNo] = useState('');
   const [chassisNo, setChassisNo] = useState('');
-  const [vehicleType, setVehicleType] = useState(''); // Updated for dropdown
+  const [vehicleType, setVehicleType] = useState('');
   const [fuelType, setFuelType] = useState('');
   const [year, setYear] = useState('');
   const [driverEmail, setDriverEmail] = useState(''); 
@@ -22,9 +22,24 @@ const CreateVehicle = () => {
     return emailRegex.test(email);
   };
 
+  const validateVehicleChassisNo = (input) => {
+    const vehicleChassisNoRegex = /^[A-Z]{2,3}-\d{4}$/;
+    return vehicleChassisNoRegex.test(input);
+  };
+
   const validateInputs = () => {
     if (!vehicleNo || !chassisNo || !vehicleType || !fuelType || !year || !driverEmail || !lastMaintenance) {
       enqueueSnackbar('All fields are required', { variant: 'error' });
+      return false;
+    }
+
+    if (!validateVehicleChassisNo(vehicleNo)) {
+      enqueueSnackbar('Vehicle No should be in the format of 2 or 3 uppercase letters followed by a dash and 4 digits (e.g., ABC-1234)', { variant: 'error' });
+      return false;
+    }
+
+    if (!validateVehicleChassisNo(chassisNo)) {
+      enqueueSnackbar('Chassis No should be in the format of 2 or 3 uppercase letters followed by a dash and 4 digits (e.g., ABC-1234)', { variant: 'error' });
       return false;
     }
 
@@ -82,13 +97,10 @@ const CreateVehicle = () => {
             label: 'Vehicle Type',
             value: vehicleType,
             setter: setVehicleType,
-            type: 'select', // Set type to 'select' for dropdown
-            options: ['CAR', 'LORRY', 'BIKE', 'VAN', 'TRUCK'], // Options for the dropdown
+            type: 'select',
+            options: ['CAR', 'LORRY', 'BIKE', 'VAN', 'TRUCK'],
           },
-          { label: 'Fuel Type', value: fuelType, setter: setFuelType,
-            type: 'select', // Set type to 'select' for dropdown
-            options: ['PETROL', 'DIESEL', ], // Options for the dropdown
-           },
+          { label: 'Fuel Type', value: fuelType, setter: setFuelType, type: 'select', options: ['PETROL', 'DIESEL'] },
           { label: 'Year', value: year, setter: setYear, type: 'number' },
           { label: 'Driver\'s Email', value: driverEmail, setter: setDriverEmail, type: 'email' },
           { label: 'Last Maintenance', value: lastMaintenance, setter: setLastMaintenance, type: 'date' },

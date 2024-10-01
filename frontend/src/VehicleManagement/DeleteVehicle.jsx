@@ -18,7 +18,7 @@ const DeleteVehicle = () => {
       .then(() => {
         setLoading(false);
         enqueueSnackbar('Vehicle deleted successfully', { variant: 'success' });
-        navigate('/');
+        navigate(-1);
       })
       .catch((error) => {
         setLoading(false);
