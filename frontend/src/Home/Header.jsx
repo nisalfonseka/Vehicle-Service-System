@@ -69,9 +69,9 @@ function Header() {
           </button>
 
           <div className="hidden lg:flex lg:items-center lg:ml-auto lg:space-x-10">
-            <a href="#" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Features</a>
-            <a href="#" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Solutions</a>
-            <a href="#" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Resources</a>
+            <a href="/books/create" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Service Appointments</a>
+            <a href="/customer/create" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Customer Support</a>
+            <a href="/breakdownRequests/create" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Breakdown Service</a>
             <a href="/store" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600">Store</a>
           </div>
 
