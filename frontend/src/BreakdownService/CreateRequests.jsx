@@ -141,7 +141,7 @@ const CreateRequests = () => {
       issueType,
       //totalCharge,
       totalDistance: parseFloat(totalDistance),
-      totalCharge: parseFloat(totalCharge.replace(/[^0-9.-]+/g, '')), // Convert charge to number
+      totalCharge: parseFloat(totalCharge.replace(/Rs\.|\s|,/g, '').trim()), // Convert charge to number
     };
     setLoading(true);
     axios
