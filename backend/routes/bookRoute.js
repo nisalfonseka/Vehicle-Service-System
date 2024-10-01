@@ -179,7 +179,7 @@ router.delete("/:id", async (request, response) => {
 router.patch("/books/:id/status", async (req, res) => {
   try {
     const { status } = req.body;
-    const validStatuses = ['New', 'Confirmed', 'Declined'];
+    const validStatuses = ['New', 'Confirmed', 'Declined','Completed'];
 
     if (!validStatuses.includes(status)) {
       return res.status(400).send({ message: 'Invalid status' });
@@ -202,7 +202,7 @@ router.patch("/books/:id/status", async (req, res) => {
 router.get("/books/status/:status", async (req, res) => {
   try {
     const { status } = req.params;
-    const validStatuses = ['New', 'Confirmed', 'Declined'];
+    const validStatuses = ['New', 'Confirmed', 'Declined', 'Completed'];
 
     if (!validStatuses.includes(status)) {
       return res.status(400).send({ message: 'Invalid status' });

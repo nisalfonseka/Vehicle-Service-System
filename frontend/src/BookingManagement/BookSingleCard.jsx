@@ -5,6 +5,8 @@ import { CiCalendarDate } from "react-icons/ci";
 import { FaCarAlt } from "react-icons/fa";
 import { GiConfirmed } from "react-icons/gi";
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
+import { BsCaretRightSquareFill } from "react-icons/bs";
+
 import BookModel from "./BookModel";
 
 const BookSingleCard = ({ book, onStatusUpdate }) => {
@@ -16,9 +18,16 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
         return 'bg-green-500';
       case 'Declined':
         return 'bg-red-500';
+      case 'Completed':
+        return 'bg-blue-500';
       default:
         return 'bg-yellow-300';
     }
+  };
+
+  const handleComplete = () => {
+    // Call the status update function with "Completed"
+    onStatusUpdate(book._id, 'Completed');
   };
 
   return (
@@ -54,6 +63,12 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
         <Link to={`/dashboard/books/delete/${book._id}`}>
           <MdOutlineDelete className="text-2xl text-red-500 hover:text-red-700" />
         </Link>
+        
+          <BsCaretRightSquareFill className="text-2xl text-green-500 hover:text-green-700"
+          onClick={handleComplete}/>
+        
+  
+        
       </div>
 
       {showModel && (
