@@ -24,24 +24,24 @@ function EditBook() {
   const { enqueueSnackbar } = useSnackbar();
 
   const services = [
-    { name: "Wash and Grooming", cost: 30, time: 45 },
-    { name: "Lube Services", cost: 50, time: 60 },
-    { name: "Exterior & Interior Detailing", cost: 80, time: 120 },
-    { name: "Engine Tune ups", cost: 150, time: 180 },
-    { name: "Undercarriage Degreasing", cost: 40, time: 60 },
-    { name: "Windscreen Treatments", cost: 25, time: 30 },
-    { name: "Inspection Reports", cost: 75, time: 90 },
+    { name: "Wash and Grooming", cost: 9000, time: 45 },
+    { name: "Lube Services", cost: 5000, time: 60 },
+    { name: "Exterior & Interior Detailing", cost: 8000, time: 120 },
+    { name: "Engine Tune ups", cost: 15000, time: 180 },
+    { name: "Undercarriage Degreasing", cost: 40000, time: 60 },
+    { name: "Windscreen Treatments", cost: 20000, time: 60 },
+    { name: "Inspection Reports", cost: 7500, time: 90 },
     { name: "Insurance Claims", cost: 0, time: 30 },
-    { name: "Part Replacements", cost: 100, time: 120 },
-    { name: "Hybrid Services", cost: 200, time: 240 },
-    { name: "Wheel Alignment", cost: 60, time: 90 },
-    { name: "Battery Services", cost: 70, time: 60 },
-    { name: "Nano Treatments", cost: 120, time: 180 },
-    { name: "Full Paints", cost: 500, time: 480 },
-    { name: "Mechanical", cost: 250, time: 300 },
-    { name: "Detailing", cost: 100, time: 150 },
-    { name: "Body Shop", cost: 400, time: 420 },
-    { name: "Periodic Maintenances", cost: 80, time: 120 },
+    { name: "Part Replacements", cost: 10000, time: 100 },
+    { name: "Hybrid Services", cost: 200000, time: 140 },
+    { name: "Wheel Alignment", cost: 6000, time: 90 },
+    { name: "Battery Services", cost: 7000, time: 60 },
+    { name: "Nano Treatments", cost: 12000, time: 180 },
+    { name: "Full Paints", cost: 20000, time: 1440 },
+    { name: "Mechanical", cost: 15000, time: 300 },
+    { name: "Detailing", cost: 10000, time: 150 },
+    { name: "Body Shop", cost: 9000, time: 60 },
+    { name: "Periodic Maintenances", cost: 20000, time: 120 },
     { name: "Other", cost: 0, time: 0 },
   ];
 
@@ -66,8 +66,8 @@ function EditBook() {
         setVehicleNumber(response.data.vehicleNumber);
         setContactNumber(response.data.contactNumber);
         setSelectedServices(response.data.selectedServices);
-        setTotalCost(response.data.totalCost);
-        setTotalTime(response.data.totalTime);
+        // setTotalCost(response.data.totalCost);
+        // setTotalTime(response.data.totalTime);
         setSelectedDate(new Date(response.data.selectedDate));
         setSelectedTimeSlot(response.data.selectedTimeSlot);
         setLoading(false);
@@ -321,7 +321,7 @@ function EditBook() {
 
         <button
           onClick={handleSaveCustomer}
-          className="bg-blue-500 text-white p-3 rounded-lg mt-4"
+          className="bg-red-600 text-white p-3 rounded-lg mt-4"
         >
           Save Changes
         </button>
