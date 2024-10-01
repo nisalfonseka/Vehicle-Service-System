@@ -53,7 +53,7 @@ const CancelledOrders = () => {
                   <th className="border border-red-300 px-4 py-2">Customer Name</th>
                   <th className="border border-red-300 px-4 py-2">Items</th>
                   <th className="border border-red-300 px-4 py-2">Total Price</th>
-                  <th className="border border-red-300 px-4 py-2">Action</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -69,14 +69,7 @@ const CancelledOrders = () => {
                     <td className="border border-red-300 px-4 py-2">
                       {order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)} LKR
                     </td>
-                    <td className="border border-red-300 px-4 py-2">
-                    <button
-                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-200"
-                        onClick={() => deleteOrder(order._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                    
                   </tr>
                 ))}
               </tbody>

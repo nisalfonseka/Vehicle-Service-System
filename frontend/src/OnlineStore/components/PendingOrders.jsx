@@ -50,7 +50,7 @@ const PendingOrders = () => {
                   <th className="border border-yellow-300 px-4 py-2">Customer Name</th>
                   <th className="border border-yellow-300 px-4 py-2">Items</th>
                   <th className="border border-yellow-300 px-4 py-2">Total Price</th>
-                  <th className="border border-yellow-300 px-4 py-2">Action</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -66,14 +66,7 @@ const PendingOrders = () => {
                     <td className="border border-yellow-300 px-4 py-2">
                       {order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)} LKR
                     </td>
-                    <td className="border border-yellow-300 px-4 py-2">
-                      <button
-                        className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition duration-200"
-                        onClick={() => deleteOrder(order._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                    
                   </tr>
                 ))}
               </tbody>
