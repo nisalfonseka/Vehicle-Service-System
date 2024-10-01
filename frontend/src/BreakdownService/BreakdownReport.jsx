@@ -5,6 +5,7 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
 } from "@react-pdf/renderer";
 
 // Create styles
@@ -25,7 +26,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#ff0038",
-    marginBottom: 20,
+    marginBottom: 5,
+    textAlign: "center",
+  },
+  companyName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333333",
     textAlign: "center",
   },
   sectionTitle: {
@@ -53,25 +60,45 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 12,
     color: "#666666",
+    position: "absolute",
+    bottom: 30,
+    left: 0,
+    right: 0,
+  },
+  footerText: {
+    marginBottom: 5, // Add some space between the footer texts
+  },
+  logo: {
+    width: 100, // Adjust the size as needed
+    height: 'auto',
   },
 });
 
 // BreakdownReport Component
-const BreakdownReport = ({
-  customerName,
-  contactNumber,
-  vehicleNumber,
-  issueType,
-  location,
-  totalDistance,
-  totalCharge,
-}) => {
+const BreakdownReport = ({ breakdownRequest }) => {
+  const {
+    customerName,
+    contactNumber,
+    vehicleNumber,
+    issueType,
+    location,
+    totalDistance,
+    totalCharge,
+  } = breakdownRequest; // Destructure breakdownRequest here
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Breakdown Request Report</Text>
+          <Image
+            style={styles.logo}
+            src="../../../images/AaaaAuto (1).png" // Path to your logo image
+          />
+          <View>
+            <Text style={styles.title}>Breakdown Request Report</Text>
+            <Text style={styles.companyName}>Ashan Auto Service</Text>
+          </View>
         </View>
 
         {/* Customer Information Section */}
@@ -113,14 +140,19 @@ const BreakdownReport = ({
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.label}>Total Charge:</Text>
-            <Text style={styles.value}>{totalCharge}</Text>
+            <Text style={styles.value}>Rs {totalCharge}</Text>
           </View>
         </View>
 
         {/* Footer */}
-        <Text style={styles.footer}>
-          Generated on {new Date().toLocaleDateString()}
-        </Text>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>
+            Company Name: Ashan Auto Service
+          </Text>
+          <Text style={styles.footerText}>
+            Generated on {new Date().toLocaleDateString()}
+          </Text>
+        </View>
       </Page>
     </Document>
   );

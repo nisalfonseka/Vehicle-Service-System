@@ -18,7 +18,7 @@ function EditBook() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [timeSlotsAvailability, setTimeSlotsAvailability] = useState({});
-  const [loading, setLoading] = useState(true); // Default loading state set to true
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -70,7 +70,7 @@ function EditBook() {
         setTotalTime(response.data.totalTime);
         setSelectedDate(new Date(response.data.selectedDate));
         setSelectedTimeSlot(response.data.selectedTimeSlot);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       } catch (error) {
         setLoading(false);
         enqueueSnackbar("An error occurred. Please check the console", {
@@ -86,7 +86,9 @@ function EditBook() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://localhost:5555/books?date=${selectedDate.toISOString().split("T")[0]}`);
+        const response = await axios.get(
+          `http://localhost:5555/books?date=${selectedDate.toISOString().split("T")[0]}`
+        );
         const bookings = response.data;
 
         // Initialize availability with 0 bookings for each time slot
@@ -124,14 +126,24 @@ function EditBook() {
     setTotalTime((prevTime) => prevTime + (isSelected ? service.time : -service.time));
   };
 
+  const validateContactNumber = (number) => {
+    const numberPattern = /^\+94\d{9}$/;
+    return numberPattern.test(number);
+  };
+
+  const validateVehicleNumber = (number) => {
+    const numberPattern = /^[A-Z]{0,3}[0-9]{0,4}$/;
+    return numberPattern.test(number.toUpperCase());
+  };
+
   const handleSaveCustomer = () => {
     if (!customerName.trim()) {
-      enqueueSnackbar("Please enter the customer's name", { variant: "error" });
+      enqueueSnackbar("Customer name cannot be edited.", { variant: "error" });
       return;
     }
 
-    if (!contactNumber.trim()) {
-      enqueueSnackbar("Please enter the contact number", { variant: "error" });
+    if (!validateContactNumber(contactNumber)) {
+      enqueueSnackbar("Contact number must start with +94 and contain exactly 9 digits.", { variant: "error" });
       return;
     }
 
@@ -140,8 +152,8 @@ function EditBook() {
       return;
     }
 
-    if (!vehicleNumber.trim()) {
-      enqueueSnackbar("Please enter the vehicle number", { variant: "error" });
+    if (!validateVehicleNumber(vehicleNumber)) {
+      enqueueSnackbar("Vehicle number must contain 0-3 letters followed by 0-4 digits.", { variant: "error" });
       return;
     }
 
@@ -159,7 +171,7 @@ function EditBook() {
       customerName,
       contactNumber,
       vehicleType,
-      vehicleNumber,
+      vehicleNumber: vehicleNumber.toUpperCase(), // Ensure vehicle number is uppercase
       selectedServices,
       totalCost,
       totalTime,
@@ -172,12 +184,12 @@ function EditBook() {
       .put(`http://localhost:5555/books/${id}`, data)
       .then(() => {
         setLoading(false);
-        enqueueSnackbar("Book Edited Successfully", { variant: "success" });
+        enqueueSnackbar("Booking edited successfully", { variant: "success" });
         navigate(-1);
       })
       .catch((error) => {
         setLoading(false);
-        enqueueSnackbar("Error", { variant: "error" });
+        enqueueSnackbar("Error while saving the booking.", { variant: "error" });
         console.log(error);
       });
   };
@@ -191,115 +203,127 @@ function EditBook() {
   return (
     <div className="p-4">
       <BackButton />
-      <h1 className="text-3xl my-4"></h1>
+      <h1 className="text-3xl my-4">Edit Booking</h1>
       {loading && <Spinner />}
       <div className="flex flex-col rounded-xl w-[1000px] p-4 mx-auto">
         <div className="flex justify-between my-4">
           <div className="w-1/2 pr-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Customer Name</label>
+            <label className="text-xl font-bold">Customer Name</label>
             <input
-              type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              className="border-2 rem border-gray-500 px-4 py-2 w-full"
+              readOnly
+              className="w-full p-2 rounded-lg border border-gray-400"
+              type="text"
             />
           </div>
           <div className="w-1/2 pl-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Contact Number</label>
+            <label className="text-xl font-bold">Contact Number</label>
             <input
-              type="text"
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
-              className="border-2 rem border-gray-500 px-4 py-2 w-full"
+              className="w-full p-2 rounded-lg border border-gray-400"
+              type="text"
             />
           </div>
         </div>
 
         <div className="flex justify-between my-4">
-          <div className="w-1/2 pr-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Type</label>
-            <input
-              type="text"
-              value={vehicleType}
-              onChange={(e) => setVehicleType(e.target.value)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
-            />
-          </div>
+        <div className="w-1/2 pr-2">
+    <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Type</label>
+    <select
+      value={vehicleType}
+      onChange={(e) => setVehicleType(e.target.value)}
+      className="border-2 border-gray-500 px-4 py-2 w-full"
+    >
+      <option value="">Select vehicle type</option>
+      {[
+        "Car",
+        "SUV",
+        "Vans",
+        "Trucks",
+        "Motorcycles",
+        "Electric Vehicles (EVs)",
+        "Hybrid Vehicles",
+        "Buses",
+        "Recreational Vehicles (RVs)",
+      ].map((type, index) => (
+        <option key={index} value={type}>
+          {type}
+        </option>
+      ))}
+    </select>
+  </div>
           <div className="w-1/2 pl-2">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Vehicle Number</label>
+            <label className="text-xl font-bold">Vehicle Number</label>
             <input
+              value={vehicleNumber.toUpperCase()}
+              onChange={(e) => setVehicleNumber(e.target.value.toUpperCase())}
+              className="w-full p-2 rounded-lg border border-gray-400"
               type="text"
-              value={vehicleNumber}
-              onChange={(e) => setVehicleNumber(e.target.value)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
             />
           </div>
         </div>
 
-        {/* Service Selection */}
-        <div className="my-4">
-          <h4 className="text-xl text-lg font-semibold text-black-500">Select Services</h4>
-          <div className="service-grid grid grid-cols-3 gap-4 mt-2">
-            {services.map((service, index) => (
-              <label key={index} className="service-option flex items-center">
+        <div className="flex flex-col my-4">
+          <label className="text-xl font-bold">Services</label>
+          <div className="grid grid-cols-3 gap-4">
+            {services.map((service) => (
+              <div key={service.name}>
                 <input
                   type="checkbox"
+                  id={service.name}
                   checked={selectedServices.includes(service.name)}
                   onChange={() => handleCheckboxChange(service)}
-                  className="mr-2"
                 />
-                {service.name}
-              </label>
+                <label htmlFor={service.name} className="ml-2">
+                  {service.name}
+                </label>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Date Picker */}
-        <div className="flex justify-between my-4">
-          <div className="my-4">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Date</label>
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
-              dateFormat="yyyy-MM-dd"
-              minDate={new Date()} // Restrict to current day and future dates
-            />
-          </div>
-
-          {/* Time Slot Selection */}
-          <div className="my-4">
-            <label className="text-xl text-lg font-semibold mr-4 text-black-500">Select Time Slot</label>
-            <select
-              value={selectedTimeSlot}
-              onChange={(e) => setSelectedTimeSlot(e.target.value)}
-              className="border-2 border-gray-500 px-4 py-2 w-full"
-            >
-              <option value="" disabled>
-                Select a time slot
-              </option>
-              {timeSlots.map((slot, index) => (
-                <option
-                  key={index}
-                  value={slot}
-                  disabled={timeSlotsAvailability[slot] >= 3} // Disable slot if fully booked
-                >
-                  {slot} {timeSlotsAvailability[slot] >= 3 ? "(Fully Booked)" : ""}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Estimation Summary */}
         <div className="my-4 p-4 bg-gray-100 rounded-lg">
           <h4 className="text-lg font-semibold">Estimated Cost and Time</h4>
           <p className="text-gray-700">Total Cost: LKR: {totalCost}.00</p>
           <p className="text-gray-700">Total Time: {formatTime(totalTime)}</p>
         </div>
 
-        <button className="items-center justify-center hidden px-4 py-3 ml-10 text-base font-semibold text-white transition-all duration-200 bg-red-600 border border-transparent rounded-md lg:inline-flex hover:bg-red-700 focus:bg-red-700" onClick={handleSaveCustomer}>
-          Save
+
+        <div className="flex justify-between my-4">
+          <div className="w-1/2 pr-2">
+            <label className="text-xl font-bold">Selected Date</label>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              minDate={new Date()} // Restrict past dates
+              dateFormat="yyyy-MM-dd"
+              className="w-full p-2 rounded-lg border border-gray-400"
+            />
+          </div>
+          <div className="my-4">
+          <label className="text-lg font-semibold">Select Time Slot </label>
+          <select
+            value={selectedTimeSlot}
+            onChange={(e) => handleTimeSlotChange(e.target.value)}
+            className="px-4 py-2 border"
+          >
+            <option value="">Select Time Slot</option>
+            {timeSlots.map((slot) => (
+              <option key={slot} value={slot}>
+                {slot} 
+              </option>
+            ))}
+          </select>
+        </div>
+        </div>
+
+        <button
+          onClick={handleSaveCustomer}
+          className="bg-blue-500 text-white p-3 rounded-lg mt-4"
+        >
+          Save Changes
         </button>
       </div>
     </div>
