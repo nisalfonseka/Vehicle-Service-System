@@ -212,6 +212,7 @@ const CardManagementPage = () => {
                   <p className="text-gray-600">{card.name}</p>
                   {/* Expiration Date */}
                   <p className="text-gray-500">{card.expirationDate}</p>
+                  <p className="text-gray-500">{card.cvv}</p>
                 </div>
                 <div className="flex space-x-2">
                   <button

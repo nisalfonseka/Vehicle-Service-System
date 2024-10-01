@@ -19,16 +19,30 @@ function Checkout({ cart, setCart }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [userProfile, setUserProfile] = useState(null);
+  const [cards, setCards] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
     if (loggedInUser) {
       setUserProfile(loggedInUser);
+      fetchCards(loggedInUser.userId); // Fetch cards when user is logged in
     } else {
       console.error('User is not logged in or user data is missing.');
     }
   }, []);
+
+  const fetchCards = async (userId) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://localhost:5555/api/cards/${userId}`);
+      setCards(response.data);
+    } catch (error) {
+      console.error('Failed to fetch cards:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!validateInputs()) return;
@@ -110,6 +124,15 @@ function Checkout({ cart, setCart }) {
     doc.save(`order_${Date.now()}.pdf`);
   };
 
+  // Autofill payment info when card is selected
+  const handleCardSelect = (card) => {
+    setPaymentInfo({
+      cardNumber: card.cardNumber,
+      expirationDate: card.expirationDate,
+      cvv: card.cvv
+    });
+  };
+
   // Validation event handlers
   const handleNameChange = (e) => {
     const regex = /^[A-Za-z\s]*$/; // Only allow letters and spaces
@@ -164,6 +187,16 @@ function Checkout({ cart, setCart }) {
     setPaymentInfo({ ...paymentInfo, expirationDate: value });
   };
 
+  // Clear payment information fields
+  const handleClear = () => {
+    setPaymentInfo({
+      cardNumber: '',
+      expirationDate: '',
+      cvv: ''
+    });
+    setError(''); // Clear any error messages
+  };
+
   return (
     <div className="custom-checkout container mx-auto px-4 py-12">
       {/* Title */}
@@ -207,64 +240,81 @@ function Checkout({ cart, setCart }) {
       {/* Payment Information */}
       <div className="custom-payment-info bg-gray-100 shadow-md rounded-lg p-8 mb-8">
         <h4 className="text-2xl font-bold text-gray-800 mb-6">Payment Information</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <input
-            type="text"
-            placeholder="Card Number"
-            value={paymentInfo.cardNumber}
-            onChange={handleCardNumberChange}
-            className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
-          />
-          <input
-            type="text"
-            placeholder="Expiration Date (MM/YY)"
-            value={paymentInfo.expirationDate}
-            onChange={handleExpirationDateChange}
-            className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
-          />
-          <input
-            type="text"
-            placeholder="CVV"
-            value={paymentInfo.cvv}
-            onChange={handleCvvChange}
-            className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
-          />
-        </div>
+
+        {loading ? (
+          <div className="text-center">Loading cards...</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <select onChange={(e) => handleCardSelect(JSON.parse(e.target.value))} className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg">
+              <option value="">Select a Card</option>
+              {cards.map((card, index) => (
+                <option key={index} value={JSON.stringify(card)}>
+                  {card.cardNumber} - Exp: {card.expirationDate}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              placeholder="Card Number"
+              value={paymentInfo.cardNumber}
+              onChange={handleCardNumberChange}
+              className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+            />
+            <input
+              type="text"
+              placeholder="MM/YY"
+              value={paymentInfo.expirationDate}
+              onChange={handleExpirationDateChange}
+              className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+            />
+            <input
+              type="password"
+              placeholder="CVV"
+              value={paymentInfo.cvv}
+              onChange={handleCvvChange}
+              className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+            />
+          </div>
+        )}
+        {error && <p className="text-red-600 text-sm mt-4">{error}</p>}
+        <button
+          onClick={handleClear}
+          className="custom-clear-button mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200"
+        >
+          Clear Payment Details
+        </button>
       </div>
 
       {/* Order Summary */}
-      <div className="custom-order-summary bg-gray-100 shadow-md rounded-lg p-8 mb-8">
+      <div className="custom-order-summary bg-gray-100 shadow-md rounded-lg p-8">
         <h4 className="text-2xl font-bold text-gray-800 mb-6">Order Summary</h4>
         <ul>
-          {cart.map((item, index) => (
-            <li key={index} className="text-gray-600 mb-2">
-              {item.name} - Quantity: {item.quantity} - Price: LKR {item.price}
+          {cart.map(item => (
+            <li key={item._id} className="flex justify-between mb-4">
+              <span>{item.name} (x{item.quantity})</span>
+              <span>LKR {item.price.toFixed(2)}</span>
             </li>
           ))}
         </ul>
-        <div className="font-bold text-lg mt-4">
-          Total: LKR {cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
-        </div>
+        <p className="font-bold text-xl">Total: LKR {cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</p>
       </div>
 
-      {/* Buttons */}
-      <div className="custom-buttons flex justify-end gap-4">
+      {/* Action Buttons */}
+      <div className="flex justify-between mt-6">
         <button
           onClick={handleCancel}
-          className="px-6 py-3 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+          className="custom-cancel-button px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200"
         >
           Cancel
         </button>
         <button
           onClick={handleSubmit}
-          className="px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="custom-submit-button px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-200"
         >
-          {loading ? 'Processing...' : 'Place Order'}
+          Place Order
         </button>
       </div>
-
-      {/* Error Message */}
-      {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   );
 }
