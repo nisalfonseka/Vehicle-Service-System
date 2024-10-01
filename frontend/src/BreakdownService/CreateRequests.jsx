@@ -139,7 +139,9 @@ const CreateRequests = () => {
       vehicleNumber,
       location: cityName,
       issueType,
-      totalCharge
+      //totalCharge,
+      totalDistance: parseFloat(totalDistance),
+      totalCharge: parseFloat(totalCharge.replace(/[^0-9.-]+/g, '')), // Convert charge to number
     };
     setLoading(true);
     axios
