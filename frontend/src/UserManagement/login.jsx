@@ -11,28 +11,41 @@ function LoginForm() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
+  const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email); // Regular expression for email validation
+  const containsAtSymbol = (email) => email.includes("@"); // Check if email contains '@'
+
   const handleLogin = async () => {
     // Form validation
     if (!email.trim()) {
       enqueueSnackbar("Please enter your email", { variant: "error" });
       return;
     }
-  
+
+    if (!containsAtSymbol(email)) {
+      enqueueSnackbar("Email must contain an '@' symbol", { variant: "error" });
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      enqueueSnackbar("Please enter a valid email address", { variant: "error" });
+      return;
+    }
+
     if (!password.trim()) {
       enqueueSnackbar("Please enter your password", { variant: "error" });
       return;
     }
-  
+
     // Start login logic
     setLoading(true);
-  
+
     try {
       // Replace with your actual API URL
       const response = await axios.post("http://localhost:5555/api/user/login", {
         email,
-        password
+        password,
       });
-  
+
       if (response.status === 200) {
         const { token, username, _id: userId } = response.data;
 
@@ -40,12 +53,12 @@ function LoginForm() {
         if (!userId) {
           console.error("userId is missing from the response.");
         }
-  
+
         // Store user details in localStorage
         localStorage.setItem('user', JSON.stringify({ username, token, userId }));
         // Show success message
         enqueueSnackbar("Login Successful", { variant: "success" });
-  
+
         // Navigation logic for different users
         if (email === "bookingAdmin@gmail.com") {
           navigate("/dashboard/Bookadmin");
@@ -63,10 +76,10 @@ function LoginForm() {
           navigate("/dashboard/breakdown/dashboard");
         } else if (email === "vehicleAdmin@gmail.com") {
           navigate("/dashboard/vehicle/dashboard");
-        }else {
+        } else {
           navigate("/");
         }
-  
+
         // Refresh the page
         window.location.reload();
       } else {

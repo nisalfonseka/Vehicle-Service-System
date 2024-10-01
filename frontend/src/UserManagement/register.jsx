@@ -13,6 +13,11 @@ function RegisterForm() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
+  const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email); // Regular expression for email validation
+  const containsAtSymbol = (email) => email.includes("@"); // Check if email contains '@'
+  const isValidUsername = (username) => username.length >= 3; // Username should be at least 3 characters
+  const isValidPassword = (password) => password.length >= 3; // Password should be at least 6 characters
+
   const handleRegister = async () => {
     const trimmedEmail = email.trim();
     const trimmedUsername = username.trim();
@@ -25,13 +30,33 @@ function RegisterForm() {
       return;
     }
 
+    if (!containsAtSymbol(trimmedEmail)) {
+      enqueueSnackbar("Email must contain an '@' symbol", { variant: "error" });
+      return;
+    }
+
+    if (!isValidEmail(trimmedEmail)) {
+      enqueueSnackbar("Please enter a valid email address", { variant: "error" });
+      return;
+    }
+
     if (!trimmedUsername) {
       enqueueSnackbar("Please enter a username", { variant: "error" });
       return;
     }
 
+    if (!isValidUsername(trimmedUsername)) {
+      enqueueSnackbar("Username must be at least 3 characters long", { variant: "error" });
+      return;
+    }
+
     if (!trimmedPassword) {
       enqueueSnackbar("Please enter a password", { variant: "error" });
+      return;
+    }
+
+    if (!isValidPassword(trimmedPassword)) {
+      enqueueSnackbar("Password must be at least 6 characters long", { variant: "error" });
       return;
     }
 
