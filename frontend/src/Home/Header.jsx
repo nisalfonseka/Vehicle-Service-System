@@ -107,7 +107,11 @@ function Header() {
                 <li>
                   <Link to={"/profile"}>Profile</Link>
                 </li>
+                <li>
+                  <Link to={"/login"}>Admin Dashboard</Link>
+                </li>
               </ul>
+              
             </div>
           )}
         </nav>
