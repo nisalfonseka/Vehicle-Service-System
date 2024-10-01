@@ -68,7 +68,7 @@ app.patch('/books/:id/status', async (req, res) => {
   const { status } = req.body;
 
   try {
-      const validStatuses = ['Confirmed', 'Declined', 'Pending']; // Adjust according to your requirements
+      const validStatuses = ['Confirmed', 'Declined', 'Pending', 'Completed']; // Adjust according to your requirements
       if (!validStatuses.includes(status)) {
           return res.status(400).json({ message: 'Invalid status' });
       }

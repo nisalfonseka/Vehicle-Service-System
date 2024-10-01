@@ -254,7 +254,7 @@ function CreateCustomer() {
         }
       }}
       className="border-2 border-gray-500 px-4 py-2 w-full ml-1"
-      placeholder="Enter contact number"
+      placeholder="Enter without 0"
     />
   </div>
 </div>

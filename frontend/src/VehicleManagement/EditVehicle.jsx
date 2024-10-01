@@ -78,7 +78,7 @@ const EditVehicle = () => {
       .then(() => {
         setLoading(false);
         enqueueSnackbar('Vehicle edited successfully', { variant: 'success' });
-        navigate('/');
+        navigate(-1);
       })
       .catch((error) => {
         setLoading(false);

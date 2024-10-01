@@ -156,6 +156,14 @@ function ContactForm() {
       });
   };
 
+  // New handler for restricting non-numeric and limiting to 10 digits
+  const handleMobileNumberChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 10) {
+      setMobileNumber(value);
+    }
+  };
+
   const handleAdminDashboard = () => {
     navigate("/admin-dashboard");
   };
@@ -200,7 +208,7 @@ function ContactForm() {
           <input
             type="text"
             value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
+            onChange={handleMobileNumberChange}
             style={{
               border: "2px solid #000000",
               padding: "10px",

@@ -6,6 +6,7 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { BsInfoCircle } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
 import jsPDF from 'jspdf';
+import VehicleReport from './VehicleReport'; // Import the new component
 
 const VehiclesCard = ({ vehicles }) => {
   const [searchTerm, setSearchTerm] = useState(''); // Search term state
@@ -38,33 +39,6 @@ const VehiclesCard = ({ vehicles }) => {
     const body = `Dear Driver,\n\nThe next maintenance for your vehicle (${vehicle.vehicleNo}) is due in ${calculateDaysUntilNextMaintenance(vehicle.lastMaintenance, 2)} days. Please schedule it soon!\n\nBest regards,\nVehicle Management System`;
     
     return `mailto:${vehicle.driverEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
-
-  // Function to generate PDF for a specific vehicle
-  const generatePDF = (vehicle) => {
-    const doc = new jsPDF();
-
-    doc.setFontSize(16);
-    doc.text('Vehicle Report', 10, 10);
-    
-    doc.setFontSize(12);
-    doc.text(`Vehicle Number: ${vehicle.vehicleNo}`, 10, 30);
-    doc.text(`Chassis Number: ${vehicle.chassisNo}`, 10, 40);
-    doc.text(`Vehicle Type: ${vehicle.vehicleType}`, 10, 50);
-    doc.text(`Fuel Type: ${vehicle.fuelType}`, 10, 60);
-    doc.text(`Year: ${vehicle.year}`, 10, 70);
-    doc.text(`Last Maintenance: ${vehicle.lastMaintenance}`, 10, 80);
-
-    const daysUntilNextMaintenance = calculateDaysUntilNextMaintenance(vehicle.lastMaintenance, 2);
-    doc.text(`Days Until Next Maintenance: ${daysUntilNextMaintenance} days`, 10, 90);
-
-    const reminderMessage = getReminderMessage(daysUntilNextMaintenance);
-    if (reminderMessage) {
-      doc.setTextColor(255, 0, 0);
-      doc.text(reminderMessage, 10, 100);
-    }
-
-    doc.save(`vehicle-report-${vehicle._id}.pdf`);
   };
 
   // Filter vehicles based on the search term
@@ -149,13 +123,9 @@ const VehiclesCard = ({ vehicles }) => {
               </div>
 
               {/* Button to Download PDF */}
+              {/* Button to Download PDF */}
               <div className="flex justify-center mt-4">
-                <button
-                  onClick={() => generatePDF(item)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                >
-                  Download Report
-                </button>
+                <VehicleReport vehicle={item} /> {/* Use the new VehicleReport component */}
               </div>
 
               {/* Button to Send Maintenance Reminder */}

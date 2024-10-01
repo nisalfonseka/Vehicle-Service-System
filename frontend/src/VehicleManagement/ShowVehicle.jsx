@@ -63,14 +63,6 @@ const ShowVehicle = () => {
             <span className='text-xl mr-4 text-gray-700 font-bold'>Driver's Email:</span>
             <span className='text-gray-600'>{vehicle.driverEmail}</span>
           </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-700 font-bold'>Create Time:</span>
-            <span className='text-gray-600'>{new Date(vehicle.createdAt).toString()}</span>
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-700 font-bold'>Last Update Time:</span>
-            <span className='text-gray-600'>{new Date(vehicle.updatedAt).toString()}</span>
-          </div>
         </div>
       )}
     </div>
