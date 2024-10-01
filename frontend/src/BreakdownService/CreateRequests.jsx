@@ -102,6 +102,15 @@ const CreateRequests = () => {
     }
   }, [markerPosition]);
 
+  // Handle change for contact number, allowing only digits and limiting to 10 digits
+  const handleContactNumberChange = (e) => {
+    const value = e.target.value;
+    // Only allow digits and limit to 10 digits
+    if (/^\d{0,10}$/.test(value)) {
+      setContactNumber(value);
+    }
+  };
+
   const handleSaveRequest = () => {
 
     // Validation rules
@@ -193,7 +202,7 @@ const CreateRequests = () => {
           <input
             type='text'
             value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
+             onChange={handleContactNumberChange}
             style={{
               border: '2px solid #ff0038',
               borderRadius: '16px',
