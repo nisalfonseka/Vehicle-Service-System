@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable'; // For automatic table generation
 import ManagerHeader from '../../components/managerHeader';
 
 function SalesSummary() {
@@ -38,6 +40,36 @@ function SalesSummary() {
         fetchOrders();
     }, []);
 
+    // Function to download the sales summary as a PDF
+    const downloadPDF = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(20);
+        doc.text('Online Sales Summary', 14, 20);
+
+        // Add total revenue
+        doc.setFontSize(16);
+        doc.text(`Total Revenue: LKR ${totalRevenue}`, 14, 40);
+        doc.text(`Pending Orders: ${pendingOrders}`, 14, 50);
+        doc.text(`Completed Orders: ${completedOrders}`, 14, 60);
+        doc.text(`Canceled Orders: ${canceledOrders}`, 14, 70);
+
+        // Add Orders Breakdown table
+        const tableData = orders.map(order => [
+            order._id,
+            order.customerInfo.name,
+            order.status,
+            order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
+        ]);
+
+        autoTable(doc, {
+            head: [['Order ID', 'Customer Name', 'Status', 'Total Price']],
+            body: tableData,
+            startY: 80,
+        });
+
+        doc.save('sales_summary.pdf');
+    };
+
     return (
         <div className="flex bg-gray-100 min-h-screen">
             <ManagerHeader />
@@ -68,6 +100,14 @@ function SalesSummary() {
                         <p className="text-4xl font-bold text-red-600">{canceledOrders}</p>
                     </div>
                 </div>
+
+                {/* Download Button */}
+                <button
+                    onClick={downloadPDF}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg mb-6 hover:bg-blue-600 transition-all duration-200"
+                >
+                    Sales Summary
+                </button>
 
                 {/* Orders Breakdown Table */}
                 <h3 className="text-2xl font-bold mb-4">Orders Breakdown</h3>
