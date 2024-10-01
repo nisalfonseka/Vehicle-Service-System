@@ -28,19 +28,26 @@ const styles = StyleSheet.create({
   },
   header: {
     top: 0,
+    height: 70, // Increased to accommodate the logo
+    flexDirection: "row", // Align items horizontally
+    justifyContent: "space-between", // Adjust space between logo and text
+    alignItems: "center",
+    paddingHorizontal: 20, // Add padding to the sides
   },
   footer: {
     bottom: 0,
     height: 70, // Increased height for a more informative footer
     paddingHorizontal: 20, // Added padding for cleaner layout
     justifyContent: "space-between", // Align footer items appropriately
-    flexDirection: "column", // Allow multi-line text
+    flexDirection: "row", // Changed to row for image + text alignment
+    alignItems: "center",
   },
   headerText: {
     fontSize: 18, // Large enough to stand out
     fontWeight: "bold",
     color: "#ffffff", // White text
     textTransform: "uppercase",
+    marginLeft: 10, // Space between logo and text
   },
   footerText: {
     fontSize: 12,
@@ -110,6 +117,11 @@ const CustomerReport = ({ customer }) => (
     <Page size="A4" style={styles.page}>
       {/* Header */}
       <View style={[styles.headerFooter, styles.header]}>
+        {/* Logo on the top-left */}
+        <Image
+          style={{ width: 70, height: 50 }} // Adjusted size for the logo
+          src="../../../images/AaaaAuto (1).png"
+        />
         <Text style={styles.headerText}>Ashan Auto Service</Text>
       </View>
 
@@ -144,9 +156,16 @@ const CustomerReport = ({ customer }) => (
 
       {/* Footer */}
       <View style={[styles.headerFooter, styles.footer]}>
-        <Text style={styles.footerText}>Ashan Auto Service | Quality Service, Reliable Care</Text>
-        <Text style={styles.footerText}>Phone: 071 3745565 | Email: info@ashanauto.com</Text>
-        <Text style={styles.footerText}>© 2002 Ashan Auto Service. All rights reserved.</Text>
+        {/* Logo on the bottom-left */}
+        <Image
+          style={{ width: 60, height: 50 }} // Adjusted size for the logo in the footer
+          src="../../../images/AaaaAuto (1).png"
+        />
+        <View>
+          <Text style={styles.footerText}>Ashan Auto Service | Quality Service, Reliable Care</Text>
+          <Text style={styles.footerText}>Phone: 071 3745565 | Email: info@ashanauto.com</Text>
+          <Text style={styles.footerText}>© 2002 Ashan Auto Service. All rights reserved.</Text>
+        </View>
       </View>
     </Page>
   </Document>
