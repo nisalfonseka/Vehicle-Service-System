@@ -213,13 +213,12 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
           document={<BreakdownReport breakdownRequest={breakdownRequest} />}
           fileName={`BreakdownReport_${breakdownRequest._id}.pdf`}
         >
-          {({ loading }) =>
-            loading ? (
-              <button style={{ fontWeight: "bold", color: "#696969" }}>Loading...</button>
-            ) : (
-              <button style={{ fontWeight: "bold", color: "#0000FF" }}>Report</button>
-            )
-          }
+           {({ loading }) => (
+      <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+        <AiOutlineFilePdf className="text-2xl text-green-500 hover:text-black" />
+        {loading && <span style={{ marginLeft: '4px' }}>Loading...</span>}
+      </div>
+    )}
         </PDFDownloadLink>
       </div>
 
