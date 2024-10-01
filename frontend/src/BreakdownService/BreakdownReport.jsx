@@ -57,15 +57,16 @@ const styles = StyleSheet.create({
 });
 
 // BreakdownReport Component
-const BreakdownReport = ({
-  customerName,
-  contactNumber,
-  vehicleNumber,
-  issueType,
-  location,
-  totalDistance,
-  totalCharge,
-}) => {
+const BreakdownReport = ({ breakdownRequest }) => {
+  const {
+    customerName,
+    contactNumber,
+    vehicleNumber,
+    issueType,
+    location,
+    totalDistance,
+    totalCharge,
+  } = breakdownRequest; // Destructure breakdownRequest here
   return (
     <Document>
       <Page size="A4" style={styles.page}>

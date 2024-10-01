@@ -8,6 +8,8 @@ import BreakdownModal from './BreakdownModal';
 import axios from 'axios';
 import { jsPDF } from 'jspdf'; // Import jsPDF
 import { AiOutlineFilePdf } from 'react-icons/ai'; // Import PDF icon
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import BreakdownReport from './BreakdownReport';
 
 const BreakdownSingleCard = ({ breakdownRequest }) => {
   const [showModal, setShowModal] = useState(false);
@@ -120,24 +122,6 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
     }
   };
 
-  const generateReport = () => {
-    // Create a new instance of jsPDF
-    const doc = new jsPDF();
-
-    // Add content to the PDF
-    doc.setFontSize(12);
-    doc.text('Breakdown Request Report:', 10, 10);
-    doc.text('------------------------', 10, 15);
-    doc.text(`Customer Name: ${breakdownRequest.customerName}`, 10, 25);
-    doc.text(`Vehicle Number: ${breakdownRequest.vehicleNumber}`, 10, 35);
-    doc.text(`Contact Number: ${breakdownRequest.contactNumber}`, 10, 45);
-    doc.text(`Request ID: ${breakdownRequest._id}`, 10, 55);
-    doc.text(`Status: ${status}`, 10, 65);
-
-    // Save the PDF
-    doc.save(`BreakdownReport_${breakdownRequest._id}.pdf`);
-  };
-
   const statusColorClasses = {
     New: 'bg-green-500 text-white',
     Accepted: 'bg-blue-500 text-white',
@@ -225,10 +209,18 @@ const BreakdownSingleCard = ({ breakdownRequest }) => {
         <Link to={`/breakdownRequests/delete/${breakdownRequest._id}`}>
           <MdOutlineDelete className="text-2xl text-red-600 hover:text-black" />
         </Link>
-        <AiOutlineFilePdf
-          onClick={generateReport}
-          className="text-2xl text-green-600 hover:text-green-800 cursor-pointer"
-        />
+        <PDFDownloadLink
+          document={<BreakdownReport breakdownRequest={breakdownRequest} />}
+          fileName={`BreakdownReport_${breakdownRequest._id}.pdf`}
+        >
+          {({ loading }) =>
+            loading ? (
+              <button style={{ fontWeight: "bold", color: "#696969" }}>Loading...</button>
+            ) : (
+              <button style={{ fontWeight: "bold", color: "#0000FF" }}>Report</button>
+            )
+          }
+        </PDFDownloadLink>
       </div>
 
       {showModal && (
