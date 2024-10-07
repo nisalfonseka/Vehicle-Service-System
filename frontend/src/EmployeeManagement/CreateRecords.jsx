@@ -26,6 +26,13 @@ const AddEmployee = () => {
       alert("Please fill out all required fields.");
       return;
     }
+      
+    // Validate that the joined year is not in the future
+  const currentYear = new Date().getFullYear();
+  if (joinedYear > currentYear) {
+    alert("Joined Year cannot be in the future.");
+    return;
+  }
 
     const formData = {
       employeeName,
