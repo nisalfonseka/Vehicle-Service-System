@@ -165,7 +165,7 @@ const CardManagementPage = () => {
     if (!validateCardDetails()) {
       return; // Exit if validation fails
     }
-
+//check the user added 3 only cards
     if (cards.length >= 3 && !editCard) {
       alert('You can only add up to 3 cards.');
       return;

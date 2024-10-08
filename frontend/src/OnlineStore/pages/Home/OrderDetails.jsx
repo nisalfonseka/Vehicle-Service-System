@@ -139,7 +139,7 @@ function OrderDetails() {
     }
 
     return (
-        <div className="container mx-auto p-8 bg-white rounded-lg shadow-md">
+        <div className="container mx-auto p-8 bg-white rounded-lg shadow-md m-8">
     <button
         className="flex items-center text-indigo-500 hover:text-indigo-700 font-semibold mb-6"
         onClick={handleBack}
@@ -151,7 +151,7 @@ function OrderDetails() {
     <div className="flex flex-col md:flex-row justify-center gap-8">
         <div className="bg-gray-50 p-6 rounded-lg shadow-md w-full md:w-1/2">
             <h4 className="text-2xl font-semibold text-indigo-600 mb-4">Order Information</h4>
-            <p className="text-lg text-black"><strong>Order ID:</strong> {order._id}</p>
+            
             <p className="text-lg text-black"><strong>Customer Name:</strong> {order.customerInfo.name}</p>
             <p className="text-lg text-black"><strong>Customer Address:</strong> {order.customerInfo.address}</p>
             <p className="text-lg text-black"><strong>Customer Phone:</strong> {order.customerInfo.phone}</p>

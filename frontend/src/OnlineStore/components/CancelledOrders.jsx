@@ -38,7 +38,7 @@ const CancelledOrders = () => {
       
         <ManagerHeader />
      
-      <div className="-1 ml-64 p-6">
+      <div className="-1 ml-96 p-6">
         <h1 className="text-4xl font-bold text-red-600 mb-6 text-center">Cancelled Orders</h1>
         {loading ? (
           <p className="text-center">Loading...</p>
@@ -49,7 +49,7 @@ const CancelledOrders = () => {
             <table className="min-w-full bg-white border border-red-300 shadow-lg rounded-lg">
               <thead className="bg-red-100">
                 <tr>
-                  <th className="border border-red-300 px-4 py-2">Order ID</th>
+                  
                   <th className="border border-red-300 px-4 py-2">Customer Name</th>
                   <th className="border border-red-300 px-4 py-2">Items</th>
                   <th className="border border-red-300 px-4 py-2">Total Price</th>
@@ -59,7 +59,7 @@ const CancelledOrders = () => {
               <tbody>
                 {orders.map(order => (
                   <tr key={order._id} className="hover:bg-gray-100 transition duration-200">
-                    <td className="border border-red-300 px-4 py-2">{order._id}</td>
+                    
                     <td className="border border-red-300 px-4 py-2">{order.customerInfo.name}</td>
                     <td className="border border-red-300 px-4 py-2">
                       {order.items.map(item => (
