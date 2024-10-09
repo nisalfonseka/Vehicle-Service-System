@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
+
 function Checkout({ cart, setCart }) {
   const [customerInfo, setCustomerInfo] = useState({
     name: '',

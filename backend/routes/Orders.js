@@ -106,11 +106,6 @@ router.get('/orders', async (req, res) => {
 router.post('/orders', async (req, res) => {
   try {
     const { customerInfo, items, paymentInfo } = req.body;
-    
-    // Use mockUserId if req.user is not available
-    //const mockUserId = '96b0a0f0c9d3f3e16b2a3b28'; // Replace with any valid ObjectId for testing
-    //const userId = req.user ? req.user._id : mockUserId;
-
     // Create a new order
     const newOrder = new Order({
       customerInfo,
@@ -149,7 +144,6 @@ router.get('/orders/:userId', async (req, res) => {
 
     // Find orders by userId
     const orders = await Order.find({ userId });
-
     if (orders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this user.' });
     }
@@ -196,7 +190,7 @@ router.post('/orders/:userId', async (req, res) => {
   }
 });
 
-// Route to fetch orders by user ID
+// Route to fetch orders by user ID (not in use)
 router.get('/orders/:userId', async (req, res) => {
   const { userId } = req.params;
 

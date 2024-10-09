@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import OrderReport from '../../components/OrderReport';
 
 function OrderDetails() {
     const { orderId } = useParams();
@@ -175,7 +177,16 @@ function OrderDetails() {
                 <button className="bg-green-500 text-white py-2 px-4 rounded-lg shadow hover:bg-green-600 transition duration-200" onClick={handleAccept}>Accept</button>
                 <button className="bg-red-500 text-white py-2 px-4 rounded-lg shadow hover:bg-red-600 transition duration-200" onClick={handleCancel}>Cancel</button>
                 <button className="bg-gray-500 text-white py-2 px-4 rounded-lg shadow hover:bg-gray-600 transition duration-200" onClick={handleDelete}>Delete</button>
-                <button className="bg-indigo-500 text-white py-2 px-4 rounded-lg shadow hover:bg-indigo-600 transition duration-200" onClick={handleDownloadReport}>Download Report</button>
+
+
+                <PDFDownloadLink
+                        document={<OrderReport order={order} />}
+                        fileName={`Order_Report_${order._id}.pdf`}
+                        className="bg-indigo-500 text-white py-2 px-4 rounded-lg shadow hover:bg-indigo-600 transition duration-200">
+                        {({ loading }) => (loading ? 'Preparing Report...' : 'Download Report')}
+                </PDFDownloadLink>
+
+
             </div>
         </div>
         <div className="bg-gray-50 p-6 rounded-lg shadow-md w-full md:w-1/2">
