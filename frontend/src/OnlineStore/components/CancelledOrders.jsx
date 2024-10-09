@@ -38,7 +38,7 @@ const CancelledOrders = () => {
       
         <ManagerHeader />
      
-      <div className="-1 ml-96 p-6">
+      <div className="-1 ml-96 p-6" >
         <h1 className="text-4xl font-bold text-red-600 mb-6 text-center">Cancelled Orders</h1>
         {loading ? (
           <p className="text-center">Loading...</p>
