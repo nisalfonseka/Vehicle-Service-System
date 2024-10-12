@@ -79,6 +79,51 @@ router.get("/search", async (req, res) => {
 });
 */
 
+
+// Route to search employee by employeeId or employeeName
+router.get("/search", async (req, res) => {
+  try {
+    const { employeeId, employeeName } = req.query;
+
+    // Check if neither employeeId nor employeeName was provided
+    if (!employeeId && !employeeName) {
+      return res.status(400).json({ message: "Please provide an employee ID or employee name" });
+    }
+
+    let employee;
+    // Search by employeeId (if provided)
+    if (employeeId) {
+      employee = await empmanageRequest.findById(employeeId);
+    }
+    // Search by employeeName (if provided and no result from employeeId)
+    if (!employee && employeeName) {
+      employee = await empmanageRequest.findOne({ employeeName: { $regex: employeeName, $options: "i" } });
+    }
+
+    // If no employee was found
+    if (!employee) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    // Send back the employee details
+    return res.status(200).json({
+      employeeId: employee._id, // Returning _id as employeeId
+      employeeName: employee.employeeName,
+      email: employee.email,
+      contactNo: employee.contactNo,
+      Age: employee.Age,
+      position: employee.position,
+      licenseNo:employee.licenseNo,
+      salary: employee.salary,
+      joinedYear: employee.joinedYear,
+    });
+  } catch (error) {
+    console.error("Error searching for employee:", error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+
 // Route to get employee recruitment count by year
 router.get("/recruitment-per-year", async (req, res) => {
   try {
