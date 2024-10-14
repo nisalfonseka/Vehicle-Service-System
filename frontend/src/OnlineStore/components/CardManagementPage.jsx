@@ -286,7 +286,7 @@ const CardManagementPage = () => {
                   <p className="text-gray-600">{card.name}</p>
                   {/* Expiration Date */}
                   <p className="text-gray-500">{card.expirationDate}</p>
-                  <p className="text-gray-500">{card.cvv}</p>
+                  <p className="text-gray-500">{card.cvv.replace(/.(?=.{1})/g, '*')}</p>
                 </div>
                 <div className="flex space-x-2">
                   <button
@@ -350,7 +350,7 @@ const CardManagementPage = () => {
 
           {/* CVV */}
           <input
-            type="text"
+            type="password"
             name="cvv"
             value={cardDetails.cvv}
             placeholder="CVV"
