@@ -36,7 +36,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTotalIncome = async () => {
       try {
-        const response = await fetch('http://localhost:5555/invoiceRequests/totalIncome');
+        const response = await fetch('http://localhost:5555/api/totalIncome');
         const data = await response.json();
         setTotalIncomes(data.totalIncome);
       } catch (error) {
@@ -47,23 +47,27 @@ const Dashboard = () => {
     fetchTotalIncome();
   }, []);
 
-  // Fetch total invoices
-  useEffect(() => {
-    const fetchTotalInvoices = async () => {
-      try {
-        const response = await fetch('http://localhost:5555/invoiceRequests/totalInvoices');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setTotalInvoices(data.totalInvoices);
-      } catch (error) {
-        console.error('Error fetching total invoices:', error);
-      }
-    };
 
-    fetchTotalInvoices();
-  }, []);
+// Fetch total invoices from the server
+useEffect(() => {
+  const fetchTotalInvoices = async () => {
+    try {
+      const response = await fetch('http://localhost:5555/api/totalInvoice');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Total Invoices Data:', data); // Log the data to see what you receive
+      setTotalInvoices(data.totalCompletedOrders); // Use totalCompletedOrders instead of totalInvoices
+    } catch (error) {
+      console.error('Error fetching total invoices:', error);
+    }
+  };
+
+  fetchTotalInvoices(); // Call the function to fetch total invoices
+}, []); // Empty dependency array ensures this runs once on component mount
+
+  
 
   // Calculate total profits when totalIncomes or totalExpenses change
   useEffect(() => {

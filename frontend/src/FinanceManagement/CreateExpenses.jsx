@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './expenses.css'; // Ensure to import the relevant CSS
 
 const CreateExpense = ({ onClose, refreshData, initialData }) => {
   const [formData, setFormData] = useState({
@@ -42,6 +41,12 @@ const CreateExpense = ({ onClose, refreshData, initialData }) => {
       const selectedDate = new Date(value);
       const today = new Date();
       today.setHours(0, 0, 0, 0); // Set to the start of the day for accurate comparison
+
+      if (selectedDate > today) {
+        setDateError('Date cannot be in the future.'); // Set an error message if date is in the future
+      } else {
+        setDateError(null); // Clear the error if date is valid
+      }
 
       setFormData((prevData) => ({
         ...prevData,
@@ -86,59 +91,134 @@ const CreateExpense = ({ onClose, refreshData, initialData }) => {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="expense-form">
-        <h2 className="form-title">{initialData ? 'Edit Expense' : 'Add Expense'}</h2>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f5f5f5', // Soft background color
+        padding: '20px',
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '8px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+          maxWidth: '500px',
+          width: '100%',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <h2
+          style={{
+            textAlign: 'center',
+            fontSize: '24px',
+            color: '#333',
+            marginBottom: '20px',
+          }}
+        >
+          {initialData ? 'Edit Expense' : 'Add Expense'}
+        </h2>
 
-        <div className="form-row">
-          <label className="form-label" htmlFor="title">Title</label>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="title" style={{ marginBottom: '8px', display: 'block', fontSize: '14px', color: '#333' }}>
+            Title
+          </label>
           <input
             type="text"
             id="title"
             name="title"
-            className="form-input"
+            style={{
+              width: '100%',
+              padding: '10px',
+              fontSize: '16px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              outline: 'none',
+              color: 'black', // Set text color to black
+              transition: 'border-color 0.3s ease',
+            }}
             value={formData.title}
             onChange={handleInputChange}
             required
           />
         </div>
 
-        <div className="input-row">
-          <div className="form-row">
-            <label className="form-label" htmlFor="amount">Amount</label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', marginBottom: '15px' }}>
+          <div style={{ flex: '1' }}>
+            <label htmlFor="amount" style={{ marginBottom: '8px', display: 'block', fontSize: '14px', color: '#333' }}>
+              Amount
+            </label>
             <input
               type="number"
               id="amount"
               name="amount"
-              className="form-input"
+              style={{
+                width: '100%',
+                padding: '10px',
+                fontSize: '16px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                outline: 'none',
+                color: 'black', // Set text color to black
+                transition: 'border-color 0.3s ease',
+              }}
               value={formData.amount}
               onChange={handleInputChange}
               required
             />
           </div>
 
-          <div className="form-row">
-            <label className="form-label" htmlFor="date">Date</label>
+          <div style={{ flex: '1' }}>
+            <label htmlFor="date" style={{ marginBottom: '8px', display: 'block', fontSize: '14px', color: '#333' }}>
+              Date
+            </label>
             <input
               type="date"
               id="date"
               name="date"
-              className="form-input"
+              style={{
+                width: '100%',
+                padding: '10px',
+                fontSize: '16px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                outline: 'none',
+                color: 'black', // Set text color to black
+                transition: 'border-color 0.3s ease',
+              }}
               value={formData.date}
               onChange={handleInputChange}
               required
               max={new Date().toISOString().split('T')[0]} // Limit to today
             />
-            {dateError && <p className="error-text">{dateError}</p>} {/* Display date error */}
+            {dateError && <p style={{ color: 'red', fontSize: '12px' }}>{dateError}</p>}
           </div>
         </div>
 
-        <div className="form-row">
-          <label className="form-label" htmlFor="description">Description</label>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="description" style={{ marginBottom: '8px', display: 'block', fontSize: '14px', color: '#333' }}>
+            Description
+          </label>
           <textarea
             id="description"
             name="description"
-            className="form-textarea"
+            style={{
+              width: '100%',
+              padding: '10px',
+              fontSize: '16px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              outline: 'none',
+              color: 'black', // Set text color to black
+              transition: 'border-color 0.3s ease',
+              minHeight: '80px',
+            }}
             value={formData.description}
             onChange={handleInputChange}
             rows="3"
@@ -146,12 +226,23 @@ const CreateExpense = ({ onClose, refreshData, initialData }) => {
           />
         </div>
 
-        <div className="form-row">
-          <label className="form-label" htmlFor="paymentMethod">Payment Method</label>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="paymentMethod" style={{ marginBottom: '8px', display: 'block', fontSize: '14px', color: '#333' }}>
+            Payment Method
+          </label>
           <select
             id="paymentMethod"
             name="paymentMethod"
-            className="form-input"
+            style={{
+              width: '100%',
+              padding: '10px',
+              fontSize: '16px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              outline: 'none',
+              color: 'black', // Set text color to black
+              transition: 'border-color 0.3s ease',
+            }}
             value={formData.paymentMethod}
             onChange={handleInputChange}
             required
@@ -161,17 +252,42 @@ const CreateExpense = ({ onClose, refreshData, initialData }) => {
             <option value="Debit Card">Debit Card</option>
             <option value="PayPal">PayPal</option>
             <option value="Bank Transfer">Bank Transfer</option>
-            {/* Add more payment options as needed */}
           </select>
         </div>
 
-        {error && <p className="error-text">{error}</p>}
+        {error && <p style={{ color: 'red', fontSize: '14px', textAlign: 'center' }}>{error}</p>}
 
-        <div className="form-actions">
-          <button type="submit" className="submit-button" disabled={loading}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: '#28a745',
+              color: '#fff',
+              padding: '10px 15px',
+              fontSize: '16px',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease',
+            }}
+            disabled={loading}
+          >
             {loading ? 'Submitting...' : 'Submit'}
           </button>
-          <button type="button" className="cancel-button" onClick={onClose}>
+          <button
+            type="button"
+            style={{
+              backgroundColor: '#dc3545',
+              color: '#fff',
+              padding: '10px 15px',
+              fontSize: '16px',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease',
+            }}
+            onClick={onClose}
+          >
             Cancel
           </button>
         </div>
