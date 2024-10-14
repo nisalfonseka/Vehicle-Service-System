@@ -26,26 +26,28 @@ function OrderDetails() {
         fetchOrderDetails();
     }, [orderId]);
 
-    const onSubmit = async (event) => {
+     // Email sending function
+     const handleEmailSend = async (event) => {
         event.preventDefault();
         setResult("Sending....");
-        const formData = new FormData(event.target);
+        
+        const formData = {
+            recipientEmail: event.target.recipientEmail.value,
+            subject: event.target.subject.value,
+            message: event.target.message.value,
+        };
 
-        formData.append("access_key", "8b920bf8-7c7b-46f8-8b89-29847a488297");
-
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            setResult("Form Submitted Successfully");
-            event.target.reset();
-        } else {
-            console.log("Error", data);
-            setResult(data.message);
+        try {
+            const response = await axios.post('http://localhost:5555/send-email', formData);
+            if (response.data.success) {
+                setResult("Email sent successfully!");
+                event.target.reset();
+            } else {
+                setResult(response.data.message);
+            }
+        } catch (error) {
+            console.error('Error sending email:', error);
+            setResult('Failed to send email. Please try again.');
         }
     };
 
@@ -190,27 +192,27 @@ function OrderDetails() {
             </div>
         </div>
         <div className="bg-gray-50 p-6 rounded-lg shadow-md w-full md:w-1/2">
-            <h4 className="text-2xl font-semibold text-indigo-600 mb-4">Send Us a Message</h4>
-            <form id="order-form" onSubmit={onSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name</label>
-                    <input type="text" id="name" name="name" required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                    <h4 className="text-2xl font-semibold text-indigo-600 mb-4">Send Us a Message</h4>
+                    <form id="order-form" onSubmit={handleEmailSend}>
+                        <div className="mb-4">
+                            <label htmlFor="recipientEmail" className="block text-gray-700 font-bold mb-2">Recipient Email</label>
+                            <input type="email" id="recipientEmail" name="recipientEmail" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="subject" className="block text-gray-700 font-bold mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="message" className="block text-gray-700 font-bold mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required></textarea>
+                        </div>
+                        <div className="flex justify-between">
+                            <button type="button" className="bg-red-500 text-white py-2 px-4 rounded-lg shadow hover:bg-red-600 transition duration-200" onClick={handleClear}>Clear</button>
+                            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-200">Send Email</button>
+                        </div>
+                        <p className={`mt-2 ${result.includes("successfully") ? "text-green-600" : "text-red-600"}`}>{result}</p>
+                    </form>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email</label>
-                    <input type="email" id="email" name="email" required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="message" className="block text-gray-700 font-bold mb-2">Message</label>
-                    <textarea id="message" name="message" required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
-                </div>
-                <div className="flex justify-between">
-                    <button type="button" onClick={handleClear} className="bg-gray-400 text-white py-2 px-4 rounded-lg shadow hover:bg-gray-500 transition duration-200">Clear</button>
-                    <button type="submit" className="bg-indigo-500 text-white py-2 px-4 rounded-lg shadow hover:bg-indigo-600 transition duration-200">Send Message</button>
-                </div>
-                {result && <p className="text-green-500 mt-3">{result}</p>}
-            </form>
-        </div>
     </div>
 </div>
 
