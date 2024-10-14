@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
+import { format } from 'date-fns'; // Import date-fns for date formatting
 
 // Create styles
 const styles = StyleSheet.create({
@@ -118,59 +119,68 @@ const styles = StyleSheet.create({
   },
 });
 
-const OrderReport = ({ order }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Header */}
-      <View style={styles.header}>
-      <Image style={styles.logo} src={comlogo} /> {/* Local image used here */}
-        <View style={styles.companyInfo}>
-          <Text style={styles.companyName}>{"Ashan Auto Services"}</Text>
-          <Text style={styles.companyAddress}>{"No 34,Colombo Road,Hanwella"}</Text>
-          <Text style={styles.companyAddress}>{"+94-75675759"}</Text>
-        </View>
-      </View>
+const OrderReport = ({ order }) => {
+  // Get current date and time
+  const currentDate = format(new Date(), 'MMMM dd, yyyy');
+  const currentTime = format(new Date(), 'hh:mm a');
 
-      {/* Title */}
-      <Text style={styles.title}>{"Order Report"}</Text>
-
-      {/* Customer Information */}
-      <Text style={styles.sectionTitle}>Customer Information:</Text>
-      <Text style={styles.text}>Name: {order.customerInfo.name}</Text>
-      <Text style={styles.text}>Address: {order.customerInfo.address}</Text>
-      <Text style={styles.text}>Phone: {order.customerInfo.phone}</Text>
-      <Text style={styles.text}>Email: {order.customerInfo.email}</Text>
-
-      {/* Order Summary */}
-      <Text style={styles.sectionTitle}>Order Summary:</Text>
-      <View style={styles.table}>
-        <View style={styles.tableRow}>
-          <Text style={styles.tableColHeader}>Item</Text>
-          <Text style={styles.tableColHeader}>Quantity</Text>
-          <Text style={styles.tableColHeader}>Price (LKR)</Text>
-        </View>
-        {order.items.map((item, index) => (
-          <View
-            key={index}
-            style={index % 2 === 0 ? styles.tableRow : styles.tableRowAlternate}
-          >
-            <Text style={styles.tableCol}>{item.name}</Text>
-            <Text style={styles.tableCol}>{item.quantity}</Text>
-            <Text style={styles.tableCol}>{item.price.toFixed(2)}</Text>
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Image style={styles.logo} src={comlogo} /> {/* Local image used here */}
+          <View style={styles.companyInfo}>
+            <Text style={styles.companyName}>{"Ashan Auto Services"}</Text>
+            <Text style={styles.companyAddress}>{"No 34, Colombo Road, Hanwella"}</Text>
+            <Text style={styles.companyAddress}>{"+94-75675759"}</Text>
           </View>
-        ))}
-      </View>
+        </View>
 
-      <Text>Total Price: LKR {order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</Text>
+        {/* Title */}
+        <Text style={styles.title}>{"Order Report"}</Text>
 
+        {/* Date and Time */}
+        <Text style={styles.text}>{"Date: " + currentDate}</Text>
+        <Text style={styles.text}>{"Time: " + currentTime}</Text>
 
-      {/* Footer */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>{"Thank you for choosing our services!"}</Text>
-        <Text style={styles.footerContact}>{"Contact us: +94-75675759"}</Text>
-      </View>
-    </Page>
-  </Document>
-);
+        {/* Customer Information */}
+        <Text style={styles.sectionTitle}>Customer Information:</Text>
+        <Text style={styles.text}>Name: {order.customerInfo.name}</Text>
+        <Text style={styles.text}>Address: {order.customerInfo.address}</Text>
+        <Text style={styles.text}>Phone: {order.customerInfo.phone}</Text>
+        <Text style={styles.text}>Email: {order.customerInfo.email}</Text>
+
+        {/* Order Summary */}
+        <Text style={styles.sectionTitle}>Order Summary:</Text>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableColHeader}>Item</Text>
+            <Text style={styles.tableColHeader}>Quantity</Text>
+            <Text style={styles.tableColHeader}>Price (LKR)</Text>
+          </View>
+          {order.items.map((item, index) => (
+            <View
+              key={index}
+              style={index % 2 === 0 ? styles.tableRow : styles.tableRowAlternate}
+            >
+              <Text style={styles.tableCol}>{item.name}</Text>
+              <Text style={styles.tableCol}>{item.quantity}</Text>
+              <Text style={styles.tableCol}>{item.price.toFixed(2)}</Text>
+            </View>
+          ))}
+        </View>
+
+        <Text>Total Price: LKR {order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</Text>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>{"Thank you for choosing our services!"}</Text>
+          <Text style={styles.footerContact}>{"Contact us: +94-75675759"}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 export default OrderReport;
