@@ -192,7 +192,7 @@ function OrderDetails() {
             </div>
         </div>
         <div className="bg-gray-50 p-6 rounded-lg shadow-md w-full md:w-1/2">
-                    <h4 className="text-2xl font-semibold text-indigo-600 mb-4">Send Us a Message</h4>
+                    <h4 className="text-2xl font-semibold text-indigo-600 mb-4">Send Message To {order.customerInfo.name}</h4>
                     <form id="order-form" onSubmit={handleEmailSend}>
                         <div className="mb-4">
                             <label htmlFor="recipientEmail" className="block text-gray-700 font-bold mb-2">Recipient Email</label>
