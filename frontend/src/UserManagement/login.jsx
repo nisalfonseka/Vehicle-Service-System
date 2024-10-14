@@ -55,7 +55,7 @@ function LoginForm() {
         }
 
         // Store user details in localStorage
-        localStorage.setItem('user', JSON.stringify({ username, token, userId }));
+        localStorage.setItem('user', JSON.stringify({ username, token, userId, password}));
         // Show success message
         enqueueSnackbar("Login Successful", { variant: "success" });
 

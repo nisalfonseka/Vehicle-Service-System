@@ -6,6 +6,7 @@ import loginRoute from "./routes/loginRoute.js"
 import multer from 'multer';
 import path from 'path';
 import bodyParser from 'body-parser';
+import nodemailer from 'nodemailer'; // Import Nodemailer
 import { Book } from "./models/bookModel.js";
 import customerRoute from "./routes/customerRoute.js"
 import breakdownRoute from "./routes/breakdownRoute.js"
@@ -36,11 +37,6 @@ import employee from "./routes/breakdownEmpRoute.js"
 
 //vehicle
 import vehiclesRoute from './routes/vehiclesRoute.js';
-
-
-
-
-
 import cors from "cors";
 
 
@@ -62,6 +58,35 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ limit: '50mb' })); // Set to 50MB or any larger limit
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+
+// Email sending route
+app.post('/send-email', async (req, res) => {
+  const { recipientEmail, subject, message } = req.body;
+
+  // Create reusable transporter object
+  const transporter = nodemailer.createTransport({
+      service: 'gmail', // Use your email provider
+      auth: {
+          user: 'salemanager516@gmail.com', // Your email
+          pass: 'byklfvxpgjyvrddf', // Your email password or app password
+      },
+  });
+
+  const mailOptions = {
+      from: 'salemanager516@gmail.com',
+      to: recipientEmail,
+      subject: subject,
+      text: message,
+  };
+
+  try {
+      await transporter.sendMail(mailOptions);
+      res.status(200).json({ success: true, message: 'Email sent successfully!' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Failed to send email' });
+  }
+});
 
 app.patch('/books/:id/status', async (req, res) => {
   const { id } = req.params;

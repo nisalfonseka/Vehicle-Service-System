@@ -45,14 +45,22 @@ function SalesSummary() {
         const doc = new jsPDF();
         doc.setFontSize(20);
         doc.text('Online Sales Summary', 14, 20);
-
-        // Add total revenue
+    
+        // Get current date and time
+        const date = new Date();
+        const formattedDate = date.toLocaleString(); // Format as 'MM/DD/YYYY, HH:MM AM/PM'
+    
+        // Add report generation date
+        doc.setFontSize(12);
+        doc.text(`Generated on: ${formattedDate}`, 14, 30); // Adjust y-position as needed
+    
+        // Add total revenue and other stats
         doc.setFontSize(16);
         doc.text(`Total Revenue: LKR ${totalRevenue}`, 14, 40);
         doc.text(`Pending Orders: ${pendingOrders}`, 14, 50);
         doc.text(`Completed Orders: ${completedOrders}`, 14, 60);
         doc.text(`Canceled Orders: ${canceledOrders}`, 14, 70);
-
+    
         // Add Orders Breakdown table
         const tableData = orders.map(order => [
             order._id,
@@ -60,16 +68,15 @@ function SalesSummary() {
             order.status,
             order.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
         ]);
-
+    
         autoTable(doc, {
             head: [['Order ID', 'Customer Name', 'Status', 'Total Price']],
             body: tableData,
-            startY: 80,
+            startY: 90, // Adjust to avoid overlapping with previous text
         });
-
+    
         doc.save('sales_summary.pdf');
     };
-
     return (
         <div className="flex bg-gray-100 min-h-screen">
             <ManagerHeader />

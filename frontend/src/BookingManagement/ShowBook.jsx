@@ -66,19 +66,20 @@ function ShowBook() {
             </div>
 
             <div className="flex justify-center mt-6">
-              <PDFDownloadLink 
-                document={<Bookreport book={book} />} 
-                fileName={`${book.vehicleNumber}.pdf`}>
-                {({ loading }) =>
-                  loading ? (
-                    <button className="text-sm text-gray-500">Loading...</button>
-                  ) : (
-                    <button className="px-6 py-3 text-base font-semibold text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:bg-red-700">
-                      Download Report
-                    </button>
-                  )
-                }
-              </PDFDownloadLink>
+            <PDFDownloadLink
+                        document={<Bookreport books={[book]} />}
+                        fileName={`${book.vehicleNumber}.pdf`}
+                      >
+                        {({ loading }) =>
+                          loading ? (
+                            <button className="text-sm text-gray-500">Loading...</button>
+                          ) : (
+                            <button className="px-2 py-3 text-base font-semibold text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:bg-red-700">
+                               Download Report
+                            </button>
+                          )
+                        }
+                      </PDFDownloadLink>
             </div>
           </div>
         )}

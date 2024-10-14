@@ -53,9 +53,40 @@ const EditEmployee = () => {
         }));
     };
 
+    //css
+    const pageStyle = {
+        height: "100vh",
+        background: "linear-gradient(to right, #d3d3d3, #a9a9a9)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      };
+    
+      const containerStyle = {
+        background: "rgba(255, 255, 255, 0.85)", // Transparent white background
+        borderRadius: "16px",
+        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+        padding: "30px",
+        width: "90%",
+        maxWidth: "800px",
+        position: "relative",
+      };
+    
+    const buttonStyle = {
+        background: "linear-gradient(135deg, #4a90e2, #50e3c2)",
+        border: "none",
+        fontWeight: 700,
+        padding: "12px",
+        borderRadius: "12px",
+        color: "#fff",
+        transition: "background 0.3s, transform 0.2s, box-shadow 0.3s",
+        boxShadow: "0 6px 12px rgba(0, 0, 0, 0.3)",
+        cursor: "pointer",
+      };
+
     return (
-        <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-            <div className="bg-gradient-to-br from-gray-200 to-white rounded-lg shadow-lg p-8 w-full max-w-2xl">
+                 <div style={pageStyle}>
+                 <div style={containerStyle}>
                 <h3 className="text-center text-gray-800 text-2xl font-bold mb-6">Edit Employee</h3>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     {Object.entries(employee).map(([key, value]) => (
@@ -74,7 +105,7 @@ const EditEmployee = () => {
                         </div>
                     ))}
                     <div>
-                        <button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg py-2 hover:from-blue-600 hover:to-blue-800 transition-transform transform hover:-translate-y-1">Edit Employee</button>
+                    <button type="submit" className="btn" style={buttonStyle}> Edit Employee</button>
                     </div>
                 </form>
             </div>

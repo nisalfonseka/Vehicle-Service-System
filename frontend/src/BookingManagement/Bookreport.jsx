@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 110,
-    height: 60,
+    height: 55,
   },
   companyInfo: {
     textAlign: "right",
@@ -109,60 +109,72 @@ const styles = StyleSheet.create({
   },
 });
 
-const Bookreport = ({ companyInfo, book }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Header */}
-      <View style={styles.header}>
-      <Image style={styles.logo} src="https://i.imgur.com/Y06SdPV.png" />
-      <View style={styles.companyInfo}>
-          <Text style={styles.companyName}>{"Ashan Auto Services"}</Text>
-          <Text style={styles.companyAddress}>{"No 34,Colombo Road,Hanwella"}</Text>
-          <Text style={styles.companyAddress}>{"+94-75675759"}</Text>
-        </View>
-      </View>
+const Bookreport = ({ books = [] }) => {
+  console.log(books); // Debugging line
 
-      {/* Title */}
-      <Text style={styles.title}>{"Vehicle Service Report"}</Text>
-
-      {/* Table with Booking Details */}
-      <View style={styles.table}>
-        {[
-          { label: "Name", value: book.customerName },
-          { label: "Vehicle Type", value: book.vehicleType },
-          { label: "Vehicle Number", value: book.vehicleNumber },
-          {
-            label: "Selected Services",
-            value: Array.isArray(book.selectedServices)
-              ? book.selectedServices.join(", ")
-              : "",
-          },
-          { label: "Date", value: book.selectedDate },
-          { label: "Time", value: book.selectedTimeSlot },
-          { label: "Estimated Time", value: book.totalTime },
-          { label: "Estimated Cost", value: `LKR: ${book.totalCost}` },
-        ].map((item, index) => (
-          <View
-            style={index % 2 === 0 ? styles.tableRow : styles.tableRowAlternate}
-            key={index}
-          >
-            <View style={styles.tableColHeader}>
-              <Text>{item.label}</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text>{item.value || "N/A"}</Text>
-            </View>
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Header */}
+       <View style={styles.header}>
+          <Image style={styles.logo} src="https://i.imgur.com/Y06SdPV.png" />
+          <View style={styles.companyInfo}>
+            <Text style={styles.companyName}>{"Ashan Auto Services"}</Text>
+            <Text style={styles.companyAddress}>{"No 34, Colombo Road, Hanwella"}</Text>
+            <Text style={styles.companyAddress}>{"+94-75675759"}</Text>
           </View>
-        ))}
-      </View>
+        </View> 
 
-      {/* Footer */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>{"Thank you for choosing our services!"}</Text>
-        <Text style={styles.footerContact}>{"Contact us: +94-75675759"}</Text>
-      </View>
-    </Page>
-  </Document>
-);
+        {/* Title */}
+        <Text style={styles.title}>{"Vehicle Service Report"}</Text>
+
+        {/* Check if books has data */}
+        {books.length === 0 ? (
+          <Text>No booking data available</Text>
+        ) : (
+          books.map((book, index) => (
+            <View key={index}>
+              <View style={styles.table}>
+                {[
+                  { label: "Name", value: book.customerName },
+                  { label: "Vehicle Type", value: book.vehicleType },
+                  { label: "Vehicle Number", value: book.vehicleNumber },
+                  {
+                    label: "Selected Services",
+                    value: Array.isArray(book.selectedServices)
+                      ? book.selectedServices.join(", ")
+                      : "",
+                  },
+                  { label: "Date", value: book.selectedDate },
+                  { label: "Time", value: book.selectedTimeSlot },
+                  { label: "Estimated Time", value: book.totalTime },
+                  { label: "Estimated Cost", value: `LKR: ${book.totalCost}` },
+                ].map((item, rowIndex) => (
+                  <View
+                    style={rowIndex % 2 === 0 ? styles.tableRow : styles.tableRowAlternate}
+                    key={rowIndex}
+                  >
+                    <View style={styles.tableColHeader}>
+                      <Text>{item.label}</Text>
+                    </View>
+                    <View style={styles.tableCol}>
+                      <Text>{item.value || "N/A"}</Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ))
+        )}
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>{"Thank you for choosing our services!"}</Text>
+          <Text style={styles.footerContact}>{"Contact us: +94-75675759"}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 export default Bookreport;
