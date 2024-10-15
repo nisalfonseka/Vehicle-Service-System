@@ -132,7 +132,7 @@ function EditBook() {
   };
 
   const validateVehicleNumber = (number) => {
-    const numberPattern = /^[A-Z]{0,3}[0-9]{0,4}$/;
+    const numberPattern = /^[A-Z]{3}[0-9]{4}$/; // Exactly 3 letters followed by exactly 4 digits
     return numberPattern.test(number.toUpperCase());
   };
 

@@ -122,7 +122,7 @@ function SalesSummary() {
                     <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-300">
                         <thead className="bg-gray-200">
                             <tr>
-                                <th className="py-3 px-4 text-left">Order ID</th>
+                                
                                 <th className="py-3 px-4 text-left">Customer Name</th>
                                 <th className="py-3 px-4 text-left">Status</th>
                                 <th className="py-3 px-4 text-left">Total Price</th>
@@ -131,7 +131,7 @@ function SalesSummary() {
                         <tbody>
                             {orders.map(order => (
                                 <tr key={order._id} className="hover:bg-gray-100">
-                                    <td className="py-3 px-4 border-b">{order._id}</td>
+                                    
                                     <td className="py-3 px-4 border-b">{order.customerInfo.name}</td>
                                     <td className="py-3 px-4 border-b">
                                         <span className={`px-2 py-1 rounded-lg text-white ${order.status === 'Completed' ? 'bg-green-500' : order.status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'}`}>
