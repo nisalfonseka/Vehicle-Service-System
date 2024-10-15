@@ -244,12 +244,18 @@ function Checkout({ cart, setCart }) {
             className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
           />
           <input
-            type="email"
-            placeholder="Email"
-            value={customerInfo.email}
-            onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-            className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
-          />
+  type="email"
+  placeholder="Email"
+  value={customerInfo.email}
+  onChange={(e) => {
+    const email = e.target.value;
+    const regex = /^[a-zA-Z0-9@.]*$/; // Allow only letters, numbers, @ and .
+    if (regex.test(email)) {
+      setCustomerInfo({ ...customerInfo, email });
+    }
+  }}
+  className="custom-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+/>
           <input
             type="text"
             placeholder="Address"
