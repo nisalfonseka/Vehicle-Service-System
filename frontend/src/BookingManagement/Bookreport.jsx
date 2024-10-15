@@ -47,6 +47,12 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     color: "#000000",
   },
+  reportTime: {
+    fontSize: 12,
+    textAlign: "right",
+    color: "#666", // Gray color for report time
+    marginBottom: 20,
+  },
   table: {
     display: "table",
     width: "100%",
@@ -110,7 +116,8 @@ const styles = StyleSheet.create({
 });
 
 const Bookreport = ({ books = [] }) => {
-  console.log(books); // Debugging line
+  // Get current date and time
+  const currentTime = new Date().toLocaleString();
 
   return (
     <Document>
@@ -124,6 +131,9 @@ const Bookreport = ({ books = [] }) => {
             <Text style={styles.companyAddress}>{"+94-75675759"}</Text>
           </View>
         </View> 
+
+        {/* Report generated time */}
+        <Text style={styles.reportTime}>{"Report generated on: " + currentTime}</Text>
 
         {/* Title */}
         <Text style={styles.title}>{"Vehicle Service Report"}</Text>

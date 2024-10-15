@@ -1,14 +1,23 @@
 import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
-
+// Registering fonts
 Font.register({
   family: 'Roboto',
   fonts: [
-    { src: '/src/Home/Roboto-Regular.ttf', fontWeight: 'normal'},
+    { src: '/src/Home/Roboto-Regular.ttf', fontWeight: 'normal' },
     { src: '/src/Home/Roboto-Bold.ttf', fontWeight: 'bold' },
     { src: '/src/Home/Roboto-Italic.ttf', fontStyle: 'italic' },
   ],
 });
+
+// Helper function to get the current date and time
+const getCurrentDateTime = () => {
+  const now = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = now.toLocaleDateString('en-US', options);
+  const time = now.toLocaleTimeString('en-US');
+  return `${date}, ${time}`;
+};
 
 // Styles for PDF
 const styles = StyleSheet.create({
@@ -49,6 +58,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 15,
     color: "#000000",
+    fontFamily: 'Roboto',
+  },
+  dateTime: {
+    fontSize: 10,
+    color: "#666",
+    textAlign: "right",
+    marginBottom: 20,
     fontFamily: 'Roboto',
   },
   footer: {
@@ -107,6 +123,8 @@ const styles = StyleSheet.create({
 });
 
 const Allbookreport = ({ books }) => {
+  const currentDateTime = getCurrentDateTime();
+
   return (
     <Document>
       <Page style={styles.page}>
@@ -120,6 +138,9 @@ const Allbookreport = ({ books }) => {
         </View> 
 
         <Text style={styles.title}>Service Appointment Report</Text>
+
+        {/* Display current date and time */}
+        <Text style={styles.dateTime}>Generated on: {currentDateTime}</Text>
         
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
