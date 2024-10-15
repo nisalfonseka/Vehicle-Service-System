@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import MyOrderReport from './MyOrderReport'; // Assuming you named your styled report component MyOrderReport
+import { pdf } from '@react-pdf/renderer'; // Importing pdf from react-pdf
+
 
 function Checkout({ cart, setCart }) {
   const [customerInfo, setCustomerInfo] = useState({
@@ -46,12 +49,12 @@ function Checkout({ cart, setCart }) {
 
   const handleSubmit = async () => {
     if (!validateInputs()) return;
-
+  
     setLoading(true);
-
+  
     try {
       if (!userProfile?.userId) throw new Error('User ID is not available.');
-
+  
       const orderData = {
         customerInfo,
         items: cart.map(item => ({
@@ -64,16 +67,24 @@ function Checkout({ cart, setCart }) {
         totalAmount: cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
         userId: userProfile.userId
       };
-
+  
+      // Send order data to the server
       await axios.post(`http://localhost:5555/api/orders/${userProfile.userId}`, orderData);
       setCart([]);
       alert('Order placed successfully!');
-
+  
+      // Automatically download MyOrderReport when user confirms
       if (window.confirm('Would you like to download the order report?')) {
-        generateReport(orderData);
+        const pdfBlob = await pdf(<MyOrderReport order={orderData} />).toBlob();
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(pdfBlob);
+        link.download = `order_${Date.now()}.pdf`;
+        link.click();
       }
-
+  
+      // Navigate to store after placing the order
       navigate('/store');
+  
     } catch (error) {
       console.error('Error placing order:', error);
       setError('Failed to place order. Please try again.');

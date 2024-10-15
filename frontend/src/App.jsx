@@ -56,6 +56,9 @@ import CreateIncome from './FinanceManagement/CreateIncome';
 import CreateExpenses from './FinanceManagement/CreateExpenses';
 import Expenses from './FinanceManagement/expenses';
 import UserProfile from './FinanceManagement/userProfile';
+import Summery from './FinanceManagement/Orsummery';
+import InvoiceDetails from './FinanceManagement/invoiceDetails';
+import IncomeList from './FinanceManagement/incomeList';
 
 
 //employeee
@@ -171,6 +174,9 @@ function App() {
         <Route path="/dashboard/finance/create-expense" element={<CreateExpenses />} />
         <Route path="/dashboard/finance/profile" element={<UserProfile />} />
         <Route path="/dashboard/header" element={<Navbar />} />
+        <Route path="/dashboard/finance/summery" element={<Summery />} />
+        <Route path="/dashboard/finance/summery/:orderId" element={<InvoiceDetails />} />
+        <Route path="/dashboard/finance/incomeList" element={<IncomeList />} />
           
 
         <Route path='/dashboard/emp' element={<DashboardEmp /> }>

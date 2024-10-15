@@ -73,7 +73,7 @@ function MyOrders() {
       {orders.map((order) => (
         <div key={order._id} className="bg-white rounded-lg shadow-md p-4 border border-gray-200 transition-transform transform hover:scale-105">
           {/* Order ID */}
-          <h3 className="text-lg font-semibold mb-2 text-gray-900">Order ID: {order._id}</h3>
+          
           
           {/* Order Status */}
           <p className="text-gray-600">

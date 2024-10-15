@@ -33,6 +33,10 @@ const AddInvoiceForm = ({ onAddInvoice, onClose }) => {
     { value: 'Nano Treatments', label: 'Nano Treatments' },
     { value: 'Full Paints', label: 'Full Paints' },
     { value: 'Wheel Alignment', label: 'Wheel Alignment' },
+    { value: 'Body Shop', label: 'Body Shop' },
+    { value: 'Mechanical', label: 'Mechanical' },
+    { value: 'Detailing', label: 'Detailing' },
+    { value: 'Periodic Maintenances', label: 'Periodic Maintenances' },
   ];
 
   // Payment method options

@@ -28,9 +28,10 @@ const Navbar = () => {
       </div>
       <div className="nav-links">
         <Link className="nav-link" to="/dashboard/finance/dashboard">Dashboard</Link>
-        <Link className="nav-link" to="/dashboard/finance/invoices">Invoices</Link>
-        <Link className="nav-link" to="/dashboard/finance/incomes">Incomes</Link>
+        <Link className="nav-link" to="/dashboard/finance/summery">Invoices</Link>
+        <Link className="nav-link" to="/dashboard/finance/incomeList">Income List</Link>
         <Link className="nav-link" to="/dashboard/finance/expenses">Expenses</Link>
+        <Link className="nav-link" to="/dashboard/finance/profile">Profile</Link>
       </div>
     </nav>
   );

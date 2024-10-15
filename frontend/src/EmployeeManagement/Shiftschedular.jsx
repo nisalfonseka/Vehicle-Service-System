@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 const ShiftScheduler = () => {
     const [dayShiftEmployees, setDayShiftEmployees] = useState([]);
@@ -8,6 +10,8 @@ const ShiftScheduler = () => {
     const [selectedShift, setSelectedShift] = useState('Day');
     const [employeeInput, setEmployeeInput] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [reportData, setReportData] = useState([]);
+    const [employeeCount, setEmployeeCount] = useState(0);
 
     const fetchEmployees = async () => {
         try {
@@ -65,45 +69,81 @@ const ShiftScheduler = () => {
         }
     };
 
-const renderRows = (shiftEmployees) => {
-    console.log("Rendering Rows for Shift Employees:", shiftEmployees);
-    const rows = [];
+    const generateReport = () => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const formattedDate = tomorrow.toLocaleDateString();
 
-    for (let i = 0; i < 5; i++) {
-        if (i < shiftEmployees.length) {
-            rows.push(
-                <tr key={`${shiftEmployees[i]._id}-${i}`} style={{ padding: '5px 0' }}>
-                    <td style={{ padding: '10px', fontWeight: 'bold' }}>
-                        {shiftEmployees[i].Team} <span style={{ fontWeight: 'normal' }}>({shiftEmployees[i].role})</span>
-                    </td>
-                    <td>
-                        <button
-                            style={{
-                                backgroundColor: '#e53e3e',
-                                color: '#fff',
-                                padding: '5px 10px',
-                                borderRadius: '5px',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                            }}
-                            onClick={() => handleDeleteEmployee(shiftEmployees[i]._id)}
-                        >
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            );
-        } else {
-            rows.push(
-                <tr key={`empty-${i}`}>
-                    <td style={{ padding: '10px' }}></td>
-                    <td></td>
-                </tr>
-            );
+        const doc = new jsPDF();
+        doc.setFontSize(18);
+        doc.text(`Shift Report for ${formattedDate}`, 14, 22);
+        
+        const reportTableData = [
+            ["Employee Name", "Role", "Shift"],
+            ...dayShiftEmployees.map(emp => [emp.Team, emp.role, 'Day']),
+            ...nightShiftEmployees.map(emp => [emp.Team, emp.role, 'Night'])
+        ];
+
+        doc.autoTable({
+            head: [[
+                { content: 'Employee Name', styles: { fillColor: 'red' } },
+                { content: 'Role', styles: { fillColor: 'red' } },
+                { content: 'Shift', styles: { fillColor: 'red' } },
+            ]],
+            body: reportTableData.map(row => row.map(cell => cell)),
+            startY: 30,
+            theme: 'grid',
+        });
+
+        // Add employee count
+        const totalEmployees = dayShiftEmployees.length + nightShiftEmployees.length;
+        doc.text(`Total Employees: ${totalEmployees}`, 14, doc.autoTable.previous.finalY + 10);
+
+        doc.save(`Shift_Report_${formattedDate}.pdf`);
+    };
+
+    const renderRows = (shiftEmployees) => {
+        const rows = [];
+
+        for (let i = 0; i < 5; i++) {
+            if (i < shiftEmployees.length) {
+                rows.push(
+                    <tr key={`${shiftEmployees[i]._id}-${i}`} style={{ padding: '5px 0' }}>
+                        <td style={{ padding: '10px', fontWeight: 'bold' }}>
+                            {shiftEmployees[i].Team} <span style={{ fontWeight: 'normal' }}>({shiftEmployees[i].role})</span>
+                        </td>
+                        <td>
+                            <button
+                                style={{
+                                    backgroundColor: '#e53e3e',
+                                    color: '#fff',
+                                    padding: '5px 10px',
+                                    borderRadius: '5px',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                }}
+                                onClick={() => handleDeleteEmployee(shiftEmployees[i]._id)}
+                                onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                                onMouseDown={(e) => e.target.style.transform = 'scale(0.95)'}
+                                onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
+                            >
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                );
+            } else {
+                rows.push(
+                    <tr key={`empty-${i}`}>
+                        <td style={{ padding: '10px' }}></td>
+                        <td></td>
+                    </tr>
+                );
+            }
         }
-    }
-    return rows;
-};
+        return rows;
+    };
 
     return (
         <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', fontSize: '18px', color: '#4a5568', background: 'linear-gradient(to right, #edf2f7, #e2e8f0)' }}>
@@ -158,6 +198,26 @@ const renderRows = (shiftEmployees) => {
                 onClick={() => setShowModal(true)}
             >
                 Assign Employee
+            </button>
+
+            <button
+                style={{
+                    backgroundColor: '#38a169',
+                    color: '#fff',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    marginTop: '10px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    marginLeft: '10px',
+                }}
+                onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                onMouseDown={(e) => e.target.style.transform = 'scale(0.95)'}
+                onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
+                onClick={generateReport}
+            >
+                Generate Report
             </button>
 
             {showModal && (
@@ -266,12 +326,12 @@ const renderRows = (shiftEmployees) => {
                         >
                             Cancel
                         </button>
+                        </div>
                     </div>
-                </div>
+              
             )}
         </div>
     );
 };
 
 export default ShiftScheduler;
-

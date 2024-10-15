@@ -106,11 +106,6 @@ router.get('/orders', async (req, res) => {
 router.post('/orders', async (req, res) => {
   try {
     const { customerInfo, items, paymentInfo } = req.body;
-    
-    // Use mockUserId if req.user is not available
-    //const mockUserId = '96b0a0f0c9d3f3e16b2a3b28'; // Replace with any valid ObjectId for testing
-    //const userId = req.user ? req.user._id : mockUserId;
-
     // Create a new order
     const newOrder = new Order({
       customerInfo,
@@ -149,7 +144,6 @@ router.get('/orders/:userId', async (req, res) => {
 
     // Find orders by userId
     const orders = await Order.find({ userId });
-
     if (orders.length === 0) {
       return res.status(404).json({ message: 'No orders found for this user.' });
     }
@@ -196,7 +190,7 @@ router.post('/orders/:userId', async (req, res) => {
   }
 });
 
-// Route to fetch orders by user ID
+// Route to fetch orders by user ID (not in use)
 router.get('/orders/:userId', async (req, res) => {
   const { userId } = req.params;
 
@@ -257,6 +251,36 @@ router.get('/cancelled', async (req, res) => {
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching cancelled orders', error: err });
+  }
+});
+
+// Route to fetch orders with 'Completed' status and calculate total income
+router.get('/totalIncome', async (req, res) => {
+  try {
+    const orders = await Order.find({ status: 'Completed' });
+
+    // Calculate total income from completed orders
+    const totalIncome = orders.reduce((total, order) => {
+      const orderTotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      return total + orderTotal;
+    }, 0);
+
+    res.status(200).json({ totalIncome }); // Send only total income
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching completed orders', error: err });
+  }
+});
+
+
+// Route to fetch total count of completed orders
+router.get('/totalInvoice', async (req, res) => {
+  try {
+    // Count the number of completed orders
+    const count = await Order.countDocuments({ status: 'Completed' });
+
+    res.status(200).json({ totalCompletedOrders: count }); // Send the count in the response
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching completed orders count', error: err });
   }
 });
 

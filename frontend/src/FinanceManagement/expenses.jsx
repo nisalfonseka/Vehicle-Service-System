@@ -12,11 +12,9 @@ import Modal from 'react-modal';
 import './expenses.css';
 import logo from '../FinanceManagement/AaaaAuto (1).png';
 
-
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-Modal.setAppElement('#root'); // Set the root element for accessibility
+Modal.setAppElement('#root'); // Set root element for accessibility
 
-// Function to convert an image URL to Base64
 const toBase64 = (url) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -37,8 +35,8 @@ const toBase64 = (url) => {
 const ExpenseRequestsTable = () => {
   const [expenseRequests, setExpenseRequests] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Modal visibility state
-  const [selectedRequest, setSelectedRequest] = useState(null); // Holds selected request for editing
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchExpenseRequests = async () => {
@@ -47,7 +45,7 @@ const ExpenseRequestsTable = () => {
       const response = await axios.get('http://localhost:5555/expenseRequests');
       setExpenseRequests(response.data.data || response.data);
     } catch (error) {
-      console.log('Error fetching expense requests:', error);
+      console.error('Error fetching expense requests:', error);
     } finally {
       setLoading(false);
     }
@@ -59,36 +57,33 @@ const ExpenseRequestsTable = () => {
 
   const handleEdit = (request) => {
     setSelectedRequest(request);
-    setModalIsOpen(true); // Open the modal for editing
+    setModalIsOpen(true);
   };
 
   const handleAddExpense = () => {
-    setSelectedRequest(null); // Clear selected request to make it a new entry
-    setModalIsOpen(true); // Open modal for adding
+    setSelectedRequest(null);
+    setModalIsOpen(true);
   };
 
   const handleFormClose = () => {
     setModalIsOpen(false);
     setSelectedRequest(null);
-    fetchExpenseRequests(); // Refresh data after closing
+    fetchExpenseRequests();
   };
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5555/expenseRequests/${id}`);
-      fetchExpenseRequests(); // Refresh data after deletion
+      fetchExpenseRequests();
     } catch (error) {
-      console.log('Error deleting expense request:', error);
+      console.error('Error deleting expense request:', error);
     }
   };
 
-
-  const filteredExpenses = expenseRequests.filter((request) => {
-    return (
-      request.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      request.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+  const filteredExpenses = expenseRequests.filter((request) =>
+    request.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    request.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const calculateTotalAmount = () =>
     filteredExpenses.reduce((total, req) => total + req.amount, 0);
@@ -116,6 +111,7 @@ const ExpenseRequestsTable = () => {
       { text: 'Total Amount', colSpan: 4, alignment: 'right', style: 'tableTotal' }, {}, {}, {},
       { text: `Rs.${calculateTotalAmount().toFixed(2)}`, style: 'tableTotal' },
     ]);
+
     const docDefinition = {
       content: [
         {
@@ -183,23 +179,29 @@ const ExpenseRequestsTable = () => {
 
   return (
     <div className="container">
-      <NavBar />
-      <div className="expense-list-container">
-        <h1 className="text-4xl my-8"><b>Ashan Auto Service</b></h1>
-        <h3 className="text-2xl my-8" >Expenses List</h3>
-
-        <div className="search-bar-container">
+    <NavBar />
+    <div className="expense-list-container">
+        <h1 className="heading expense-list-title" style={{ fontSize: '2.0rem', marginBottom: '1.5rem' }}>
+            <b>Ashan Auto Service</b>
+        </h1>
+        <h3 className="text-2xl text-[#0a2f56]" style={{ marginBottom: '3.5rem', textAlign: 'center' }}>
+            Expense List
+        </h3>
+       
+        <div className="container flex justify-center">
+        <div className="relative w-1/3 mx-auto" style={{ marginTop: '-1rem', marginBottom: '1.5rem' }}>
           <input
-            type="text"
-            className="search-bar"
-            placeholder="Search Expenses..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+              type="text"
+              className="w-full p-2 border border-[#0a2f56] rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-[#0a2f56]"
+              placeholder="Search Expenses..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <MdSearch className="search-icon" />
-        </div>
+          <MdSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500 text-2xl" />
+      </div>
+      </div>
 
-        {/* Modal for CreateExpense */}
+
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={handleFormClose}
@@ -210,7 +212,7 @@ const ExpenseRequestsTable = () => {
           <CreateExpense
             onClose={handleFormClose}
             refreshData={fetchExpenseRequests}
-            initialData={selectedRequest} // Pass selected request for editing
+            initialData={selectedRequest}
           />
         </Modal>
 
@@ -255,9 +257,10 @@ const ExpenseRequestsTable = () => {
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan="4" className="text-right font-bold">
-                  Total Amount:
-                </td>
+              <td colSpan="4" className="text-right font-bold text-red">
+               Total Amount:
+              </td>
+
                 <td className="font-bold">
                   Rs.{calculateTotalAmount().toFixed(2)}
                 </td>
@@ -266,14 +269,14 @@ const ExpenseRequestsTable = () => {
             </tfoot>
           </table>
         )}
-        <div class="btn-container">
-        <button onClick={handleAddExpense} className="add-expense-btn">
-          Add Expenses
-        </button>
 
-        <button onClick={generateInvoiceStatementPDF} className="generate-report-btn">
-          <MdDownload className="icon" /> Download Expenses Report
-        </button>
+        <div className="btn-container">
+          <button onClick={handleAddExpense} className="add-expense-btn">
+            Add Expenses
+          </button>
+          <button onClick={generateInvoiceStatementPDF} className="generate-report-btn">
+            <MdDownload className="icon" /> Download Expenses Report
+          </button>
         </div>
       </div>
     </div>

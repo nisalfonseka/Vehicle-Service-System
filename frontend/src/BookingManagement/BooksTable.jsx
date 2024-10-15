@@ -31,6 +31,7 @@ const BooksTable = ({ books }) => {
             <tr>
               <th className="border-b-2 border-red-600 p-3 text-left text-l">Booking ID</th>
               <th className="border-b-2 border-red-600 p-3 text-left text-l">Customer Name</th>
+              <th className="border-b-2 border-red-600 p-3 text-left text-l">Contact No</th>
               <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Vehicle Number</th>
               <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Date</th>
               <th className="border-b-2 border-red-600 p-3 text-left text-l max-md:hidden">Time</th>
@@ -48,6 +49,7 @@ const BooksTable = ({ books }) => {
                 <tr key={book._id} className="even:bg-gray-100 odd:bg-white transition duration-200 hover:bg-gray-200">
                   <td className="border-b border-gray-300 p-3 text-left text-l">{index + 1}</td>
                   <td className="border-b border-gray-300 p-3 text-left text-l">{book.customerName}</td>
+                  <td className="border-b border-gray-300 p-3 text-left text-l">{book.contactNumber}</td>
                   <td className="border-b border-gray-300 p-3 text-left text-l max-md:hidden">{book.vehicleNumber}</td>
                   <td className="border-b border-gray-300 p-3 text-left text-l max-md:hidden">{book.selectedDate}</td>
                   <td className="border-b border-gray-300 p-3 text-left text-l max-md:hidden">{book.selectedTimeSlot}</td>

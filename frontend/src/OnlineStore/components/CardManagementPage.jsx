@@ -9,10 +9,54 @@ const CardManagementPage = () => {
     expirationDate: '',
     cvv: '',
   });
+  
   const [editCard, setEditCard] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // New states for popup and validation
+  const [showPopup, setShowPopup] = useState(false);
+  const [deleteCardId, setDeleteCardId] = useState(null);
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [authError, setAuthError] = useState(null);
+
+   // Input handler for credentials in popup
+  const handleCredentialsChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({ ...credentials, [name]: value });
+  };
+
+  // Handle delete button click
+  const handleDeleteClick = (cardId) => {
+    setDeleteCardId(cardId);
+    setShowPopup(true); // Show the popup
+  };
+
+  // Validate credentials and delete card
+  const handleDeleteConfirm = async () => {
+    const { username, password } = credentials;
+
+    if (username === userProfile.username && password === userProfile.password) {
+      try {
+        await axios.delete(`http://localhost:5555/api/cards/${userProfile.userId}/${deleteCardId}`);
+        setCards(cards.filter((card) => card._id !== deleteCardId));
+        setShowPopup(false); // Close popup on success
+        setAuthError(null);
+      } catch (error) {
+        console.error('Failed to delete card:', error);
+        setError('Failed to delete card. Please try again.');
+      }
+    } else {
+      setAuthError('Invalid username or password');
+    }
+  };
+
+  // Handle canceling the delete action
+  const handleCancelDelete = () => {
+    setShowPopup(false);
+    setAuthError(null);
+  };
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -165,7 +209,7 @@ const CardManagementPage = () => {
     if (!validateCardDetails()) {
       return; // Exit if validation fails
     }
-
+//check the user added 3 only cards
     if (cards.length >= 3 && !editCard) {
       alert('You can only add up to 3 cards.');
       return;
@@ -242,7 +286,7 @@ const CardManagementPage = () => {
                   <p className="text-gray-600">{card.name}</p>
                   {/* Expiration Date */}
                   <p className="text-gray-500">{card.expirationDate}</p>
-                  <p className="text-gray-500">{card.cvv}</p>
+                  <p className="text-gray-500">{card.cvv.replace(/.(?=.{1})/g, '*')}</p>
                 </div>
                 <div className="flex space-x-2">
                   <button
@@ -252,7 +296,7 @@ const CardManagementPage = () => {
                     Update
                   </button>
                   <button
-                    onClick={() => handleDelete(card._id)}
+                    onClick={() => handleDeleteClick(card._id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                   >
                     Delete
@@ -260,6 +304,7 @@ const CardManagementPage = () => {
                 </div>
               </div>
             ))}
+            
           </div>
         )}
         {error && <p className="text-red-500 mt-4">{error}</p>}
@@ -305,7 +350,7 @@ const CardManagementPage = () => {
 
           {/* CVV */}
           <input
-            type="text"
+            type="password"
             name="cvv"
             value={cardDetails.cvv}
             placeholder="CVV"
@@ -334,6 +379,50 @@ const CardManagementPage = () => {
             )}
           </div>
         </form>
+        {/* Popup for Delete Confirmation */}
+{showPopup && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg">
+      <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
+      <p>Please enter your username and password to confirm:</p>
+
+      <input
+        type="text"
+        name="username"
+        onChange={handleCredentialsChange}
+        placeholder="Username"
+        className="p-2 border rounded w-full mb-4"
+        autoComplete="off"  // Disable autofill for username
+      />
+      <input
+        type="password"
+        name="password"
+        onChange={handleCredentialsChange}
+        placeholder="Password"
+        className="p-2 border rounded w-full mb-4"
+        autoComplete="off"  // Disable autofill for password
+      />
+
+      {authError && <p className="text-red-500 mb-4">{authError}</p>}
+
+      <div className="flex justify-between">
+        <button
+          onClick={handleDeleteConfirm}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Confirm Delete
+        </button>
+        <button
+          onClick={handleCancelDelete}
+          className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );

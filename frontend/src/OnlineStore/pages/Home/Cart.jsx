@@ -95,12 +95,7 @@ function Cart({ cart, setCart }) {
 
       {/* Discount Button */}
       <div className="flex flex-col items-center mt-6">
-        <button
-          className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition duration-200"
-          onClick={() => alert("Discount code feature coming soon!")}
-        >
-          Apply Discount Code
-        </button>
+        
       </div>
     </div>
   )}

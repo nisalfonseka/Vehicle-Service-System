@@ -25,10 +25,23 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
     }
   };
 
-  const handleComplete = () => {
-    // Call the status update function with "Completed"
-    onStatusUpdate(book._id, 'Completed');
+  const handleComplete = async () => {
+    try {
+      // Update booking status to Completed
+      await fetch(`http://localhost:5555/books/${book._id.trim()}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'Completed' }),
+      });
+
+      onStatusUpdate(book._id, 'Completed');
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
   };
+
 
   return (
     <div className="border border-gray-300 rounded-xl p-6 m-4 relative bg-white shadow-lg transition transform hover:-translate-y-2 hover:shadow-2xl">
@@ -64,7 +77,7 @@ const BookSingleCard = ({ book, onStatusUpdate }) => {
           <MdOutlineDelete className="text-2xl text-red-500 hover:text-red-700" />
         </Link>
         
-          <BsCaretRightSquareFill className="text-2xl text-green-500 hover:text-green-700"
+          <BsCaretRightSquareFill className="text-2xl text-blue-500 hover:text-blue-700"
           onClick={handleComplete}/>
         
   

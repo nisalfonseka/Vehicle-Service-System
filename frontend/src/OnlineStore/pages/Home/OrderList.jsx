@@ -70,7 +70,7 @@ function OrderList() {
                         <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-300">
                             <thead className="bg-gray-200">
                                 <tr>
-                                    <th className="py-3 px-4 text-left">Order ID</th>
+                                    
                                     <th className="py-3 px-4 text-left">Customer Name</th>
                                     <th className="py-3 px-4 text-left">Status</th>
                                     <th className="py-3 px-4 text-left">Items</th>
@@ -81,7 +81,7 @@ function OrderList() {
                             <tbody>
                                 {filteredOrders.map(order => (
                                     <tr key={order._id} className={`hover:bg-gray-100 ${getStatusClass(order.status)}`}>
-                                        <td className="py-3 px-4 border-b">{order._id}</td>
+                                        
                                         <td className="py-3 px-4 border-b">{order.customerInfo.name}</td>
                                         <td className="py-3 px-4 border-b">{order.status}</td>
                                         <td className="py-3 px-4 border-b">
