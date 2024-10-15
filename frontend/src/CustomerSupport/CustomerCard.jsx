@@ -26,9 +26,12 @@ const CustomerCard = () => {
     setSearchId(event.target.value);
   };
 
-  // Function to filter customers based on the search ID and ticket status
+  // Function to filter customers based on the search ID (either customer name or customer ID) and ticket status
   const filteredCustomers = customers
-    .filter((item) => item.customerName.includes(searchId))
+    .filter((item) =>
+      item.customerName.toLowerCase().includes(searchId.toLowerCase()) ||
+      item.customer_id.toString().toLowerCase().includes(searchId.toLowerCase()) 
+    )
     .filter((item) => {
       const emailStatus = localStorage.getItem(`emailStatus_${item.customer_id}`) || "Pending"; // Fetch email status from local storage
       if (ticketFilter === "all") return true;
@@ -87,7 +90,7 @@ const CustomerCard = () => {
             {/* Input Field */}
             <input
               type="text"
-              placeholder="Search by Customer name :"
+              placeholder="Search by Customer name or ID:"
               value={searchId}
               onChange={handleSearchChange}
               style={{
