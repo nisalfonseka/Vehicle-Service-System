@@ -43,7 +43,7 @@ router.post("/", async (request, response) => {
       selectedTimeSlot: selectedTimeSlot,
     });
 
-    if (existingBookings >= 3) {
+    if (existingBookings >= 2) {
       return response.status(400).json({ message: "This time slot is fully booked. Please select another time slot." });
     }
 
