@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BackButton from '../BookingManagement/BackButton';
 import Spinner from '../BookingManagement/Spinner';
 import axios from 'axios';
@@ -6,16 +6,29 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 
 const CreateVehicle = () => {
+  const [empmanageRequests, setEmpmanageRequests] = useState([]); // Corrected state name
   const [vehicleNo, setVehicleNo] = useState('');
   const [chassisNo, setChassisNo] = useState('');
   const [vehicleType, setVehicleType] = useState('');
   const [fuelType, setFuelType] = useState('');
   const [year, setYear] = useState('');
-  const [driverEmail, setDriverEmail] = useState(''); 
+  const [driverEmail, setDriverEmail] = useState(''); // Driver email
   const [lastMaintenance, setLastMaintenance] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const result = await axios.get("http://localhost:5555/empmanageRequests");
+        setEmpmanageRequests(result.data.data); // Set employee data correctly
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchEmployees();
+  }, []);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -102,7 +115,13 @@ const CreateVehicle = () => {
           },
           { label: 'Fuel Type', value: fuelType, setter: setFuelType, type: 'select', options: ['PETROL', 'DIESEL'] },
           { label: 'Year', value: year, setter: setYear, type: 'number' },
-          { label: 'Driver\'s Email', value: driverEmail, setter: setDriverEmail, type: 'email' },
+          {
+            label: 'Driver Email',
+            value: driverEmail,
+            setter: setDriverEmail,
+            type: 'select', // Use a select input for driver emails
+            options: empmanageRequests.map((employee) => employee.email), // Fetch and display emails
+          },
           { label: 'Last Maintenance', value: lastMaintenance, setter: setLastMaintenance, type: 'date' },
         ].map(({ label, value, setter, type = 'text', options }) => (
           <div className="my-4" key={label}>
