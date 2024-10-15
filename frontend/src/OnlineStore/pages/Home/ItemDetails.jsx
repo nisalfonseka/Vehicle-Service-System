@@ -44,7 +44,7 @@ function ItemDetails({ cart, setCart }) {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container1 mx-auto p-4">
             <button
                         className="btn btn-secondary mb-4"
                         onClick={() => navigate(-1)}

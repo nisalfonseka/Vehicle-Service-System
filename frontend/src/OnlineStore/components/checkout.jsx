@@ -221,7 +221,7 @@ function Checkout({ cart, setCart }) {
   };
 
   return (
-    <div className="custom-checkout container mx-auto px-4 py-12">
+    <div className="custom-checkout container1 mx-auto px-4 py-12">
       {/* Title */}
       <h2 className="custom-title text-4xl font-extrabold text-center text-gray-900 mb-10">Checkout</h2>
 

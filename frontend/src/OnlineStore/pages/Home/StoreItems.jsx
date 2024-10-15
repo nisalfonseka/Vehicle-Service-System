@@ -26,7 +26,7 @@ function StoreItems() {
   return (
     <div>
       <ManagerHeader />
-      <div className="container mt-4" style={{ userSelect: 'none' }}>
+      <div className="container1 mt-4" style={{ userSelect: 'none' }}>
         <h2>Online Store Items</h2>
         <table className="table table-hover">
           <thead>

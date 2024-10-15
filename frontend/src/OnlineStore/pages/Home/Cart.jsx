@@ -29,7 +29,7 @@ function Cart({ cart, setCart }) {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container1 mx-auto p-6">
   {/* Title */}
   <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">Your Shopping Cart</h2>
   

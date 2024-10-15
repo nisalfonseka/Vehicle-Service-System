@@ -265,7 +265,7 @@ const CardManagementPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="container1 mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Left Side: Saved Cards */}
       <div className="bg-white shadow-md rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">Saved Cards</h2>

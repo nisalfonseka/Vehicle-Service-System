@@ -57,7 +57,7 @@ function Store({ cart, setCart }) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container1 mx-auto px-4 py-6">
       {notification && (
         <Notification message={notification} onClose={handleCloseNotification} />
       )}

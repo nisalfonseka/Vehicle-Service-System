@@ -143,7 +143,7 @@ function OrderDetails() {
     }
 
     return (
-        <div className="container mx-auto p-8 bg-white rounded-lg shadow-md m-8">
+        <div className="container1 mx-auto p-8 bg-white rounded-lg shadow-md m-8">
     <button
         className="flex items-center text-indigo-500 hover:text-indigo-700 font-semibold mb-6"
         onClick={handleBack}

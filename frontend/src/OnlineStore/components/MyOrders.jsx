@@ -49,7 +49,7 @@ function MyOrders() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container1 mx-auto px-4 py-6">
   {/* Back Button */}
   <div className="flex items-center mb-6">
     <button

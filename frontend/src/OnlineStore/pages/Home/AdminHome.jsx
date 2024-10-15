@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const AdminHome = () => {
   return (
-    <div className="sales-manager-container grid grid-cols-1 md:grid-cols-2 gap-8 p-10 bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen">
+    <div className="sales-manager-container1 grid grid-cols-1 md:grid-cols-2 gap-8 p-10 bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen">
       {/* Sales Manager Section */}
       <div className="section relative group bg-white rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
         <Link to="/inventory" className="section-link block text-center p-8">

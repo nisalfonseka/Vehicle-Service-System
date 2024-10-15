@@ -26,7 +26,7 @@ function ItemList() {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container1 mt-4">
       <h2>Item List</h2>
       <table className="table table-hover">
         <thead>
