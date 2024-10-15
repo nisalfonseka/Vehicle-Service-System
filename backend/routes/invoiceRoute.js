@@ -128,7 +128,7 @@ router.get("/:id", async (request, response) => {
     }
   
  
-    // Calculate the total amount dynamically for the single invoice
+   
     const calculatedTotalAmount =
       invoice.Amount + invoice.taxAmount - invoice.discountAmount;
 

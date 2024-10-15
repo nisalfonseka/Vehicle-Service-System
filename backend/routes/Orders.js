@@ -254,5 +254,35 @@ router.get('/cancelled', async (req, res) => {
   }
 });
 
+// Route to fetch orders with 'Completed' status and calculate total income
+router.get('/totalIncome', async (req, res) => {
+  try {
+    const orders = await Order.find({ status: 'Completed' });
+
+    // Calculate total income from completed orders
+    const totalIncome = orders.reduce((total, order) => {
+      const orderTotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      return total + orderTotal;
+    }, 0);
+
+    res.status(200).json({ totalIncome }); // Send only total income
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching completed orders', error: err });
+  }
+});
+
+
+// Route to fetch total count of completed orders
+router.get('/totalInvoice', async (req, res) => {
+  try {
+    // Count the number of completed orders
+    const count = await Order.countDocuments({ status: 'Completed' });
+
+    res.status(200).json({ totalCompletedOrders: count }); // Send the count in the response
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching completed orders count', error: err });
+  }
+});
+
 
 export default router;
